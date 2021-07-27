@@ -104,7 +104,7 @@ The difference in processing time is only **3 seconds** on this test data set. T
 There will be many great tools that help create awesome visualisations, here we're going for ease of installation and interpretation initially.
 ### recentrifuge
 
-We thought that we'd test [recentrifuge](https://github.com/khyox/recentrifuge) for creating interactive plots. Installation was actually very simple after getting minconda set up (see [notes](Jetson_Xavier_setup_notes.md).
+We thought that we'd test [recentrifuge](https://github.com/khyox/recentrifuge) for creating interactive plots. Installation was actually very simple after getting minconda set up (see [notes](jetson_xavier_setup_notes.md)).
 
 Here is a quick run on the Zymo data set:
 
