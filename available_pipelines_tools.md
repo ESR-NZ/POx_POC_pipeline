@@ -10,3 +10,7 @@ Some neat looking things:
 
 - [marbl/Krona](https://github.com/marbl/Krona/wiki)
 - [khyox/recentrifuge](https://github.com/khyox/recentrifuge)
+
+## Kraken output wrangling
+
+- [jenniferlu717/KrakenTools](https://github.com/jenniferlu717/KrakenTools)
