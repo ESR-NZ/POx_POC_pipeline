@@ -53,7 +53,7 @@ The database we're most interested in initially is [Minikraken v1](https://genom
 
 > "**Memory**: To run efficiently, Kraken 2 requires enough free memory to hold the database (primarily the hash table) in RAM. While this can be accomplished with a ramdisk, Kraken 2 will by default load the database into process-local RAM; the **--memory-mapping** switch to kraken2 will avoid doing so. The default database size is 29 GB (as of Jan. 2018), and you will need slightly more than that in RAM if you want to build the default database."
 
-When running kraken2 on the Xavier AGX (32Gb) with the Zymo mock community test data and the `Minikraken v1` database 8Gb of system RAM is used during classification (and a single CPU thread). This is fine on the bigger AGX units which have 16/32Gb of RAM. However on the NX with it's 8Gb RAM this would mean we can run classification. That's where `--memory-mapping` comes in. This parameter gives up a little bit of performance (speed) for little to no extra RAM usage.
+When running kraken2 on the Xavier AGX (32Gb) with the Zymo mock community test data and the `Minikraken v1` database 8Gb of system RAM is used during classification (and a single CPU thread). This is fine on the bigger AGX units which have 16/32Gb of RAM. However on the NX with it's 8Gb RAM this would mean we can't run classification. That's where `--memory-mapping` comes in. This parameter gives up a little bit of performance (speed) for little to no extra RAM usage.
 
 Here is the AGX running without `-M` (it uses 9Gb of total system RAM):
 ```sh
