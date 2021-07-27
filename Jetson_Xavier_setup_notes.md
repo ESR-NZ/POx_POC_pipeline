@@ -15,6 +15,8 @@ source .bashrc
 
 ## miniconda
 
+This used to be tricky on ARM but now miniconda have dedicated ARM builds ([link](https://repo.anaconda.com/miniconda/)). I've grabbed the latest build ([link](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)).
+
 ```sh
 # set up conda
 mkdir miniconda
@@ -22,7 +24,114 @@ cd miniconda/
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh
 chmod +x Miniconda3-latest-Linux-aarch64.sh 
 ./Miniconda3-latest-Linux-aarch64.sh 
+source ~/.bashrc
 ```
+
+#### channels
+
+```sh
+conda config --add channels defaults
+conda config --add channels bioconda
+conda config --add channels conda-forge
+```
+
+#### mamba
+
+```sh
+conda install mamba -n base -c conda-forge
+```
+
+#### recentrifuge
+
+```sh
+mamba install -c bioconda recentrifuge
+```
+
+Probably should have created an env here... oh well! Looks like it is working:
+
+```sh
+rcf --version
+
+=-= /xavier_ssd/miniconda3/bin/rcf =-= v1.3.3 - May 2021 =-= by Jose Manuel Martí =-=
+
+rcf version 1.3.3 released in May 2021
+```
+
+```sh
+git clone https://github.com/khyox/recentrifuge.git
+cd recentrifuge
+./retaxdump     # download NCBI node db
+# -n /xavier_ssd/gitrepo/recentrifuge/taxdump       # use this dir as -n flag
+```
+
+```sh
+rcf -n /xavier_ssd/gitrepo/recentrifuge/taxdump -k zymo_mockcommunity_kr2_output.krk
+
+=-= /xavier_ssd/miniconda3/bin/rcf =-= v1.3.3 - May 2021 =-= by Jose Manuel Martí =-=
+
+Loading NCBI nodes... OK! 
+Loading NCBI names... OK! 
+Building dict of parent to children taxa... OK! 
+
+Please, wait, processing files in parallel...
+
+Loading output file zymo_mockcommunity_kr2_output.krk... OK!
+  Seqs read: 128_011	[213.35 Mnt]
+  Seqs clas: 119_519	(6.63% unclassified)
+  Seqs pass: 119_519	(0.00% rejected)
+  Scores SHEL: min = 35.0, max = 1067.0, avr = 79.0
+  Coverage(%): min = 0.0, max = 25.5, avr = 2.8
+  Read length: min = 136 nt, max = 19.18 knt, avr = 1.72 knt
+  TaxIds: by classifier = 1009, by filter = 1009
+Building from raw data with mintaxa = 5 ... 
+  Check for more seqs lost ([in/ex]clude affects)... 
+  Info: 1091 additional seqs discarded (0.913% of accepted)
+
+  Warning! 4 orphan taxids (rerun with --debug for details)
+zymo_mockcommunity_kr2_output sample OK!
+Load elapsed time: 11.1 sec
+
+
+Building the taxonomy multiple tree... OK!
+Generating final plot (zymo_mockcommunity_kr2_output.krk.rcf.html)... OK!
+Generating Excel full summary (zymo_mockcommunity_kr2_output.krk.rcf.xlsx)... OK!
+Total elapsed time: 00:00:42
+```
+
+![recentrifuge_plot](images/recentrifuge_zymodata.png)
+
+```sh
+rcf -n /xavier_ssd/gitrepo/recentrifuge/taxdump -k barcode26_kr2_output.krk 
+
+=-= /xavier_ssd/miniconda3/bin/rcf =-= v1.3.3 - May 2021 =-= by Jose Manuel Martí =-=
+
+Loading NCBI nodes... OK! 
+Loading NCBI names... OK! 
+Building dict of parent to children taxa... OK! 
+
+Please, wait, processing files in parallel...
+
+Loading output file barcode26_kr2_output.krk... OK!
+  Seqs read: 4_911	[40.21 Mnt]
+  Seqs clas: 4_909	(0.04% unclassified)
+  Seqs pass: 4_909	(0.00% rejected)
+  Scores SHEL: min = 35.0, max = 4729.0, avr = 322.4
+  Coverage(%): min = 0.0, max = 17.1, avr = 5.3
+  Read length: min = 1000 nt, max = 76.79 knt, avr = 8.19 knt
+  TaxIds: by classifier = 16, by filter = 16
+Building from raw data with mintaxa = 4 ... 
+  Check for more seqs lost ([in/ex]clude affects)... OK!
+barcode26_kr2_output sample OK!
+Load elapsed time: 2.65 sec
+
+
+Building the taxonomy multiple tree... OK!
+Generating final plot (barcode26_kr2_output.krk.rcf.html)... OK!
+Generating Excel full summary (barcode26_kr2_output.krk.rcf.xlsx)... OK!
+Total elapsed time: 00:00:32
+```
+
+## docker
 
 ```sh
 # had some docker permission issues
