@@ -145,3 +145,27 @@ Total elapsed time: 00:00:42
 ...and here is a static image of the output:
 
 ![recentrifuge_plot](images/recentrifuge_zymodata.png)
+
+## GitHub LFS (Large File System)
+
+Installing git-lfs: [link](https://docs.github.com/en/github/managing-large-files/versioning-large-files/installing-git-large-file-storage)
+Set up: [link](https://docs.github.com/en/github/managing-large-files/versioning-large-files/configuring-git-large-file-storage)
+
+Once set up check that it's installed:
+
+```sh
+git lfs install
+
+Updated git hooks.
+Git LFS initialized.
+```
+
+Then you can flag which files should be marked for tracking and upload to LFS:
+
+```sh
+git lfs track "*.fastq"
+git lfs track "*.fq"
+git lfs track "*.fq.gz"
+git lfs track "*.fastq.gz"
+git lfs track "*.tar.gz"
+```
