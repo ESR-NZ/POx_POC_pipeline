@@ -98,3 +98,50 @@ Loading database information... done.
 ```
 
 The difference in processing time is only **3 seconds** on this test data set. This is great news moving forward for lower RAM units like the NX, and maybe even the Nano.
+
+## Visualisation 
+
+There will be many great tools that help create awesome visualisations, here we're going for ease of installation and interpretation initially.
+### recentrifuge
+
+We thought that we'd test [recentrifuge](https://github.com/khyox/recentrifuge) for creating interactive plots. Installation was actually very simple after getting minconda set up (see [notes](Jetson_Xavier_setup_notes.md).
+
+Here is a quick run on the Zymo data set:
+
+```sh
+rcf -n /xavier_ssd/gitrepo/recentrifuge/taxdump -k zymo_mockcommunity_kr2_output.krk
+
+=-= /xavier_ssd/miniconda3/bin/rcf =-= v1.3.3 - May 2021 =-= by Jose Manuel Martí =-=
+
+Loading NCBI nodes... OK! 
+Loading NCBI names... OK! 
+Building dict of parent to children taxa... OK! 
+
+Please, wait, processing files in parallel...
+
+Loading output file zymo_mockcommunity_kr2_output.krk... OK!
+  Seqs read: 128_011	[213.35 Mnt]
+  Seqs clas: 119_519	(6.63% unclassified)
+  Seqs pass: 119_519	(0.00% rejected)
+  Scores SHEL: min = 35.0, max = 1067.0, avr = 79.0
+  Coverage(%): min = 0.0, max = 25.5, avr = 2.8
+  Read length: min = 136 nt, max = 19.18 knt, avr = 1.72 knt
+  TaxIds: by classifier = 1009, by filter = 1009
+Building from raw data with mintaxa = 5 ... 
+  Check for more seqs lost ([in/ex]clude affects)... 
+  Info: 1091 additional seqs discarded (0.913% of accepted)
+
+  Warning! 4 orphan taxids (rerun with --debug for details)
+zymo_mockcommunity_kr2_output sample OK!
+Load elapsed time: 11.1 sec
+
+
+Building the taxonomy multiple tree... OK!
+Generating final plot (zymo_mockcommunity_kr2_output.krk.rcf.html)... OK!
+Generating Excel full summary (zymo_mockcommunity_kr2_output.krk.rcf.xlsx)... OK!
+Total elapsed time: 00:00:42
+```
+
+...and here is a static image of the output:
+
+![recentrifuge_plot](images/recentrifuge_zymodata.png)
