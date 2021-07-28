@@ -2,7 +2,7 @@
 library(tidyverse)
 library(reactable)
 
-resgenes <- read_tsv("../data/test_dna.got")
+resgenes <- read_tsv("data/test_dna.got")
 ```
 
 # AMR genes
