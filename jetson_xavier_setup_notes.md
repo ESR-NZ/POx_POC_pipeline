@@ -225,6 +225,16 @@ It turns out that `recentrifuge` has the ability to detect and process multiple 
 rcf -n /data/gitrepos/recentrifuge/taxdump -k ./ -o recentrifuge_group_analysis.html -e CSV
 ```
 
+This produces something like the following:
+
+```sh
+-rw-rw-r-- 1 minit minit 661K Jul 28 15:44 recentrifuge_group_analysis.html
+-rw-rw-r-- 1 minit minit 2.0K Jul 28 15:44 recentrifuge_group_analysis.stat.csv
+-rw-rw-r-- 1 minit minit 118K Jul 28 15:44 recentrifuge_group_analysis.data.csv
+```
+
+So a single set of 'data' and html that contains all samples in a given 'run'. Neat!
+
 ## other python packages required
 
 The current draft pipeline ans associated scripts depend on the below (as well as anything previously mentioned):
