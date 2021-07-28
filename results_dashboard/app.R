@@ -25,7 +25,7 @@ ui <- fluidPage(
             
             # User input to choose sample of interest to view ----
             selectizeInput("isolate",
-                           h4("Select an isolate:"),
+                           h4("Select or search for an isolate:"),
                            choices = NULL,
                            options = list(maxItems = 1)),
         ),
@@ -57,6 +57,10 @@ server <- function(input, output, session) {
     
     # Embed the appropriate recentrifuge html file in the dashboard ----
     output$recentrifuge_plot <- renderUI({
+        
+        # Print a message if no isolate is chosen
+        validate(need(input$isolate, "Please choose and isolate from the drop down box to create a plot"))
+        
         # Load in the current isolate the user has chosen to view so it can be used for "recentrifuge_html_path" ----
         input$isolate
 
