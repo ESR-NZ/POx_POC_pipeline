@@ -133,11 +133,16 @@ def plot_length_dis_graph(fastq_file, results_path):
     plot.savefig(plot_path)
     plt.close('all')
 
-def filtlong_run(fastq_file):
-    len_filt_path = Path("")
-    filt_cmd = f'filtlong --min_length $READ_LEN -t 300000000 Reads/all_sup_reads.fq > Reads/len_filter_kb_SUP_reads.fq'
+
+def filtlong_run(fastq_file, read_len=1000):
+    
+    fastq_dir = fastq_file.parent
+    len_filt_file_path = fastq_dir/"len_filter_reads.fq"
+    
+    filt_cmd = f'filtlong --min_length {read_len} {fastq_file} > {len_filt_file_path}'
     os.system(filt_cmd)
-    pass
+    
+    return len_filt_file_path
 
 
 # main func to run the script
@@ -149,8 +154,14 @@ def main():
         print(f'working on {fq_dir.name}')
 
         fastq_file = concat_read_files(fq_dir)
-        plot_length_dis_graph(fastq_file, results_path)
+        all_reads_files.append(fastq_file.name)
 
+        len_filtered_fastq = filtlong_run(fastq_file)
+
+        print(f"Filtered reads live at {len_filtered_fastq}")
+        
+        plot_length_dis_graph(fastq_file, results_path)
+ 
 
 if __name__ == '__main__':
     main()
