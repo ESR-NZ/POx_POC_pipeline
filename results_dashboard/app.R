@@ -63,7 +63,7 @@ server <- function(input, output, session) {
     output$recentrifuge_plot <- renderUI({
         
         # Print a message if no isolate is chosen
-        validate(need(input$isolate, "Please choose and isolate from the drop down box to create a plot"))
+        validate(need(input$isolate, "Please choose an isolate from the drop down box to create a plot"))
         
         # Load in the current isolate the user has chosen to view so it can be used for "recentrifuge_html_path" ----
         input$isolate
