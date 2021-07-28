@@ -1,0 +1,20 @@
+```r
+library(tidyverse)
+library(reactable)
+
+resgenes <- read_tsv("../data/test_dna.got")
+```
+
+# AMR genes
+```r
+reactable(resgenes, groupBy="Class", defaultSorted=c("Class", "Subclass"))
+```
+
+# AMR figure
+```r
+library(ggplot2)
+ggplot(resgenes, aes(x=Subclass, fill=`Gene symbol`, label = `Gene symbol`)) +
+geom_bar() +
+geom_text(stat="count", size=2, position = position_stack(vjust = 0.5)) +
+coord_flip()
+```
