@@ -216,3 +216,90 @@ Generating final plot (barcode26_kr2_output.krk.rcf.html)... OK!
 Generating Excel full summary (barcode26_kr2_output.krk.rcf.xlsx)... OK!
 Total elapsed time: 00:00:32
 ```
+
+##### 'grouped' analysis
+
+It turns out that `recentrifuge` has the ability to detect and process multiple kraken2 outputs in a dir. The only requirement is that the kraken2 outputs finish with the `.krk` file extension. Then the following can be run:
+
+```sh
+rcf -n /data/gitrepos/recentrifuge/taxdump -k ./ -o recentrifuge_group_analysis.html -e CSV
+```
+
+## other python packages required
+
+The current draft pipeline ans associated scripts depend on the below (as well as anything previously mentioned):
+
+```sh
+# these are the current python deps i have for the run script
+from pathlib import Path
+import os
+from Bio import SeqIO
+from subprocess import Popen, PIPE
+import numpy as np
+import seaborn as sns
+from matplotlib import pyplot as plt
+```
+
+Might be useful to have a `requirements.txt`?
+
+```sh
+pathlib
+Bio
+subprocess
+numpy
+pandas
+seaborn
+matplotlib
+pprint
+```
+
+## filtlong
+
+Grab filtlong from the repo, make and install (add to path).
+
+```sh
+# clone and make
+git clone https://github.com/rrwick/Filtlong.git
+cd Filtlong
+make -j
+bin/filtlong -h
+```
+
+```sh
+# add to path
+sudo cp bin/filtlong /usr/local/bin
+
+# check
+filtlong --version
+Filtlong v0.2.1
+```
+
+## MinKNOW API
+
+With the MinKNOW API we can poll data in real-time. You can also set up and control runs as well.
+
+Get the repo and install the API:
+
+```sh
+# grab repo
+git clone https://github.com/nanoporetech/minknow_api.git
+cd minknow_api
+
+# Install minknow_api
+pip install minknow_api
+```
+
+Now we can test it:
+
+```sh
+# Verify API is installed correctly (from a checkout of this repository):
+python ./python/examples/list_sequencing_positions.py --host localhost --port 9501
+
+Available sequencing positions on localhost:9501:
+MN34702: running
+  secure: 8001
+  insecure: 8000
+```
+
+Cool! The above has identified the device correctly, and that it is running.
+
