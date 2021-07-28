@@ -5,6 +5,10 @@ library(readxl)
 
 # Setup ----
 
+# Make a context path variable (for example set to "/POC_metagenomics_dashboard/" for publishing
+# to shinyapps.io at https://esr-cri.shinyapps.io/POC_metagenomics_dashboard/)
+context_path = "/POC_metagenomics_dashboard/"
+
 # Create a list of samples based on the files present in the kraken output directory
 isolates <- list.files(path = "www")
 
@@ -51,8 +55,8 @@ server <- function(input, output, session) {
     
     # Build a path to the recentrifuge html file based on the current isolate the user has chosen to view ----
     observe({ 
-        # Extract as context path variable  (environment variable?)
-        recentrifuge_html_path <<- paste0("/POC_metagenomics_dashboard/", input$isolate, "_kr2_output.krk.rcf.html")
+
+        recentrifuge_html_path <<- paste0(context_path, input$isolate, "_kr2_output.krk.rcf.html")
     })
     
     # Embed the appropriate recentrifuge html file in the dashboard ----
@@ -73,18 +77,10 @@ server <- function(input, output, session) {
     # 
     #     input$isolate
     #     
-    #     datatable(read_excel(paste0("/POC_metagenomics_dashboard/", input$isolate, "_kr2_output.krk.rcf.xlsx")),
+    #     datatable(read_excel(paste0(context_path, input$isolate, "_kr2_output.krk.rcf.xlsx")),
     #               filter = "top",
     #               rownames = FALSE,
-    #               # colnames = c("RNA",
-    #               #              "RNA species",
-    #               #              "Pipeline",
-    #               #              "Differential expression method",
-    #               #              "Log fold change (limma voom)",
-    #               #              "Log fold change (deseq2)",
-    #               #              "Adjusted p-value (limma voom)",
-    #               #              "Adjusted p-value (deseq2)",
-    #               #              "Significance"),
+    #               colnames = c(),
     #               extensions = list("ColReorder" = NULL,
     #                                 "Buttons" = NULL,
     #                                 "FixedColumns" = list(leftColumns=1)),
