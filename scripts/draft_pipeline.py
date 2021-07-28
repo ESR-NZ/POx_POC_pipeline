@@ -4,12 +4,18 @@
 from pathlib import Path
 import os
 from Bio import SeqIO
+from subprocess import Popen, PIPE
+import numpy as np
+import seaborn as sns
+from matplotlib import pyplot as plt
 
 # This will be supplied by the API or as an arg by the user
 minKnow_run_path = Path("/NGS/scratch/QC/NP_barcoded_test_data") # example minIon minKnow data path used for testing
 
 # Will put results in the minKnow dir for now
 results_path = minKnow_run_path/"Results"
+if not results_path.is_dir():
+    results_path.mkdir(exist_ok=True)
 
 # Get a list of directories with fastqs in them, this works if multiplexed or not
 def get_fastq_dirs(minKnow_run_path):
@@ -30,6 +36,7 @@ def get_fastq_dirs(minKnow_run_path):
             fastq_dirs.remove(fq_dir)
     
     return fastq_dirs 
+
 
 # concat reads for each "barcode" to single file for analysis
 def concat_read_files(fq_dir: Path) -> Path:
@@ -57,6 +64,7 @@ def get_lens_array(fastq_file):
     lens_array = [len(rec) for rec in SeqIO.parse(fastq_file, "fastq")]
     return lens_array
 
+
 def func_N50(lens_array):
     '''
     Does what it says on the tin. Takes in the read lenths array and spits out the N50 stat
@@ -82,10 +90,66 @@ def func_N50(lens_array):
         return n50
 
 
+def count_fastq_bases(fastq_file):
+    '''
+    counts the number of bases sequenced in a fastq file
+    '''
+    cat_cms = f"cat {fastq_file} | paste - - - - | cut -f 2 | tr -d '\n' | wc -c"
+    sp = Popen(cat_cms, shell=True, stdout=PIPE)
+    bases = sp.communicate()[0]
+    return int(bases.decode('ascii').rstrip())
+
+
+def plot_length_dis_graph(fastq_file, results_path):
+    barcode = fastq_file.name
+    print(f'Calc length array for {barcode}')
+    lens_array = get_lens_array(fastq_file)
+    num_reads = len(lens_array)
+    if num_reads < 1000:
+        print(f'Skiping {barcode}, not enough reads')
+        return 
+
+    print(f'Calc passed bases for {barcode}')
+    passed_bases = count_fastq_bases(fastq_file)
+    
+    print(f'Calc n50 for {barcode}')
+    n50 = func_N50(lens_array)
+    
+    n50 = round(n50/1000, 1)
+    total_data = round(passed_bases/1000000, 2)
+        
+    plot_dir  = Path("Plots")
+    plot_dir.mkdir(exist_ok=True)
+
+    plot_path = results_path/f"{barcode}_read_length_distrabution_plot.png"
+    
+    print(f"Plottig {barcode} to {plot_path}")
+    
+    plot = sns.displot(x=lens_array, log_scale=(True,False),height=8, aspect=2)
+
+    plot.fig.suptitle(f'''{barcode} Read length distribution\n N50: {n50}kb - Total data: {total_data}Mb''',
+                  fontsize=24, fontdict={"weight": "bold"}, y=1.2)
+    
+    plot.savefig(plot_path)
+    plt.close('all')
+
+def filtlong_run(fastq_file):
+    len_filt_path = Path("")
+    filt_cmd = f'filtlong --min_length $READ_LEN -t 300000000 Reads/all_sup_reads.fq > Reads/len_filter_kb_SUP_reads.fq'
+    os.system(filt_cmd)
+    pass
+
+
+# main func to run the script
 def main():
     fastq_dirs = get_fastq_dirs(minKnow_run_path)
-    for i in fastq_dirs:
-        print(i.name)
+    all_reads_files = []
+    
+    for fq_dir in fastq_dirs:
+        print(f'working on {fq_dir.name}')
+
+        fastq_file = concat_read_files(fq_dir)
+        plot_length_dis_graph(fastq_file, results_path)
 
 
 if __name__ == '__main__':
