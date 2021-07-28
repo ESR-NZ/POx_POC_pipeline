@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from minknow_api import protocol_pb2 as protgrpc
 from minknow_api.manager import Manager
 import argparse
