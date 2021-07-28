@@ -216,3 +216,43 @@ Generating final plot (barcode26_kr2_output.krk.rcf.html)... OK!
 Generating Excel full summary (barcode26_kr2_output.krk.rcf.xlsx)... OK!
 Total elapsed time: 00:00:32
 ```
+
+## filtlong
+
+Grab filtlong from the repo, make and install (add to path).
+
+```sh
+# clone and make
+git clone https://github.com/rrwick/Filtlong.git
+cd Filtlong
+make -j
+bin/filtlong -h
+```
+
+```sh
+# add to path
+sudo cp bin/filtlong /usr/local/bin
+
+# check
+filtlong --version
+Filtlong v0.2.1
+```
+
+## MinKNOW API
+
+```sh
+# grab repo
+git clone https://github.com/nanoporetech/minknow_api.git
+cd minknow_api
+
+# Install minknow_api
+pip install minknow_api
+
+# Verify API is installed correctly (from a checkout of this repository):
+python ./python/examples/list_sequencing_positions.py --host localhost --port 9501
+
+Available sequencing positions on localhost:9501:
+MN34702: running
+  secure: 8001
+  insecure: 8000
+```
