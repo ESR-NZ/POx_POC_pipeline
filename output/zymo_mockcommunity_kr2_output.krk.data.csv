@@ -1,0 +1,511 @@
+Samples,zymo_mockcommunity_kr2_output,zymo_mockcommunity_kr2_output,zymo_mockcommunity_kr2_output,Details,Details
+Stats,count,unassigned,score,Rank,Name
+Id,,,,,
+1,118428,916,79.19020839666297,no_rank,root
+2,117461,140,79.4726419832966,superkingdom,Bacteria
+1224,43254,91,70.7116798446387,phylum,Proteobacteria
+1236,43031,64,70.77358183635054,class,Gammaproteobacteria
+72274,11410,0,105.11928133216477,order,Pseudomonadales
+468,7,1,37.42857142857143,family,Moraxellaceae
+469,6,6,37.333333333333336,genus,Acinetobacter
+135621,11403,3,105.16083486801719,family,Pseudomonadaceae
+286,11400,110,105.17868421052631,genus,Pseudomonas
+136841,11243,14,106.03415458507516,species_group,Pseudomonas aeruginosa group
+287,11229,10798,106.11755276516163,species,Pseudomonas aeruginosa
+208964,36,0,40.611111111111114,strain,Pseudomonas aeruginosa PAO1
+1147787,36,36,40.611111111111114,no_rank,Pseudomonas aeruginosa PAO1H2O
+381754,91,91,38.89010989010989,strain,Pseudomonas aeruginosa PA7
+388272,15,15,38.0,strain,Pseudomonas aeruginosa PACS2
+941193,6,6,38.833333333333336,strain,Pseudomonas aeruginosa M18
+1009714,33,33,39.45454545454545,strain,Pseudomonas aeruginosa PAK
+1093787,14,14,39.5,strain,Pseudomonas aeruginosa DK2
+1280938,31,31,38.67741935483871,strain,Pseudomonas aeruginosa B136-33
+1340851,6,6,39.333333333333336,strain,Pseudomonas aeruginosa RP73
+1352355,18,18,39.05555555555556,strain,Pseudomonas aeruginosa c7447m
+1400868,48,48,39.104166666666664,strain,Pseudomonas aeruginosa VRFPA04
+1408272,6,6,39.0,strain,Pseudomonas aeruginosa LES431
+1415629,42,42,39.357142857142854,strain,Pseudomonas aeruginosa MTB-1
+1427342,26,26,39.30769230769231,strain,Pseudomonas aeruginosa SCV20265
+1448140,25,25,39.56,strain,Pseudomonas aeruginosa YL84
+1457392,34,34,39.44117647058823,strain,Pseudomonas aeruginosa PA96
+136842,12,0,65.33333333333333,species_group,Pseudomonas chlororaphis group
+587753,12,12,65.33333333333333,species,Pseudomonas chlororaphis
+136843,9,2,42.0,species_group,Pseudomonas fluorescens group
+294,7,7,42.714285714285715,species,Pseudomonas fluorescens
+136849,19,2,51.26315789473684,species_group,Pseudomonas syringae group
+251701,17,17,52.8235294117647,species,Pseudomonas syringae group genomosp. 3
+196821,7,7,39.285714285714285,no_rank,unclassified Pseudomonas
+91347,31519,106,58.42774199689077,order,Enterobacterales
+543,31377,4736,58.50266118494439,family,Enterobacteriaceae
+544,144,50,38.99305555555556,genus,Citrobacter
+545,10,10,38.4,species,Citrobacter koseri
+35703,8,8,38.75,species,Citrobacter amalonaticus
+67824,9,9,38.77777777777778,species,Citrobacter farmeri
+67825,7,0,39.42857142857143,species,Citrobacter rodentium
+637910,7,7,39.42857142857143,strain,Citrobacter rodentium ICC168
+1344959,54,27,39.42592592592593,species_group,Citrobacter freundii complex
+546,14,14,38.714285714285715,species,Citrobacter freundii
+67827,6,6,38.333333333333336,species,Citrobacter werkmanii
+2816438,7,1,43.57142857142857,no_rank,unclassified Citrobacter freundii complex
+2077147,6,6,44.666666666666664,species,Citrobacter freundii complex sp. CFNIH3
+2644389,6,1,39.5,no_rank,unclassified Citrobacter
+1702170,5,5,39.4,species,Citrobacter sp. FDAARGOS_156
+547,73,11,38.76712328767123,genus,Enterobacter
+354276,40,22,38.5,species_group,Enterobacter cloacae complex
+550,9,9,39.77777777777778,species,Enterobacter cloacae
+61645,9,3,38.888888888888886,species,Enterobacter asburiae
+640513,6,6,38.333333333333336,strain,Enterobacter asburiae LF7a
+2608935,22,6,38.90909090909091,no_rank,unclassified Enterobacter
+1166130,5,5,39.0,species,Enterobacter sp. R4-368
+1692238,6,6,36.833333333333336,species,Enterobacter sp. FY-07
+1914861,5,5,39.4,species,Enterobacter sp. SA187
+561,10599,332,53.49797150674592,genus,Escherichia
+562,9921,8967,54.47081947384336,species,Escherichia coli
+83333,143,18,37.68531468531469,strain,Escherichia coli K-12
+511145,20,20,39.8,no_rank,Escherichia coli str. K-12 substr. MG1655
+595496,84,84,36.0,no_rank,Escherichia coli BW2952
+879462,21,21,40.57142857142857,no_rank,Escherichia coli str. K-12 substr. MG1655star
+83334,47,24,38.87234042553191,serotype,Escherichia coli O157:H7
+155864,7,7,37.0,strain,Escherichia coli O157:H7 str. EDL933
+502346,5,5,38.0,strain,Escherichia coli O157:H7 str. TW14588
+1328859,11,11,40.27272727272727,strain,Escherichia coli O157:H7 str. SS17
+168807,50,50,39.12,serotype,Escherichia coli O127:H6
+199310,6,6,39.5,strain,Escherichia coli CFT073
+244320,5,5,40.8,serotype,Escherichia coli O55:H7
+331112,18,18,39.833333333333336,strain,Escherichia coli HS
+362663,21,21,38.95238095238095,strain,Escherichia coli 536
+405955,8,8,39.625,strain,Escherichia coli APEC O1
+409438,6,6,38.833333333333336,strain,Escherichia coli SE11
+439855,28,28,38.285714285714285,strain,Escherichia coli SMS-3-5
+481805,19,19,39.26315789473684,strain,Escherichia coli ATCC 8739
+585057,5,5,39.2,strain,Escherichia coli IAI39
+585397,28,28,38.17857142857143,strain,Escherichia coli ED1a
+595495,106,106,39.79245283018868,strain,Escherichia coli KO11FL
+696406,20,20,38.8,strain,Escherichia coli UMNK88
+745156,18,18,39.55555555555556,strain,Escherichia coli 1303
+758831,7,7,39.142857142857146,strain,Escherichia coli ECC-1470
+861906,33,0,39.54545454545455,serotype,Escherichia coli O44:H18
+216592,33,33,39.54545454545455,strain,Escherichia coli 042
+869729,23,23,38.43478260869565,strain,Escherichia coli UM146
+930406,38,38,38.71052631578947,strain,Escherichia coli O157:H16
+941280,5,5,39.0,strain,Escherichia coli O25b:H4
+941323,15,15,38.333333333333336,strain,Escherichia coli VR50
+991915,6,6,44.0,serotype,Escherichia coli O121:H19
+1038927,25,25,40.48,serotype,Escherichia coli O104:H4
+1045010,45,45,41.13333333333333,serogroup,Escherichia coli O157
+1050617,23,23,39.608695652173914,strain,Escherichia coli UMNF18
+1055537,9,0,37.666666666666664,serogroup,Escherichia coli O121
+1055543,9,9,37.666666666666664,no_rank,Escherichia coli O121 str. RM8352
+1072458,5,0,39.2,serotype,Escherichia coli O7:K1
+1072459,5,5,39.2,strain,Escherichia coli O7:K1 str. CE10
+1078034,10,10,39.2,serotype,Escherichia coli O145:H28
+1329907,26,26,39.61538461538461,strain,Escherichia coli APEC IMT5155
+1358422,14,14,40.285714285714285,strain,Escherichia coli PCN061
+1412834,11,11,40.63636363636363,strain,Escherichia coli FAP1
+1446701,7,7,40.0,strain,Escherichia coli O169:H41
+1446746,16,16,39.75,serotype,Escherichia coli O6:H16
+1603259,14,0,38.57142857142857,serotype,Escherichia coli O139:H28
+331111,14,14,38.57142857142857,strain,Escherichia coli O139:H28 str. E24377A
+2048777,60,60,39.4,strain,Escherichia coli O15:H11
+2048778,5,5,38.4,strain,Escherichia coli O178:H19
+2048780,7,7,39.285714285714285,strain,Escherichia coli O25:H16
+2048781,10,10,39.2,strain,Escherichia coli O27:H7
+2233553,12,0,38.0,serogroup,Escherichia coli O43
+1055541,12,12,38.0,no_rank,Escherichia coli O43 str. RM10042
+564,53,30,38.528301886792455,species,Escherichia fergusonii
+585054,9,9,39.333333333333336,strain,Escherichia fergusonii ATCC 35469
+981367,14,14,37.5,strain,Escherichia fergusonii ECD227
+208962,162,155,39.34567901234568,species,Escherichia albertii
+1440052,7,7,38.57142857142857,strain,Escherichia albertii KF1
+1499973,131,131,38.94656488549618,species,Escherichia marmotae
+570,78,26,39.89743589743589,genus,Klebsiella
+548,6,6,37.5,species,Klebsiella aerogenes
+573,46,39,41.108695652173914,species,Klebsiella pneumoniae
+72407,7,7,45.0,subspecies,Klebsiella pneumoniae subsp. pneumoniae
+590,15499,129,57.23388605716498,genus,Salmonella
+28901,15354,7872,57.38700013025922,species,Salmonella enterica
+59201,7101,2692,41.233065765385156,subspecies,Salmonella enterica subsp. enterica
+594,27,27,39.18518518518518,no_rank,Salmonella enterica subsp. enterica serovar Gallinarum
+595,49,21,39.0,no_rank,Salmonella enterica subsp. enterica serovar Infantis
+596155,28,28,38.892857142857146,strain,Salmonella enterica subsp. enterica serovar Infantis str. SARB27
+598,6,0,40.0,no_rank,Salmonella enterica subsp. enterica serovar Rubislaw
+938143,6,6,40.0,strain,Salmonella enterica subsp. enterica serovar Rubislaw str. ATCC 10717
+600,13,13,39.0,no_rank,Salmonella enterica subsp. enterica serovar Thompson
+605,47,42,41.57446808510638,no_rank,Salmonella enterica subsp. enterica serovar Pullorum
+1029979,5,5,41.6,strain,Salmonella enterica subsp. enterica serovar Pullorum str. ATCC 9120
+611,19,9,39.78947368421053,no_rank,Salmonella enterica subsp. enterica serovar Heidelberg
+1160717,10,10,39.5,strain,Salmonella enterica subsp. enterica serovar Heidelberg str. B182
+28144,30,30,39.8,no_rank,Salmonella enterica subsp. enterica serovar Derby
+28146,12,0,39.583333333333336,no_rank,Salmonella enterica subsp. enterica serovar Moscow
+1243579,12,12,39.583333333333336,strain,Salmonella enterica subsp. enterica serovar Moscow str. S-1843
+28147,9,0,39.22222222222222,no_rank,Salmonella enterica subsp. enterica serovar Oranienburg
+997333,9,9,39.22222222222222,strain,Salmonella enterica subsp. enterica serovar Oranienburg str. 0250
+28150,54,54,39.27777777777778,no_rank,Salmonella enterica subsp. enterica serovar Senftenberg
+29482,9,0,40.77777777777778,no_rank,Salmonella enterica subsp. enterica serovar Abony
+1029983,9,9,40.77777777777778,strain,Salmonella enterica subsp. enterica serovar Abony str. 0014
+46626,10,10,39.0,no_rank,Salmonella enterica subsp. enterica serovar Give
+54388,16,16,40.0,no_rank,Salmonella enterica subsp. enterica serovar Paratyphi A
+57045,24,1,39.083333333333336,no_rank,Salmonella enterica subsp. enterica serovar Paratyphi B
+224729,15,15,38.53333333333333,strain,Salmonella enterica subsp. enterica serovar Java
+1016998,8,8,40.0,strain,Salmonella enterica subsp. enterica serovar Paratyphi B str. SPB7
+57046,49,0,40.06122448979592,no_rank,Salmonella enterica subsp. enterica serovar Paratyphi C
+476213,49,49,40.06122448979592,strain,Salmonella enterica subsp. enterica serovar Paratyphi C str. RKS4594
+57743,37,37,39.189189189189186,no_rank,Salmonella enterica subsp. enterica serovar Weltevreden
+58096,20,0,38.9,no_rank,Salmonella enterica subsp. enterica serovar Bareilly
+1173427,20,20,38.9,strain,Salmonella enterica subsp. enterica serovar Bareilly str. CFSAN000189
+58101,31,31,38.74193548387097,no_rank,Salmonella enterica subsp. enterica serovar Waycross
+58712,12,12,39.5,no_rank,Salmonella enterica subsp. enterica serovar Anatum
+70803,5,5,39.0,no_rank,Salmonella enterica subsp. enterica serovar Minnesota
+82689,14,14,39.785714285714285,no_rank,Salmonella enterica subsp. enterica serovar Muenster
+90105,46,23,38.84782608695652,no_rank,Salmonella enterica subsp. enterica serovar Saintpaul
+702982,23,23,39.43478260869565,strain,Salmonella enterica subsp. enterica serovar Saintpaul str. SARA26
+90370,118,118,39.53389830508475,no_rank,Salmonella enterica subsp. enterica serovar Typhi
+90371,187,146,39.72192513368984,no_rank,Salmonella enterica subsp. enterica serovar Typhimurium
+568709,7,7,40.0,strain,Salmonella enterica subsp. enterica serovar Typhimurium str. DT2
+718274,5,5,36.4,strain,Salmonella enterica subsp. enterica serovar Typhimurium str. T000240
+1008297,7,7,41.0,strain,Salmonella enterica subsp. enterica serovar Typhimurium str. 798
+1029978,16,16,39.75,strain,Salmonella enterica subsp. enterica serovar Typhimurium str. SARA13
+1454636,6,6,39.333333333333336,strain,Salmonella enterica subsp. enterica serovar Typhimurium str. USDA-ARS-USMARC-1896
+98360,14,14,40.142857142857146,no_rank,Salmonella enterica subsp. enterica serovar Dublin
+108619,78,36,39.8076923076923,no_rank,Salmonella enterica subsp. enterica serovar Newport
+796730,8,8,41.375,strain,Salmonella enterica subsp. enterica serovar Newport str. CVM 22425
+796731,9,9,39.888888888888886,strain,Salmonella enterica subsp. enterica serovar Newport str. CVM 21538
+930778,12,12,39.666666666666664,strain,Salmonella enterica subsp. enterica serovar Newport str. Levine 1
+997339,5,5,39.0,strain,Salmonella enterica subsp. enterica serovar Newport str. WA_14882
+1454627,8,8,40.125,strain,Salmonella enterica subsp. enterica serovar Newport str. CDC 2010K-2159
+115981,65,30,39.83076923076923,no_rank,Salmonella enterica subsp. enterica serovar Montevideo
+1454599,26,26,39.07692307692308,strain,Salmonella enterica subsp. enterica serovar Montevideo str. USDA-ARS-USMARC-1900
+1454613,9,9,43.55555555555556,strain,Salmonella enterica subsp. enterica serovar Montevideo str. CDC 2010K-0257
+119912,2534,2393,41.50631412786109,no_rank,Salmonella enterica subsp. enterica serovar Choleraesuis
+321314,14,14,39.857142857142854,strain,Salmonella enterica subsp. enterica serovar Choleraesuis str. SC-B67
+904139,5,5,38.0,strain,Salmonella enterica subsp. enterica serovar Choleraesuis str. SCSA50
+938142,122,122,40.278688524590166,strain,Salmonella enterica subsp. enterica serovar Choleraesuis str. ATCC 10708
+134047,8,2,40.125,no_rank,Salmonella enterica subsp. enterica serovar Bredeney
+1194154,6,6,41.333333333333336,strain,Salmonella enterica subsp. enterica serovar Bredeney str. CFSAN001080
+143221,15,15,40.86666666666667,no_rank,Salmonella enterica subsp. enterica serovar Tennessee
+149386,7,0,40.714285714285715,no_rank,Salmonella enterica subsp. enterica serovar Chester
+941190,7,7,40.714285714285715,strain,Salmonella enterica subsp. enterica serovar Chester str. ATCC 11997
+149539,165,165,40.06666666666667,no_rank,Salmonella enterica subsp. enterica serovar Enteritidis
+181798,21,0,38.80952380952381,no_rank,Salmonella enterica subsp. enterica serovar Sloterdijk
+938141,21,21,38.80952380952381,strain,Salmonella enterica subsp. enterica serovar Sloterdijk str. ATCC 15791
+189201,22,0,39.36363636363637,no_rank,Salmonella enterica subsp. enterica serovar Cubana
+1271863,22,22,39.36363636363637,strain,Salmonella enterica subsp. enterica serovar Cubana str. CFSAN002050
+192953,17,17,39.23529411764706,no_rank,Salmonella enterica subsp. enterica serovar Stanley
+192954,27,0,39.18518518518518,no_rank,Salmonella enterica subsp. enterica serovar Mbandaka
+984237,27,27,39.18518518518518,strain,Salmonella enterica subsp. enterica serovar Mbandaka str. ATCC 51958
+192955,19,1,40.05263157894737,no_rank,Salmonella enterica subsp. enterica serovar Kentucky
+1242102,18,18,39.77777777777778,strain,Salmonella enterica subsp. enterica serovar Kentucky str. SA20030505
+211968,22,0,39.86363636363637,no_rank,Salmonella enterica subsp. enterica serovar Albany
+1173798,22,22,39.86363636363637,strain,Salmonella enterica subsp. enterica serovar Albany str. ATCC 51960
+260367,8,8,38.25,no_rank,Salmonella enterica subsp. enterica serovar Aberdeen
+260368,23,0,38.91304347826087,no_rank,Salmonella enterica subsp. enterica serovar Bergen
+1240708,23,23,38.91304347826087,strain,Salmonella enterica subsp. enterica serovar Bergen str. ST350
+340188,19,19,38.94736842105263,no_rank,Salmonella enterica subsp. enterica serovar Cerro
+363569,16,0,39.875,no_rank,Salmonella enterica subsp. enterica serovar Javiana
+1267753,16,16,39.875,strain,Salmonella enterica subsp. enterica serovar Javiana str. CFSAN001992
+436295,12,0,39.083333333333336,no_rank,Salmonella enterica subsp. enterica serovar Poona
+1124962,12,12,39.083333333333336,strain,Salmonella enterica subsp. enterica serovar Poona str. ATCC BAA-1673
+486994,24,0,39.041666666666664,no_rank,Salmonella enterica subsp. enterica serovar Hvittingfoss
+1242097,24,24,39.041666666666664,strain,Salmonella enterica subsp. enterica serovar Hvittingfoss str. SA20014981
+593905,21,21,39.23809523809524,no_rank,Salmonella enterica subsp. enterica serovar Corvallis
+913070,14,14,37.785714285714285,no_rank,Salmonella enterica subsp. enterica serovar Gaminara
+913074,22,0,39.13636363636363,no_rank,Salmonella enterica subsp. enterica serovar Inverness
+941187,22,22,39.13636363636363,strain,Salmonella enterica subsp. enterica serovar Inverness str. ATCC 10720
+913076,10,0,39.9,no_rank,Salmonella enterica subsp. enterica serovar Johannesburg
+1242101,10,10,39.9,strain,Salmonella enterica subsp. enterica serovar Johannesburg str. ST203
+913085,14,0,39.07142857142857,no_rank,Salmonella enterica subsp. enterica serovar Wandsworth
+1243595,14,14,39.07142857142857,strain,Salmonella enterica subsp. enterica serovar Wandsworth str. SA20092095
+915158,31,0,39.0,no_rank,Salmonella enterica subsp. enterica serovar Manchester
+1242108,31,31,39.0,strain,Salmonella enterica subsp. enterica serovar Manchester str. ST278
+1077085,14,14,39.57142857142857,no_rank,Salmonella enterica subsp. enterica serovar Fresno
+1129117,5,5,37.4,no_rank,Salmonella enterica subsp. enterica serovar Nitra
+1242078,6,0,38.666666666666664,no_rank,Salmonella enterica subsp. enterica serovar Antsalova
+1242087,6,6,38.666666666666664,strain,Salmonella enterica subsp. enterica serovar Antsalova str. S01-0511
+1242079,21,0,38.38095238095238,no_rank,Salmonella enterica subsp. enterica serovar Apapa
+1242088,21,21,38.38095238095238,strain,Salmonella enterica subsp. enterica serovar Apapa str. SA20060561
+1242080,50,0,39.38,no_rank,Salmonella enterica subsp. enterica serovar Djakarta
+1242091,50,50,39.38,strain,Salmonella enterica subsp. enterica serovar Djakarta str. S-1087
+1242081,32,0,39.28125,no_rank,Salmonella enterica subsp. enterica serovar Hillingdon
+1242096,32,32,39.28125,strain,Salmonella enterica subsp. enterica serovar Hillingdon str. N1529-D3
+1242084,10,0,38.3,no_rank,Salmonella enterica subsp. enterica serovar Krefeld
+1242106,10,10,38.3,strain,Salmonella enterica subsp. enterica serovar Krefeld str. SA20030536
+1242085,145,0,39.324137931034485,no_rank,Salmonella enterica subsp. enterica serovar Macclesfield
+1242107,145,145,39.324137931034485,strain,Salmonella enterica subsp. enterica serovar Macclesfield str. S-1643
+1243577,18,0,38.388888888888886,no_rank,Salmonella enterica subsp. enterica serovar Milwaukee
+1243578,18,18,38.388888888888886,strain,Salmonella enterica subsp. enterica serovar Milwaukee str. SA19950795
+1243583,10,0,39.0,no_rank,Salmonella enterica subsp. enterica serovar Onderstepoort
+1243584,10,10,39.0,strain,Salmonella enterica subsp. enterica serovar Onderstepoort str. SA20060086
+1243585,16,16,39.3125,no_rank,Salmonella enterica subsp. enterica serovar Ouakam
+1243590,10,0,39.8,no_rank,Salmonella enterica subsp. enterica serovar Quebec
+1243591,10,10,39.8,strain,Salmonella enterica subsp. enterica serovar Quebec str. S-1267
+59202,276,42,38.98913043478261,subspecies,Salmonella enterica subsp. salamae
+297361,58,58,39.224137931034484,no_rank,Salmonella enterica subsp. salamae serovar Greenside
+1243601,159,0,38.704402515723274,no_rank,Salmonella enterica subsp. salamae serovar 55:k:z39
+1243602,159,159,38.704402515723274,strain,Salmonella enterica subsp. salamae serovar 55:k:z39 str. 1315K
+1710356,17,17,39.8235294117647,no_rank,Salmonella enterica subsp. salamae serovar 57:z29:z42
+59203,40,8,39.9,subspecies,Salmonella enterica subsp. arizonae
+41514,13,13,42.0,no_rank,"Salmonella enterica subsp. arizonae serovar 62:z4,z23:-"
+41515,19,0,38.73684210526316,no_rank,Salmonella enterica subsp. arizonae serovar 62:z36:-
+1386967,19,19,38.73684210526316,strain,Salmonella enterica subsp. arizonae serovar 62:z36:- str. RKS2983
+59204,33,18,39.484848484848484,subspecies,Salmonella enterica subsp. diarizonae
+1243611,8,0,42.0,no_rank,Salmonella enterica subsp. diarizonae serovar 50:k:z
+1243612,8,8,42.0,strain,Salmonella enterica subsp. diarizonae serovar 50:k:z str. MZ0080
+1243615,7,0,39.0,no_rank,Salmonella enterica subsp. diarizonae serovar 65:c:z
+1243616,7,7,39.0,strain,Salmonella enterica subsp. diarizonae serovar 65:c:z str. SA20044251
+59205,32,5,38.625,subspecies,Salmonella enterica subsp. houtenae
+58100,18,18,38.44444444444444,no_rank,Salmonella enterica subsp. houtenae serovar Houten
+523831,9,9,39.333333333333336,strain,Salmonella enterica subsp. houtenae str. ATCC BAA-1581
+54736,16,11,39.0625,species,Salmonella bongori
+41527,5,0,39.0,no_rank,Salmonella bongori serovar 48:z41:--
+1382510,5,5,39.0,strain,Salmonella bongori serovar 48:z41:-- str. RKS3044
+620,114,2,39.58771929824562,genus,Shigella
+622,75,42,39.29333333333334,species,Shigella dysenteriae
+300267,33,33,39.303030303030305,strain,Shigella dysenteriae Sd197
+623,37,0,40.24324324324324,species,Shigella flexneri
+42897,37,0,40.24324324324324,serotype,Shigella flexneri 2a
+198214,37,37,40.24324324324324,strain,Shigella flexneri 2a str. 301
+36866,22,8,38.77272727272727,no_rank,unclassified Enterobacteriaceae
+693444,14,14,38.714285714285715,species,Enterobacteriaceae bacterium strain FGI 57
+83654,5,5,38.0,genus,Leclercia
+158483,6,0,38.666666666666664,genus,Cedecea
+158822,6,6,38.666666666666664,species,Cedecea neteri
+160674,17,8,38.05882352941177,genus,Raoultella
+54291,9,9,39.0,species,Raoultella ornithinolytica
+413496,25,19,38.52,genus,Cronobacter
+28141,6,6,38.5,species,Cronobacter sakazakii
+1330545,18,4,38.72222222222222,genus,Lelliottia
+61646,9,9,38.55555555555556,species,Lelliottia amnigena
+2642424,5,0,39.0,no_rank,unclassified Lelliottia
+2153385,5,5,39.0,species,Lelliottia sp. WB101
+1330546,15,1,37.93333333333333,genus,Pluralibacter
+61647,5,5,38.4,species,Pluralibacter gergoviae
+1334193,9,9,37.77777777777778,species,[Enterobacter] lignolyticus
+1330547,20,12,39.05,genus,Kosakonia
+208223,8,8,39.375,species,Kosakonia cowanii
+1335483,6,0,38.0,genus,Shimwellia
+563,6,0,38.0,species,Shimwellia blattae
+630626,6,6,38.0,strain,Shimwellia blattae DSM 4481 = NBRC 105725
+1903409,8,8,38.75,family,Erwiniaceae
+1903410,5,5,39.6,family,Pectobacteriaceae
+1903411,11,11,38.18181818181818,family,Yersiniaceae
+1903414,12,12,39.416666666666664,family,Morganellaceae
+135614,19,0,44.10526315789474,order,Xanthomonadales
+32033,19,1,44.10526315789474,family,Xanthomonadaceae
+338,9,4,46.77777777777778,genus,Xanthomonas
+643453,5,0,53.2,species_group,Xanthomonas citri group
+346,5,5,53.2,species,Xanthomonas citri
+40323,9,1,41.888888888888886,genus,Stenotrophomonas
+995085,8,0,42.125,species_group,Stenotrophomonas maltophilia group
+40324,8,8,42.125,species,Stenotrophomonas maltophilia
+135619,12,1,44.5,order,Oceanospirillales
+28256,11,0,44.45454545454545,family,Halomonadaceae
+2745,11,1,44.45454545454545,genus,Halomonas
+2609666,10,0,45.1,no_rank,unclassified Halomonas
+2306583,10,10,45.1,species,Halomonas sp. JS92-SW72
+135622,7,7,37.857142857142854,order,Alteromonadales
+28211,27,13,37.888888888888886,class,Alphaproteobacteria
+356,14,14,37.42857142857143,order,Hyphomicrobiales
+28216,84,8,42.55952380952381,class,Betaproteobacteria
+80840,76,12,42.98684210526316,order,Burkholderiales
+506,27,6,47.55555555555556,family,Alcaligenaceae
+517,8,8,43.375,genus,Bordetella
+359336,13,0,53.92307692307692,genus,Castellaniella
+75697,13,0,53.92307692307692,species,Castellaniella defragrans
+1437824,13,13,53.92307692307692,strain,Castellaniella defragrans 65Phen
+80864,17,10,42.05882352941177,family,Comamonadaceae
+12916,7,7,39.0,genus,Acidovorax
+119060,20,9,39.0,family,Burkholderiaceae
+32008,11,5,39.0,genus,Burkholderia
+87882,6,6,39.333333333333336,species_group,Burkholderia cepacia complex
+68525,21,0,39.333333333333336,subphylum,delta/epsilon subdivisions
+28221,9,9,39.0,class,Deltaproteobacteria
+29547,12,0,39.583333333333336,class,Epsilonproteobacteria
+213849,12,2,39.583333333333336,order,Campylobacterales
+72294,10,4,39.7,family,Campylobacteraceae
+2321108,6,6,39.666666666666664,no_rank,Arcobacter group
+203691,11,0,38.72727272727273,phylum,Spirochaetes
+203692,11,2,38.72727272727273,class,Spirochaetia
+1643686,9,0,38.55555555555556,order,Brachyspirales
+143786,9,0,38.55555555555556,family,Brachyspiraceae
+29521,9,9,38.55555555555556,genus,Brachyspira
+1783270,36,0,38.22222222222222,no_rank,FCB group
+68336,36,1,38.22222222222222,no_rank,Bacteroidetes/Chlorobi group
+976,35,9,38.285714285714285,phylum,Bacteroidetes
+117743,21,0,38.523809523809526,class,Flavobacteriia
+200644,21,3,38.523809523809526,order,Flavobacteriales
+49546,7,7,38.0,family,Flavobacteriaceae
+313602,11,0,39.0,no_rank,Flavobacteriales incertae sedis
+336809,11,0,39.0,genus,Candidatus Sulcia
+336810,11,11,39.0,species,Candidatus Sulcia muelleri
+768503,5,0,36.6,class,Cytophagia
+768507,5,5,36.6,order,Cytophagales
+1783272,74020,25,84.6796406376655,no_rank,Terrabacteria group
+1239,73913,12,84.7452680854518,phylum,Firmicutes
+91061,73857,232,84.779939613036,class,Bacilli
+1385,44081,25,84.38286336516866,order,Bacillales
+90964,11489,7,106.00243711376099,family,Staphylococcaceae
+1279,11482,204,106.04311095627939,genus,Staphylococcus
+1280,11278,10753,107.13885440680971,species,Staphylococcus aureus
+273036,9,9,39.44444444444444,strain,Staphylococcus aureus RF122
+523796,14,14,38.785714285714285,strain,Staphylococcus aureus subsp. aureus ST398
+546342,5,5,38.6,strain,Staphylococcus aureus subsp. aureus str. JKD6008
+548470,12,12,41.166666666666664,strain,Staphylococcus aureus subsp. aureus MN8
+548473,18,18,40.55555555555556,strain,Staphylococcus aureus subsp. aureus TCH60
+585143,6,6,38.666666666666664,strain,Staphylococcus aureus subsp. aureus 55/2053
+685039,16,16,38.5625,strain,Staphylococcus aureus subsp. aureus ED133
+869816,135,135,38.41481481481482,strain,Staphylococcus aureus subsp. aureus JKD6159
+948563,26,26,40.11538461538461,strain,Staphylococcus aureus O46
+985006,47,47,40.02127659574468,strain,Staphylococcus aureus subsp. aureus LGA251
+1006543,10,10,38.8,strain,Staphylococcus aureus subsp. aureus T0131
+1074919,12,12,38.25,strain,Staphylococcus aureus subsp. aureus ST228
+1118959,27,27,39.407407407407405,strain,Staphylococcus aureus subsp. aureus M013
+1196216,5,0,39.2,strain,Staphylococcus aureus subsp. aureus ST72
+1193576,5,5,39.2,no_rank,Staphylococcus aureus subsp. aureus CN1
+1229492,8,8,38.625,strain,Staphylococcus aureus 08BA02176
+1323661,6,6,40.666666666666664,strain,Staphylococcus aureus CA-347
+1343064,38,38,38.5,strain,Staphylococcus aureus subsp. aureus ST772-MRSA-V
+1381115,119,119,39.30252100840336,strain,Staphylococcus aureus subsp. aureus Tager 104
+1392476,7,7,38.57142857142857,strain,Staphylococcus aureus subsp. aureus 6850
+1406863,5,5,40.8,strain,Staphylococcus aureus subsp. aureus Z172
+186817,16311,16,62.47421985163386,family,Bacillaceae
+1386,16295,390,62.495243939858845,genus,Bacillus
+86661,319,15,57.27899686520376,species_group,Bacillus cereus group
+1392,7,7,40.714285714285715,species,Bacillus anthracis
+1396,238,26,58.66386554621849,species,Bacillus cereus
+526969,43,43,48.48837209302326,strain,Bacillus cereus m1550
+526973,149,149,66.3758389261745,strain,Bacillus cereus m1293
+1003239,20,20,42.4,strain,Bacillus cereus C1L
+1405,36,36,68.94444444444444,species,Bacillus mycoides
+1428,23,18,39.65217391304348,species,Bacillus thuringiensis
+1441,5,5,41.4,no_rank,Bacillus thuringiensis serovar morrisoni
+185979,10,10,39.7,no_rank,unclassified Bacillus (in: Bacteria)
+653685,15576,44,63.05046224961478,species_group,Bacillus subtilis group
+1423,1459,1427,50.23098012337217,species,Bacillus subtilis
+135461,32,18,40.09375,subspecies,Bacillus subtilis subsp. subtilis
+1052588,5,5,39.0,strain,Bacillus subtilis subsp. subtilis str. RO-NN-1
+1192196,9,9,42.0,strain,Bacillus subtilis subsp. subtilis str. BSP1
+96241,14006,102,64.5618306440097,species,Bacillus spizizenii
+655816,13886,13886,64.78006625378079,strain,Bacillus subtilis subsp. spizizenii str. W23
+1052585,18,18,38.888888888888886,strain,Bacillus subtilis subsp. spizizenii TU-B-10
+483913,37,37,40.0,species,Bacillus inaquosorum
+1938374,30,5,39.96666666666667,species_subgroup,Bacillus amyloliquefaciens group
+492670,25,25,40.16,species,Bacillus velezensis
+186818,9,2,40.77777777777778,family,Planococcaceae
+1372,7,1,42.0,genus,Planococcus
+2662419,6,0,42.333333333333336,no_rank,unclassified Planococcus
+2058136,6,6,42.333333333333336,species,Planococcus sp. MB-3u-03
+186820,16241,0,91.19481559017302,family,Listeriaceae
+1637,16241,404,91.19481559017302,genus,Listeria
+1638,6,6,38.166666666666664,species,Listeria ivanovii
+1639,15816,14886,92.3107612544259,species,Listeria monocytogenes
+393119,485,485,38.50103092783505,strain,Listeria monocytogenes FSL J1-208
+393126,17,17,39.94117647058823,strain,Listeria monocytogenes FSL R2-561
+393127,15,15,40.46666666666667,strain,Listeria monocytogenes Finland 1998
+393130,5,5,38.0,strain,Listeria monocytogenes J0161
+552536,5,5,38.8,strain,Listeria monocytogenes HCC23
+863767,14,14,39.785714285714285,strain,Listeria monocytogenes serotype 7 str. SLCC2482
+879089,24,24,38.791666666666664,strain,Listeria monocytogenes SLCC2540
+879090,25,25,38.92,strain,Listeria monocytogenes SLCC7179
+882094,6,6,39.333333333333336,strain,Listeria monocytogenes L312
+882095,5,5,40.6,strain,Listeria monocytogenes ATCC 19117
+930781,181,181,40.52486187845304,strain,Listeria monocytogenes J1816
+932919,11,11,40.0,strain,Listeria monocytogenes SLCC2755
+932920,5,5,37.4,strain,Listeria monocytogenes SLCC2372
+1027396,22,22,43.90909090909091,strain,Listeria monocytogenes str. Scott A
+1126011,21,21,38.42857142857143,strain,Listeria monocytogenes 07PF0776
+1457188,27,27,40.333333333333336,strain,Listeria monocytogenes WSLC1042
+2065118,62,42,40.20967741935484,serotype,Listeria monocytogenes serotype 4b
+265669,7,7,37.142857142857146,strain,Listeria monocytogenes serotype 4b str. F2365
+568819,5,5,41.0,strain,Listeria monocytogenes serotype 4b str. CLIP 80459
+1196161,8,8,41.375,strain,Listeria monocytogenes serotype 4b str. 81-0861
+1642,15,8,39.93333333333333,species,Listeria innocua
+272626,7,7,41.0,strain,Listeria innocua Clip11262
+186822,6,0,39.5,family,Paenibacillaceae
+44249,6,6,39.5,genus,Paenibacillus
+186826,29544,77,85.51919171405362,order,Lactobacillales
+1300,11,1,39.18181818181818,family,Streptococcaceae
+1301,5,5,38.8,genus,Streptococcus
+1357,5,5,40.2,genus,Lactococcus
+33958,14096,35,81.97424801362088,family,Lactobacillaceae
+1578,202,186,48.70792079207921,genus,Lactobacillus
+33959,16,16,53.4375,species,Lactobacillus johnsonii
+46255,5,0,52.2,genus,Weissella
+137591,5,5,52.2,species,Weissella cibaria
+2742598,13828,1,82.64861151287244,genus,Limosilactobacillus
+1598,9,9,40.333333333333336,species,Limosilactobacillus reuteri
+1613,13818,12873,82.67933130699087,species,Limosilactobacillus fermentum
+334390,114,114,39.166666666666664,strain,Lactobacillus fermentum IFO 3956
+712938,328,328,40.05487804878049,strain,Lactobacillus fermentum CECT 5716
+767453,249,249,39.59437751004016,strain,Lactobacillus fermentum F-6
+1381124,254,254,41.29527559055118,strain,Lactobacillus fermentum 3872
+2767842,6,0,39.166666666666664,genus,Lactiplantibacillus
+1590,6,6,39.166666666666664,species,Lactiplantibacillus plantarum
+2767886,20,0,42.45,genus,Levilactobacillus
+1580,20,20,42.45,species,Levilactobacillus brevis
+81852,15360,1,89.0154296875,family,Enterococcaceae
+1350,15359,24,89.01888143759359,genus,Enterococcus
+1351,15282,12997,89.26233477293547,species,Enterococcus faecalis
+226185,115,115,41.391304347826086,strain,Enterococcus faecalis V583
+474186,150,150,39.04666666666667,strain,Enterococcus faecalis OG1RF
+565651,208,208,42.03846153846154,strain,Enterococcus faecalis ARO1/DG
+1201292,223,223,44.71300448430493,strain,Enterococcus faecalis ATCC 29212
+1206105,1171,1171,42.139197267292914,strain,Enterococcus faecalis D32
+1261557,314,314,48.39171974522293,strain,Enterococcus faecalis str. Symbioflor 1
+1287066,104,104,43.35576923076923,strain,Enterococcus faecalis DENG1
+1352,53,44,40.81132075471698,species,Enterococcus faecium
+333849,9,9,40.0,strain,Enterococcus faecium DO
+186801,44,1,39.11363636363637,class,Clostridia
+186802,43,8,39.093023255813954,order,Eubacteriales
+31979,30,4,39.166666666666664,family,Clostridiaceae
+1485,26,19,39.38461538461539,genus,Clostridium
+1491,7,7,39.285714285714285,species,Clostridium botulinum
+186804,5,5,38.8,family,Peptostreptococcaceae
+201174,48,1,37.916666666666664,phylum,Actinobacteria
+1760,47,9,37.91489361702128,class,Actinomycetia
+85006,11,3,37.72727272727273,order,Micrococcales
+85023,8,8,37.375,family,Microbacteriaceae
+85007,8,8,37.875,order,Corynebacteriales
+85011,19,0,37.94736842105263,order,Streptomycetales
+2062,19,0,37.94736842105263,family,Streptomycetaceae
+1883,19,14,37.94736842105263,genus,Streptomyces
+2593676,5,5,38.8,no_rank,unclassified Streptomyces
+544448,25,1,39.6,phylum,Tenericutes
+31969,24,2,39.583333333333336,class,Mollicutes
+2085,17,0,40.23529411764706,order,Mycoplasmatales
+2092,17,1,40.23529411764706,family,Mycoplasmataceae
+2093,11,6,40.63636363636363,genus,Mycoplasma
+656088,5,5,44.2,species_group,Mycoplasma mycoides group
+2767358,5,5,39.4,genus,Mycoplasmopsis
+186328,5,5,38.8,order,Entomoplasmatales
+1798711,9,0,38.44444444444444,no_rank,Cyanobacteria/Melainabacteria group
+1117,9,4,38.44444444444444,phylum,Cyanobacteria
+1161,5,5,38.6,order,Nostocales
+2157,23,2,38.130434782608695,superkingdom,Archaea
+28890,21,1,38.285714285714285,phylum,Euryarchaeota
+2283794,12,0,37.583333333333336,no_rank,Methanomada group
+183925,5,0,37.0,class,Methanobacteria
+2158,5,0,37.0,order,Methanobacteriales
+2159,5,5,37.0,family,Methanobacteriaceae
+183939,7,0,38.0,class,Methanococci
+2182,7,0,38.0,order,Methanococcales
+2183,7,1,38.0,family,Methanococcaceae
+2184,6,6,37.666666666666664,genus,Methanococcus
+2290931,8,0,39.25,no_rank,Stenosarchaea group
+224756,8,0,39.25,class,Methanomicrobia
+94695,8,0,39.25,order,Methanosarcinales
+2206,8,0,39.25,family,Methanosarcinaceae
+2207,8,8,39.25,genus,Methanosarcina
+10239,28,6,47.285714285714285,superkingdom,Viruses
+2731341,16,0,53.5,no_rank,Duplodnaviria
+2731360,16,1,53.5,kingdom,Heunggongvirae
+2731618,15,0,54.53333333333333,phylum,Uroviricota
+2731619,15,0,54.53333333333333,class,Caudoviricetes
+28883,15,1,54.53333333333333,order,Caudovirales
+10699,14,1,55.357142857142854,family,Siphoviridae
+196894,5,5,41.6,no_rank,unclassified Siphoviridae
+1623299,8,0,65.625,genus,Phifelvirus
+1633149,8,0,65.625,species,Enterococcus virus FL1
+673832,8,8,65.625,no_rank,Enterococcus phage phiFL1A
+2732004,6,0,39.5,no_rank,Varidnaviria
+2732005,6,0,39.5,kingdom,Bamfordvirae
+2732007,6,6,39.5,phylum,Nucleocytoviricota
