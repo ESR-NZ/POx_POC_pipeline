@@ -89,6 +89,25 @@ renderValueBox({
 
 ```
 
+### AMR hit
+    
+```{r}
+# Check for presence of data in the AMR dataset
+if (dim(amr_resgenes)[1] == 0) {
+  num_amr_genes <- 0
+} else {
+  num_amr_genes <- as.character(nrow(amr_resgenes))
+}
+
+renderValueBox({
+  valueBox(value = num_amr_genes,
+           caption = "Number of AMR genes",
+           icon = "fa-exclamation",
+           color = "warning")
+})
+
+```
+
     
 Row {data-height=800}
 -------------------------------------
