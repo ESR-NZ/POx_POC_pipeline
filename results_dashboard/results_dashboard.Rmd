@@ -2,8 +2,8 @@
 title: "POC metagenomics dashboard"
 output: 
   flexdashboard::flex_dashboard:
-    orientation: columns
-    vertical_layout: fill
+    orientation: rows
+    vertical_layout: scroll
 runtime: shiny
 ---
 
@@ -14,11 +14,20 @@ library(here)
 library(ggplot2)
 library(plotly)
 
-# Read AMR output file
-amr_resgenes <- read.delim("../data/test_dna.got", header=TRUE, allowEscapes=FALSE, sep="\t",  quote="", na.strings="", comment.char="")
-
 # Setup path to directory of recentrifuge html files
 shiny::addResourcePath(prefix = "www", directoryPath = here::here("www"))
+
+# Read a test kraken csv file
+recentrifuge_csv <- read.csv("../output/individually_analysed/barcode02_kr2_output.krk.stat.csv")
+
+# Flip dataframe for easier grabbing of variables
+variables <- recentrifuge_csv[1]
+recentrifuge_csv <- as.data.frame(t(recentrifuge_csv[,-1]))
+colnames(recentrifuge_csv) <- variables$X
+recentrifuge_csv$myfactor <- factor(row.names(recentrifuge_csv))
+
+# Read AMR output file
+amr_resgenes <- read.delim("../data/test_dna.got", header=TRUE, allowEscapes=FALSE, sep="\t",  quote="", na.strings="", comment.char="")
 
 # Create a list of samples based on the files present in the kraken output directory
 isolates <- list.files(path = "www")
@@ -40,8 +49,48 @@ selectizeInput("isolate",
                choices = isolates,
                options = list(maxItems = 1))
 ```
+
+Row
+-------------------------------------
+
+### Sequences read
     
-Column {data-width=600}
+```{r}
+renderValueBox({
+  valueBox(value = recentrifuge_csv$`Seqs. read`,
+           caption = "Sequences read",
+           icon = "fa-bars",
+           color = "primary")
+})
+
+```
+
+### Sequences classified
+    
+```{r}
+renderValueBox({
+  valueBox(value = recentrifuge_csv$`Seqs. class.`,
+           caption = "Sequences classified",
+           icon = "fa-check",
+           color = "primary")
+})
+
+```
+
+### Sequences unclassified
+    
+```{r}
+renderValueBox({
+  valueBox(value = recentrifuge_csv$`Seqs. unclass.`,
+           caption = "Sequences unclassified",
+           icon = "fa-ban",
+           color = "primary")
+})
+
+```
+
+    
+Row {data-height=800}
 -------------------------------------
     
 ### Species composition
@@ -65,9 +114,6 @@ renderUI({
 })
 ```
    
-Column {data-width = 400}
--------------------------------------
-   
 ### Antimicrobial resistance
 
 ```{r}
@@ -79,11 +125,13 @@ coord_flip() +
   xlab("Subclass")
 
 ggplotly(plot)
-```   
- 
+``` 
+
+Row
+-------------------------------------
+
 ### Chart 3
-    
+
 ```{r}
 
-```
-
+``` 
