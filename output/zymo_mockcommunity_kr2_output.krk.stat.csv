@@ -1,0 +1,16 @@
+,zymo_mockcommunity_kr2_output
+Seqs. read,128011.0
+Seqs. unclass.,8492.0
+Seqs. class.,119519.0
+Seqs. filtered,119519.0
+Score min,35.0
+Score mean,79.02890753771366
+Score max,1067.0
+Length min,136.0
+Length mean,1718.0
+Length max,19184.0
+Total nt read,213348835.0
+TIDs class.,1009.0
+TIDs filtered,1008.0
+TIDs folded,416.0
+Score limit,

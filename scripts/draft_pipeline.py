@@ -2,9 +2,8 @@
 # coding: utf-8
 
 from pathlib import Path
-import os
 from Bio import SeqIO
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, run
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
@@ -13,9 +12,10 @@ from matplotlib import pyplot as plt
 minKnow_run_path = Path("/NGS/scratch/QC/NP_barcoded_test_data") # example minIon minKnow data path used for testing
 
 # Will put results in the minKnow dir for now
-results_path = minKnow_run_path/"Results"
-if not results_path.is_dir():
-    results_path.mkdir(exist_ok=True)
+RESULTS_PATH = minKnow_run_path/"Results"
+
+if not RESULTS_PATH.is_dir():
+    RESULTS_PATH.mkdir(exist_ok=True)
 
 # Get a list of directories with fastqs in them, this works if multiplexed or not
 def get_fastq_dirs(minKnow_run_path):
@@ -46,10 +46,13 @@ def concat_read_files(fq_dir: Path) -> Path:
     the path to this new file. This uses the unix cat command.
     Could probably make this more parallel...   
     '''
-    print(f'Concatenating read files in {fq_dir.name}') # print for debug
     all_reads = Path(f"{fq_dir / fq_dir.name}_all_reads.fq") 
+    print(f'Concatenating all fastq read files in {fq_dir.name} to {all_reads.name}') # print for debug
     cat_cmd = f"cat {fq_dir}/*.fastq > {all_reads}"
-    os.system(cat_cmd)
+    
+    # run the command with supprocess.run 
+    run(cat_cmd, shell=True, check=True)
+    
     return all_reads
 
 
@@ -94,14 +97,17 @@ def count_fastq_bases(fastq_file):
     '''
     counts the number of bases sequenced in a fastq file
     '''
-    cat_cms = f"cat {fastq_file} | paste - - - - | cut -f 2 | tr -d '\n' | wc -c"
-    sp = Popen(cat_cms, shell=True, stdout=PIPE)
+    cat_cmd = f"cat {fastq_file} | paste - - - - | cut -f 2 | tr -d '\n' | wc -c"
+    # span a subprocess
+    sp = Popen(cat_cmd, shell=True, stdout=PIPE)
+    # get the results back from the sp
     bases = sp.communicate()[0]
+    
     return int(bases.decode('ascii').rstrip())
 
 
 def plot_length_dis_graph(fastq_file, results_path):
-    barcode = fastq_file.name
+    barcode = fastq_file.name # this is a bit dirty
     print(f'Calc length array for {barcode}')
     lens_array = get_lens_array(fastq_file)
     num_reads = len(lens_array)
@@ -135,33 +141,67 @@ def plot_length_dis_graph(fastq_file, results_path):
 
 
 def filtlong_run(fastq_file, read_len=1000):
-    
+    '''
+    Generates and runs a call to length filter the reads with filtlong.
+    Takes in a fastq file path and returns the path to the length filtered reads fastq
+    '''
     fastq_dir = fastq_file.parent
     len_filt_file_path = fastq_dir/"len_filter_reads.fq"
     
     filt_cmd = f'filtlong --min_length {read_len} {fastq_file} > {len_filt_file_path}'
-    os.system(filt_cmd)
+    
+    run(filt_cmd, shell=True, check=True)
     
     return len_filt_file_path
 
 
+def kraken2_run(len_filtered_fastq, fastq_dir):
+    '''
+    Generates and runs the kraken2 call. Takes in the path to length filtered reads.
+    Returns the path the the generated report 
+    '''
+    BARCODE=fastq_dir.name
+    REPORT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_.kreport"
+    OUTPUT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_output.krk"
+    KRAKEN2_DB_PATH=Path('/opt/bioinf/kraken/kraken2_db/minikraken2_v1_8GB_201904') # This will need changing
+    CONFIDENCE='0.01'
+
+    # Do these path objects need to be turned into strings for subprocess.run?
+    run(['kraken2',
+          '--db', KRAKEN2_DB_PATH,
+          '--confidence', CONFIDENCE,
+          '--report', REPORT_FILE_PATH,
+           '--output', OUTPUT_FILE_PATH,
+           len_filtered_fastq],
+           )
+    
+    return (OUTPUT_FILE_PATH, REPORT_FILE_PATH)
+
+def parse_kraken(kreport_path):
+    '''
+    Gets the top species hit from kraken.
+    '''
+    print(kreport_path)
+    species = "taxon_S"
+
+    return species 
+
 # main func to run the script
 def main():
     fastq_dirs = get_fastq_dirs(minKnow_run_path)
-    all_reads_files = []
     
     for fq_dir in fastq_dirs:
-        print(f'working on {fq_dir.name}')
+        print(f'Working on {fq_dir.name}\n')
 
         fastq_file = concat_read_files(fq_dir)
-        all_reads_files.append(fastq_file.name)
 
         len_filtered_fastq = filtlong_run(fastq_file)
 
-        print(f"Filtered reads live at {len_filtered_fastq}")
+        print(f"Filtered reads live at {len_filtered_fastq}\n")
         
-        plot_length_dis_graph(fastq_file, results_path)
- 
+        #plot_length_dis_graph(fastq_file, RESULTS_PATH)
+
+        kraken2_run(len_filtered_fastq, fq_dir)
 
 if __name__ == '__main__':
     main()
