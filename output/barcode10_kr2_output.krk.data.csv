@@ -1,0 +1,23 @@
+Samples,barcode10_kr2_output,barcode10_kr2_output,barcode10_kr2_output,Details,Details
+Stats,count,unassigned,score,Rank,Name
+Id,,,,,
+1,5494,0,335.53258099745176,no_rank,root
+2,5494,0,335.53258099745176,superkingdom,Bacteria
+1783272,5494,0,335.53258099745176,no_rank,Terrabacteria group
+201174,5494,0,335.53258099745176,phylum,Actinobacteria
+1760,5494,0,335.53258099745176,class,Actinomycetia
+85004,5494,0,335.53258099745176,order,Bifidobacteriales
+31953,5494,0,335.53258099745176,family,Bifidobacteriaceae
+1678,5494,2,335.53258099745176,genus,Bifidobacterium
+28025,5492,3206,335.61325564457394,species,Bifidobacterium animalis
+302911,596,187,41.880872483221474,subspecies,Bifidobacterium animalis subsp. lactis
+442563,30,30,42.666666666666664,strain,Bifidobacterium animalis subsp. lactis AD011
+552531,12,12,39.083333333333336,strain,Bifidobacterium animalis subsp. lactis BB-12
+555970,6,6,39.833333333333336,strain,Bifidobacterium animalis subsp. lactis DSM 10140
+573236,9,9,42.111111111111114,strain,Bifidobacterium animalis subsp. lactis V9
+1167629,239,239,40.52301255230125,strain,Bifidobacterium animalis subsp. lactis ATCC 27673
+1168290,11,11,39.09090909090909,strain,Bifidobacterium animalis subsp. lactis B420
+1281781,9,9,40.333333333333336,strain,Bifidobacterium animalis subsp. lactis Bl12
+1316911,93,93,46.354838709677416,strain,Bifidobacterium animalis subsp. lactis KLDS2.0603
+302912,1690,1202,40.23550295857988,subspecies,Bifidobacterium animalis subsp. animalis
+703613,488,488,39.22336065573771,strain,Bifidobacterium animalis subsp. animalis ATCC 25527

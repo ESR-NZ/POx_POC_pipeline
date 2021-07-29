@@ -7,7 +7,7 @@ library(readxl)
 
 # Make a context path variable (for example set to "/POC_metagenomics_dashboard/" for publishing
 # to shinyapps.io at https://esr-cri.shinyapps.io/POC_metagenomics_dashboard/)
-context_path = "/POC_metagenomics_dashboard/"
+context_path = "/xavier_ssd/gitrepo/POC_metagenomics_sprint/results_dashboard/www/"
 
 # Create a list of samples based on the files present in the kraken output directory
 isolates <- list.files(path = "www")
