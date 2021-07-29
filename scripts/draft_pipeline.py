@@ -26,7 +26,8 @@ def get_fastq_dirs(minKnow_run_path):
     that have fastqs in them
     '''
     fastq_dirs = [] 
-    fq_glob_dirs = minKnow_run_path.rglob('*.fastq')
+    fq_glob_dirs = minKnow_run_path.rglob('*.fastq*')
+
     for dirs in fq_glob_dirs:
         if dirs.parent not in fastq_dirs:
             fastq_dirs.append(dirs.parent)
@@ -49,7 +50,7 @@ def concat_read_files(fq_dir: Path) -> Path:
     '''
     all_reads = Path(f"{fq_dir / fq_dir.name}_all_reads.fq") 
     print(f'Concatenating all fastq read files in {fq_dir.name} to {all_reads.name}') # print for debug
-    cat_cmd = f"cat {fq_dir}/*.fastq > {all_reads}"
+    cat_cmd = f"cat {fq_dir}/*.fastq* > {all_reads}"
     
     # run the command with supprocess.run 
     run(cat_cmd, shell=True, check=True)
