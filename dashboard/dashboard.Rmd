@@ -18,7 +18,7 @@ library(dplyr)
 library(DT)
 
 # Setup path to directory of recentrifuge html files
-shiny::addResourcePath(prefix = "path_to_results", directoryPath = here::here("../Results/"))
+shiny::addResourcePath(prefix = "path_to_results", directoryPath = here::here("./Results/"))
 
 # Read all kraken csv files
 recentrifuge_df_list <- lapply(Sys.glob("../Results/*_output.krk.stat.csv"), read.csv)
@@ -52,6 +52,8 @@ isolates <- sub("_.*", "", isolates)
 
 # Get the unique samples names
 isolates <- unique(isolates)
+
+htmltools::tagList(fontawesome::fa_html_dependency())
 ```
 
 
@@ -101,25 +103,45 @@ classified <- reactive(recentrifuge_csv %>%
 renderValueBox({
   valueBox(value = classified(),
            caption = "Sequences classified",
-           icon = "fa-check",
+          #  icon = "fa-check",
+           icon = "fa-bacteria",
            color = "primary")
 })
 
 ```
 
-### Sequences unclassified
+### Mean read length
     
 ```{r}
 unclassified <- reactive(recentrifuge_csv %>%
   select(contains(selected_isolate()), var) %>%
-  filter(var == "Seqs. unclass.") %>%
+  filter(var == "Length mean") %>%
   pull(var = 1))
 
 renderValueBox({
   valueBox(value = unclassified(),
-           caption = "Sequences unclassified",
-           icon = "fa-ban",
+           caption = "Mean read length",
+           icon = "fa-dna",
            color = "primary")
+})
+
+```
+
+### Top classification
+    
+```{r}
+tophit <- em("Bifidobacterium animalis") 
+# tophit <- reactive(recentrifuge_csv %>%
+#   select(contains(selected_isolate()), var) %>%
+#   filter(var == "Top hit") %>%
+#   pull(var = 1))
+
+renderValueBox({
+  # valueBox(value = tophit(),
+    valueBox(value = tophit,
+           caption = "Top classification",
+          #  icon = "fa-bacterium",
+           color = "green")
 })
 
 ```
@@ -137,7 +159,8 @@ if (dim(amr_resgenes)[1] == 0) {
 renderValueBox({
   valueBox(value = num_amr_genes,
            caption = "Number of AMR genes",
-           icon = "fa-exclamation",
+           icon = "fa-pills",
+          #  icon="fas fa-capsules",
            color = "warning")
 })
 
@@ -172,7 +195,7 @@ Row {.tabset .tabset-fade}
 
 ### Read length distribution
   
-```{r, fig.height = 11}
+```{r, fig.width=5, fig.height=5, align="center"}
 # Load in the current isolate the user has chosen to view so it can be used for "recentrifuge_html_path"
 selected_isolate <- reactive(input$isolate)
 read_dist_path <- reactive(paste0("path_to_results/", selected_isolate(), "_all_reads.fq_read_length_distrabution_plot.png"))

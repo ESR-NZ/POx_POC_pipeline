@@ -235,6 +235,27 @@ This produces something like the following:
 
 So a single set of 'data' and html that contains all samples in a given 'run'. Neat!
 
+## R and Shiny
+
+```sh
+mamba create -n r_env r-essentials r-base
+```
+
+The above creates an environment that has R 4.1 and includes Shiny (1.6.0).
+
+A couple more packages required for Leah's 'dashboard'.
+
+```sh
+mamba install -c conda-forge r-shinylp
+mamba install -c conda-forge r-dt
+conda install -c conda-forge r-flexdashboard
+conda install -c conda-forge r-here
+conda install -c conda-forge r-plotly
+mamba install -c conda-forge r-fontawesome
+# recent version of fontawesome isn't available in conda
+R -e "install.packages('fontawesome', repos='http://cran.rstudio.com/')"
+```
+
 ## other python packages required
 
 The current draft pipeline ans associated scripts depend on the below (as well as anything previously mentioned):

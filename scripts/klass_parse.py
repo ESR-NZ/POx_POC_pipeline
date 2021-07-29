@@ -4,8 +4,10 @@
 #import pandas as pd
 from pathlib import Path
 import re
+import fileinput
 
-path_to_example_kreport = Path("raw_SUP_READS_krak_REPORT")
+# path_to_example_kreport = Path("./Results/barcode02_.kreport")
+path_to_example_kreport = input()   # capture file input from stdin
 
 # global params
 level="S"
