@@ -14,6 +14,7 @@ library(flexdashboard)
 library(here)
 library(ggplot2)
 library(plotly)
+library(dplyr)
 
 # Setup path to directory of recentrifuge html files
 shiny::addResourcePath(prefix = "path_to_results", directoryPath = here::here("../Results/"))
@@ -40,8 +41,6 @@ isolates <- sub("_.*", "", isolates)
 isolates <- unique(isolates)
 ```
 
-Results
-===================================== 
 
 Inputs {.sidebar}
 -----------------------------------------------------------------------
@@ -60,6 +59,13 @@ Row
 ### Sequences read
     
 ```{r}
+# Load in the current isolate the user has chosen to view so it can be used for "recentrifuge_html_path"
+# selected_isolate <- reactive(input$isolate)
+# recentrifuge_csv_path <- reactive(
+#   my_file <- paste0("path_to_results/", selected_isolate(), "_output.krk.stat.csv"),
+#   data <- read.csv(my_file)
+#   )
+
 renderValueBox({
   valueBox(value = recentrifuge_csv$`Seqs. read`,
            caption = "Sequences read",
@@ -135,7 +141,27 @@ renderUI({
   
 })
 ```
-   
+
+Row {.tabset .tabset-fade}
+-------------------------------------
+
+### Read length distribution
+  
+```{r, fig.height = 11}
+# Load in the current isolate the user has chosen to view so it can be used for "recentrifuge_html_path"
+selected_isolate <- reactive(input$isolate)
+read_dist_path <- reactive(paste0("path_to_results/", selected_isolate(), "_all_reads.fq_read_length_distrabution_plot.png"))
+
+renderUI({
+  
+  # Print a message if no isolate is chosen
+  validate(need(input$isolate, "Please choose an isolate from the drop down box to create a plot"))
+  
+  # Embed png
+  tags$iframe(src = read_dist_path(), width = "100%", height = "100%")
+})
+```
+
 ### Antimicrobial resistance
 
 ```{r}
@@ -149,39 +175,3 @@ coord_flip() +
 ggplotly(plot)
 ```
 
-Quality control
-=====================================
-
-Inputs {.sidebar}
------------------------------------------------------------------------
-
-```{r}
-# User input to choose sample of interest to view ----
-isolate2 <- reactive(input$isolate)
-
-selectizeInput("isolate2",
-               h4("Select or search for an isolate:"),
-               choices = isolates,
-               options = list(maxItems = 1))
-```
-
-Row
--------------------------------------
-
-### Read length distribution
-  
-```{r}
-# Load in the current isolate the user has chosen to view so it can be used for "recentrifuge_html_path"
-selected_isolate2 <- reactive(input$isolate2)
-read_dist_path <- reactive(paste0("path_to_results/", selected_isolate2(), "_all_reads.fq_read_length_distrabution_plot.png"))
-
-renderUI({
-  
-  # Print a message if no isolate is chosen
-  validate(need(input$isolate, "Please choose an isolate from the drop down box to create a plot"))
-  
-  # Embed png
-  tags$iframe(src = read_dist_path(), width = "100%", height = "100%")
-  
-})
-```
