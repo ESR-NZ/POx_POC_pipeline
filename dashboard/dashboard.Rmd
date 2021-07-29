@@ -1,0 +1,156 @@
+---
+title: "POC metagenomics dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: scroll
+runtime: shiny
+---
+
+```{r global, include = FALSE}
+# Load libraries
+library(flexdashboard)
+library(here)
+library(ggplot2)
+library(plotly)
+
+# Setup path to directory of recentrifuge html files
+shiny::addResourcePath(prefix = "path_to_results", directoryPath = here::here("../Results/"))
+
+# Read a test kraken csv file
+recentrifuge_csv <- read.csv("../Results/barcode02_output.krk.stat.csv")
+
+# Flip dataframe for easier grabbing of variables
+variables <- recentrifuge_csv[1]
+recentrifuge_csv <- as.data.frame(t(recentrifuge_csv[,-1]))
+colnames(recentrifuge_csv) <- variables$X
+recentrifuge_csv$myfactor <- factor(row.names(recentrifuge_csv))
+
+# Read AMR output file
+amr_resgenes <- read.delim("../data/test_dna.got", header=TRUE, allowEscapes=FALSE, sep="\t",  quote="", na.strings="", comment.char="")
+
+# Create a list of samples based on the files present in the kraken output directory
+isolates <- list.files(path = "../Results/")
+
+# Get only the sample names from the file list (everything before "_")
+isolates <- sub("_.*", "", isolates)
+
+# Get the unique samples names
+isolates <- unique(isolates)
+```
+
+Inputs {.sidebar}
+-----------------------------------------------------------------------
+
+```{r}
+# User input to choose sample of interest to view ----
+selectizeInput("isolate",
+               h4("Select or search for an isolate:"),
+               choices = isolates,
+               options = list(maxItems = 1))
+```
+
+Row
+-------------------------------------
+
+### Sequences read
+    
+```{r}
+renderValueBox({
+  valueBox(value = recentrifuge_csv$`Seqs. read`,
+           caption = "Sequences read",
+           icon = "fa-bars",
+           color = "primary")
+})
+
+```
+
+### Sequences classified
+    
+```{r}
+renderValueBox({
+  valueBox(value = recentrifuge_csv$`Seqs. class.`,
+           caption = "Sequences classified",
+           icon = "fa-check",
+           color = "primary")
+})
+
+```
+
+### Sequences unclassified
+    
+```{r}
+renderValueBox({
+  valueBox(value = recentrifuge_csv$`Seqs. unclass.`,
+           caption = "Sequences unclassified",
+           icon = "fa-ban",
+           color = "primary")
+})
+
+```
+
+### AMR hit
+    
+```{r}
+# Check for presence of data in the AMR dataset
+if (dim(amr_resgenes)[1] == 0) {
+  num_amr_genes <- 0
+} else {
+  num_amr_genes <- as.character(nrow(amr_resgenes))
+}
+
+renderValueBox({
+  valueBox(value = num_amr_genes,
+           caption = "Number of AMR genes",
+           icon = "fa-exclamation",
+           color = "warning")
+})
+
+```
+
+    
+Row {data-height=800}
+-------------------------------------
+    
+### Species composition
+    
+```{r}
+# Embed the appropriate recentrifuge html file in the dashboard
+
+# Load in the current isolate the user has chosen to view so it can be used for "recentrifuge_html_path"
+selected_isolate <- reactive(input$isolate)
+recentrifuge_html_path <- reactive(paste0("path_to_results/", selected_isolate(), "_output.krk.html"))
+
+# Plot
+renderUI({
+  
+  # Print a message if no isolate is chosen
+  validate(need(input$isolate, "Please choose an isolate from the drop down box to create a plot"))
+  
+  # Embed html
+  tags$iframe(src=recentrifuge_html_path(), height="100%", width="100%")
+  
+})
+```
+   
+### Antimicrobial resistance
+
+```{r}
+plot <- ggplot(amr_resgenes, aes(x = Subclass, fill = Gene.symbol, label = Gene.symbol)) +
+geom_bar() +
+geom_text(stat = "count", size = 2, position = position_stack(vjust = 0.5)) +
+coord_flip() +
+  ylab("Count") +
+  xlab("Subclass")
+
+ggplotly(plot)
+``` 
+
+Row
+-------------------------------------
+
+### Chart 3
+
+```{r}
+
+``` 
