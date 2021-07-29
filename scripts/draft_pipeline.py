@@ -91,7 +91,7 @@ def get_lens_array(fastq_file):
     '''
     ## this needs to handel gzipped files
     if is_gz_file(fastq_file):
-        with gzip.open("practicezip.fasta.gz", "rt") as gz_file:
+        with gzip.open(fastq_file, "rt") as gz_file:
             lens_array = [len(rec) for rec in SeqIO.parse(gz_file, "fastq")]
                
     else:
@@ -139,7 +139,7 @@ def count_fastq_bases(fastq_file):
 
 
 def plot_length_dis_graph(fastq_file, results_path):
-    barcode = fastq_file.name # this is a bit dirty
+    barcode = fastq_file.name.split('_')[0] # this is a bit dirty
     print(f'Calc length array for {barcode}')
     lens_array = get_lens_array(fastq_file)
     num_reads = len(lens_array)
@@ -264,7 +264,7 @@ def main():
         print(f'Working on {fq_dir.name}\n')
 
         # Get barcode for this sample
-        BARCOE=fq_dir.name
+        BARCOE=fq_dir.name.split('_')[0]
         
         # Gather the reads and assign Path of reads to 'fastq_file'
         fastq_file = concat_read_files(fq_dir)
