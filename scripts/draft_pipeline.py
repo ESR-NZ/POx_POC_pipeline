@@ -42,9 +42,14 @@ def get_fastq_dirs(minKnow_run_path):
     return fastq_dirs 
 
 
-def is_gz_file(filepath):
-    with open(filepath, 'rb') as test_f:
-        return test_f.read(2) == b'\x1f\x8b'
+def is_gz_file(file_path: Path) -> bool:
+    '''
+    dirty trick to check for gzipped files based on magic number first 2 bites
+    '''
+    with open(file_path, 'rb') as f:
+        is_gzip = f.read(2) == b'\x1f\x8b'
+
+        return is_gzip
 
 
 # concat reads for each "barcode" to single file for analysis
@@ -81,8 +86,6 @@ def get_lens_array(fastq_file):
     This will surfice for the draft script for now
     '''
     ## this needs to handel gzipped files
-
-
     if is_gz_file(fastq_file):
         with gzip.open("practicezip.fasta.gz", "rt") as gz_file:
             lens_array = [len(rec) for rec in SeqIO.parse(gz_file, "fastq")]
