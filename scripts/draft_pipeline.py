@@ -7,6 +7,7 @@ from subprocess import Popen, PIPE, run
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
+import re
 
 # This will be supplied by the API or as an arg by the user
 minKnow_run_path = Path("/NGS/scratch/QC/NP_barcoded_test_data") # example minIon minKnow data path used for testing
@@ -155,36 +156,74 @@ def filtlong_run(fastq_file, read_len=1000):
     return len_filt_file_path
 
 
-def kraken2_run(len_filtered_fastq, fastq_dir):
+def kraken2_run(len_filtered_fastq: Path, BARCODE: str):
     '''
     Generates and runs the kraken2 call. Takes in the path to length filtered reads.
     Returns the path the the generated report 
     '''
-    BARCODE=fastq_dir.name
-    REPORT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_.kreport"
+    KREPORT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_.kreport"
     OUTPUT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_output.krk"
     KRAKEN2_DB_PATH=Path('/opt/bioinf/kraken/kraken2_db/minikraken2_v1_8GB_201904') # This will need changing
     CONFIDENCE='0.01'
 
-    # Do these path objects need to be turned into strings for subprocess.run?
+    # this works
     run(['kraken2',
           '--db', KRAKEN2_DB_PATH,
           '--confidence', CONFIDENCE,
-          '--report', REPORT_FILE_PATH,
+          '--report', KREPORT_FILE_PATH,
            '--output', OUTPUT_FILE_PATH,
            len_filtered_fastq],
            )
     
-    return (OUTPUT_FILE_PATH, REPORT_FILE_PATH)
+    return (OUTPUT_FILE_PATH, KREPORT_FILE_PATH)
 
-def parse_kraken(kreport_path):
-    '''
-    Gets the top species hit from kraken.
-    '''
-    print(kreport_path)
-    species = "taxon_S"
 
-    return species 
+def parse_kraken(kreport_path: Path) -> dict:
+    '''
+    Gets the top species hit from kraken2 for resfinder. 
+    Output is a dict of the top three hits at the species level. 
+    '''
+    # set some parameters
+    level="S"
+    depth=3
+    
+    def extract_kreport(line, round_val=1 ):
+        s = re.split("\t", re.sub("  ","",line.rstrip()))
+        prcnt = str( round(float(s[0].lstrip()), round_val) )
+        sp = s[len(s)-1]
+        return((sp, prcnt+"%"))
+
+
+    with open(kreport_path, "r") as f:
+        tax_dict = {}
+        species = []
+        for line in f:
+        # extract all lines matching the required ID level
+        #tax_level = line.split("\t")[3]
+        #if tax_level == level: 
+            if re.search("\t"+level, line): 
+                species.append(extract_kreport( line, round_val=1 ))
+            
+        if len(species) >= depth:
+            tax_dict = {f'Taxon{i+1}':species[i] for i in range(depth)}
+        else:
+            tax_dict = {f'Taxon{i+1}':species[i] for i in range(len(species))}
+    
+    return tax_dict
+
+
+
+def run_recentrifuge():
+    pass
+
+
+def run_resfinder(len_filtered_fastq, species, BARCODE):
+    
+    OUTPUT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_res.got"
+    res_cmd = f"amrfinder --plus -n {len_filtered_fastq} -O {species} > {OUTPUT_FILE_PATH}"
+    run(res_cmd)
+    
+
 
 # main func to run the script
 def main():
@@ -193,15 +232,28 @@ def main():
     for fq_dir in fastq_dirs:
         print(f'Working on {fq_dir.name}\n')
 
+        # Get barcode for this sample
+        BARCOE=fq_dir.name
+        
+        # Gather the reads and assign Path of reads to 'fastq_file'
         fastq_file = concat_read_files(fq_dir)
-
+        # Filter the reads and assign the Path of the filtered reads to 'len_filtered_fastq'
         len_filtered_fastq = filtlong_run(fastq_file)
-
         print(f"Filtered reads live at {len_filtered_fastq}\n")
         
-        #plot_length_dis_graph(fastq_file, RESULTS_PATH)
+        # Do some plotting of the reads
+        plot_length_dis_graph(fastq_file, RESULTS_PATH)
 
-        kraken2_run(len_filtered_fastq, fq_dir)
+        # Run the classifer and assign the tuple of Paths of the output file variable  
+        K_PATHS = kraken2_run(len_filtered_fastq, BARCOE)
+        KREPORT_PATH = K_PATHS[1]
+
+        species_dict = parse_kraken(KREPORT_PATH)
+        species = species_dict['Taxon1']
+
+        print(species)
+
+
 
 if __name__ == '__main__':
     main()

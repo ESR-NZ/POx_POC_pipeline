@@ -12,7 +12,7 @@ level="S"
 depth=3
 
 
-def extract_kreport( line, round_val=1 ):
+def extract_kreport(line, round_val=1 ):
     s = re.split("\t", re.sub("  ","",line.rstrip()))
     prcnt = str( round(float(s[0].lstrip()), round_val) )
     sp = s[len(s)-1]
