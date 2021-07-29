@@ -12,6 +12,7 @@ runtime: shiny
 library(flexdashboard)
 library(here)
 library(ggplot2)
+library(plotly)
 
 # Read AMR output file
 amr_resgenes <- read.delim("../data/test_dna.got", header=TRUE, allowEscapes=FALSE, sep="\t",  quote="", na.strings="", comment.char="")
@@ -70,10 +71,14 @@ Column {data-width = 400}
 ### Antimicrobial resistance
 
 ```{r}
-ggplot(amr_resgenes, aes(x = Subclass, fill = Gene.symbol, label = Gene.symbol)) +
+plot <- ggplot(amr_resgenes, aes(x = Subclass, fill = Gene.symbol, label = Gene.symbol)) +
 geom_bar() +
 geom_text(stat = "count", size = 2, position = position_stack(vjust = 0.5)) +
-coord_flip()
+coord_flip() +
+  ylab("Count") +
+  xlab("Subclass")
+
+ggplotly(plot)
 ```   
  
 ### Chart 3
