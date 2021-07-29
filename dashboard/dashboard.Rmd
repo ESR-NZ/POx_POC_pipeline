@@ -15,10 +15,10 @@ library(ggplot2)
 library(plotly)
 
 # Setup path to directory of recentrifuge html files
-shiny::addResourcePath(prefix = "www", directoryPath = here::here("www"))
+shiny::addResourcePath(prefix = "path_to_results", directoryPath = here::here("../Results/"))
 
 # Read a test kraken csv file
-recentrifuge_csv <- read.csv("../output/individually_analysed/barcode02_kr2_output.krk.stat.csv")
+recentrifuge_csv <- read.csv("../Results/barcode02_output.krk.stat.csv")
 
 # Flip dataframe for easier grabbing of variables
 variables <- recentrifuge_csv[1]
@@ -30,7 +30,7 @@ recentrifuge_csv$myfactor <- factor(row.names(recentrifuge_csv))
 amr_resgenes <- read.delim("../data/test_dna.got", header=TRUE, allowEscapes=FALSE, sep="\t",  quote="", na.strings="", comment.char="")
 
 # Create a list of samples based on the files present in the kraken output directory
-isolates <- list.files(path = "www")
+isolates <- list.files(path = "../Results/")
 
 # Get only the sample names from the file list (everything before "_")
 isolates <- sub("_.*", "", isolates)
@@ -119,7 +119,7 @@ Row {data-height=800}
 
 # Load in the current isolate the user has chosen to view so it can be used for "recentrifuge_html_path"
 selected_isolate <- reactive(input$isolate)
-recentrifuge_html_path <- reactive(paste0("www/", selected_isolate(), "_kr2_output.krk.rcf.html"))
+recentrifuge_html_path <- reactive(paste0("path_to_results/", selected_isolate(), "_output.krk.html"))
 
 # Plot
 renderUI({
