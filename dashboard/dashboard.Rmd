@@ -19,14 +19,26 @@ library(dplyr)
 # Setup path to directory of recentrifuge html files
 shiny::addResourcePath(prefix = "path_to_results", directoryPath = here::here("../Results/"))
 
-# Read a test kraken csv file
-recentrifuge_csv <- read.csv("../Results/barcode02_output.krk.stat.csv")
+# Read all kraken csv files
+recentrifuge_df_list <- lapply(Sys.glob("../Results/*_output.krk.stat.csv"), read.csv)
 
-# Flip dataframe for easier grabbing of variables
-variables <- recentrifuge_csv[1]
-recentrifuge_csv <- as.data.frame(t(recentrifuge_csv[,-1]))
-colnames(recentrifuge_csv) <- variables$X
-recentrifuge_csv$myfactor <- factor(row.names(recentrifuge_csv))
+# Merge all kraken csv files together into one dataframe
+recentrifuge_csv <- bind_cols(recentrifuge_df_list)
+
+# Rename variable column
+colnames(recentrifuge_csv)[colnames(recentrifuge_csv) == "X...1"] <- "var"
+
+# Drop redundant columns
+recentrifuge_csv <- recentrifuge_csv %>% select(-contains("X"))
+
+# Read test recentrifuge file
+# recentrifuge_csv <- read.csv("../Results/barcode02_output.krk.stat.csv")
+# 
+# # Flip dataframe for easier grabbing of variables
+# variables <- recentrifuge_csv[1]
+# recentrifuge_csv <- as.data.frame(t(recentrifuge_csv[,-1]))
+# colnames(recentrifuge_csv) <- variables$X
+# recentrifuge_csv$myfactor <- factor(row.names(recentrifuge_csv))
 
 # Read AMR output file
 amr_resgenes <- read.delim("../data/test_dna.got", header=TRUE, allowEscapes=FALSE, sep="\t",  quote="", na.strings="", comment.char="")
@@ -60,14 +72,16 @@ Row
     
 ```{r}
 # Load in the current isolate the user has chosen to view so it can be used for "recentrifuge_html_path"
-# selected_isolate <- reactive(input$isolate)
-# recentrifuge_csv_path <- reactive(
-#   my_file <- paste0("path_to_results/", selected_isolate(), "_output.krk.stat.csv"),
-#   data <- read.csv(my_file)
-#   )
+selected_isolate <- reactive(input$isolate)
+
+seqs_read <- reactive(recentrifuge_csv %>%
+  select(contains(selected_isolate()), var) %>%
+  filter(var == "Seqs. read") %>%
+  pull(var = 1))
 
 renderValueBox({
-  valueBox(value = recentrifuge_csv$`Seqs. read`,
+  
+  valueBox(value = seqs_read(),
            caption = "Sequences read",
            icon = "fa-bars",
            color = "primary")
@@ -78,8 +92,13 @@ renderValueBox({
 ### Sequences classified
     
 ```{r}
+classified <- reactive(recentrifuge_csv %>%
+  select(contains(selected_isolate()), var) %>%
+  filter(var == "Seqs. class.") %>%
+  pull(var = 1))
+
 renderValueBox({
-  valueBox(value = recentrifuge_csv$`Seqs. class.`,
+  valueBox(value = classified(),
            caption = "Sequences classified",
            icon = "fa-check",
            color = "primary")
@@ -90,8 +109,13 @@ renderValueBox({
 ### Sequences unclassified
     
 ```{r}
+unclassified <- reactive(recentrifuge_csv %>%
+  select(contains(selected_isolate()), var) %>%
+  filter(var == "Seqs. unclass.") %>%
+  pull(var = 1))
+
 renderValueBox({
-  valueBox(value = recentrifuge_csv$`Seqs. unclass.`,
+  valueBox(value = unclassified(),
            caption = "Sequences unclassified",
            icon = "fa-ban",
            color = "primary")
