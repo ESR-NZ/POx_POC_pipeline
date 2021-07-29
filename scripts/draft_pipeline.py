@@ -11,7 +11,7 @@ import re
 import gzip
 
 # This will be supplied by the API or as an arg by the user
-minKnow_run_path = Path("/NGS/scratch/QC/NP_barcoded_test_data") # example minIon minKnow data path used for testing
+minKnow_run_path = Path("/NGS/scratch/QC/NP_barcoded_test_data/") # example minIon minKnow data path used for testing
 
 # Will put results in the minKnow dir for now
 RESULTS_PATH = minKnow_run_path/"Results"
@@ -60,21 +60,25 @@ def concat_read_files(fq_dir: Path) -> Path:
     the path to this new file. This uses the unix cat command.
     Could probably make this more parallel...   
     '''
-
     all_reads = Path(f"{fq_dir / fq_dir.name}_all_reads") 
     print(f'Concatenating all fastq read files in {fq_dir.name} to {all_reads.name}') # print for debug
     cat_cmd = f"cat {fq_dir}/*.fastq* > {all_reads}"
     
-    # add the correct suffix to the file based on gzip'd or not
-    if is_gz_file(all_reads):
-        all_reads_suffix = all_reads.parent/ (all_reads.name + 'fastq.gz')
-    else: 
-        all_reads_suffix = all_reads.parent/ (all_reads.name + 'fastq')
-
     # run the command with supprocess.run 
     run(cat_cmd, shell=True, check=True)
     
+    # add the correct suffix to the file based on gzip'd or not
+    if is_gz_file(all_reads):
+        all_reads.replace(all_reads.with_suffix('.fastq.gz'))
+        all_reads_suffix = all_reads.parent / (all_reads.name + '.fastq.gz')
+    else:
+        all_reads.replace(all_reads.with_suffix('.fastq')) 
+        all_reads_suffix = all_reads.parent / (all_reads.name + '.fastq')
+    
+    print(all_reads_suffix)
+    
     return all_reads_suffix
+
 
 
 # Function for data QC
@@ -266,6 +270,7 @@ def main():
         fastq_file = concat_read_files(fq_dir)
         # Filter the reads and assign the Path of the filtered reads to 'len_filtered_fastq'
         len_filtered_fastq = filtlong_run(fastq_file)
+        print(len_filtered_fastq)
         print(f"Filtered reads live at {len_filtered_fastq}\n")
         
         # Do some plotting of the reads
