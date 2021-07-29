@@ -11,6 +11,10 @@ runtime: shiny
 # Load libraries
 library(flexdashboard)
 library(here)
+library(ggplot2)
+
+# Read AMR output file
+amr_resgenes <- read.delim("../data/test_dna.got", header=TRUE, allowEscapes=FALSE, sep="\t",  quote="", na.strings="", comment.char="")
 
 # Setup path to directory of recentrifuge html files
 shiny::addResourcePath(prefix = "www", directoryPath = here::here("www"))
@@ -39,14 +43,14 @@ selectizeInput("isolate",
 Column {data-width=600}
 -------------------------------------
     
-### recentrifuge
+### Species composition
     
 ```{r}
 # Embed the appropriate recentrifuge html file in the dashboard
 
 # Load in the current isolate the user has chosen to view so it can be used for "recentrifuge_html_path"
 selected_isolate <- reactive(input$isolate)
-recentrifuge_html_path <- reactive(paste0(context_path, selected_isolate(), "_kr2_output.krk.rcf.html"))
+recentrifuge_html_path <- reactive(paste0("www/", selected_isolate(), "_kr2_output.krk.rcf.html"))
 
 # Plot
 renderUI({
@@ -63,10 +67,13 @@ renderUI({
 Column {data-width = 400}
 -------------------------------------
    
-### Chart 2
+### Antimicrobial resistance
 
 ```{r}
-
+ggplot(amr_resgenes, aes(x = Subclass, fill = Gene.symbol, label = Gene.symbol)) +
+geom_bar() +
+geom_text(stat = "count", size = 2, position = position_stack(vjust = 0.5)) +
+coord_flip()
 ```   
  
 ### Chart 3
