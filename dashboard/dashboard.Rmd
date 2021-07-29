@@ -15,6 +15,7 @@ library(here)
 library(ggplot2)
 library(plotly)
 library(dplyr)
+library(DT)
 
 # Setup path to directory of recentrifuge html files
 shiny::addResourcePath(prefix = "path_to_results", directoryPath = here::here("../Results/"))
@@ -186,7 +187,7 @@ renderUI({
 })
 ```
 
-### Antimicrobial resistance
+### Antimicrobial resistance - plot
 
 ```{r}
 plot <- ggplot(amr_resgenes, aes(x = Subclass, fill = Gene.symbol, label = Gene.symbol)) +
@@ -197,5 +198,36 @@ coord_flip() +
   xlab("Subclass")
 
 ggplotly(plot)
+```
+
+### Antimicrobial resistance - table
+
+```{r}
+datatable(amr_resgenes %>%
+            select(Class,
+                   Subclass,
+                   Reference.sequence.length,
+                   Accession.of.closest.sequence),
+          filter = "top",
+          rownames = FALSE,
+          colnames = c("Class",
+                       "Subclass",
+                       "Reference sequence length",
+                       "Accession of closest sequence"),
+          extensions = list("ColReorder" = NULL,
+                            "Buttons" = NULL,
+                            "FixedColumns" = list(leftColumns=1)),
+          options = list(
+            dom = "BRrltpi",
+            autoWidth = TRUE,
+            columnDefs = list(list(width = "200px", targets = 0)),
+            lengthMenu = list(c(10, 50, -1), c("10", "50", "All")),
+            ColReorder = TRUE,
+            buttons =
+              list("copy",
+                   list(extend = "collection",
+                        buttons = c("csv", "excel", "pdf"),
+                        text = "Download"),
+                   I("colvis"))))
 ```
 
