@@ -2,6 +2,7 @@
 title: "POC metagenomics dashboard"
 output: 
   flexdashboard::flex_dashboard:
+    source_code: embed
     orientation: rows
     vertical_layout: scroll
 runtime: shiny
@@ -38,6 +39,9 @@ isolates <- sub("_.*", "", isolates)
 # Get the unique samples names
 isolates <- unique(isolates)
 ```
+
+Results
+===================================== 
 
 Inputs {.sidebar}
 -----------------------------------------------------------------------
@@ -108,8 +112,7 @@ renderValueBox({
 
 ```
 
-    
-Row {data-height=800}
+Column {data-height=800}
 -------------------------------------
     
 ### Species composition
@@ -128,7 +131,7 @@ renderUI({
   validate(need(input$isolate, "Please choose an isolate from the drop down box to create a plot"))
   
   # Embed html
-  tags$iframe(src=recentrifuge_html_path(), height="100%", width="100%")
+  tags$iframe(src = recentrifuge_html_path(), height = "100%", width = "100%")
   
 })
 ```
@@ -144,13 +147,41 @@ coord_flip() +
   xlab("Subclass")
 
 ggplotly(plot)
-``` 
+```
+
+Quality control
+=====================================
+
+Inputs {.sidebar}
+-----------------------------------------------------------------------
+
+```{r}
+# User input to choose sample of interest to view ----
+isolate2 <- reactive(input$isolate)
+
+selectizeInput("isolate2",
+               h4("Select or search for an isolate:"),
+               choices = isolates,
+               options = list(maxItems = 1))
+```
 
 Row
 -------------------------------------
 
-### Chart 3
-
+### Read length distribution
+  
 ```{r}
+# Load in the current isolate the user has chosen to view so it can be used for "recentrifuge_html_path"
+selected_isolate2 <- reactive(input$isolate2)
+read_dist_path <- reactive(paste0("path_to_results/", selected_isolate2(), "_all_reads.fq_read_length_distrabution_plot.png"))
 
-``` 
+renderUI({
+  
+  # Print a message if no isolate is chosen
+  validate(need(input$isolate, "Please choose an isolate from the drop down box to create a plot"))
+  
+  # Embed png
+  tags$iframe(src = read_dist_path(), width = "100%", height = "100%")
+  
+})
+```
