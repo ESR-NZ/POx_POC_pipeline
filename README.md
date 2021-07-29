@@ -8,6 +8,10 @@ See:
 - [Initial look at demultiplexing after Kraken (no longer doing)](./demultiplex_kraken_output.md)
 - [Paper - Nanopore sequencing and its application to the study of microbial communities](https://www.sciencedirect.com/science/article/pii/S2001037021000714)
 
+## Interactive results
+
+![dashboard image](./images/dashboard_image.png)
+
 ## Classification - kraken2 
 
 We have decided upon [kraken2](https://github.com/DerrickWood/kraken2) for our initial classification needs.
