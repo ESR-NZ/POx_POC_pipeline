@@ -19,7 +19,7 @@ library(DT)
 library(fontawesome)
 
 # capture arg for results DIR coming from bash script
-results_dir <- "./Results/"
+results_dir <- commandArgs(trailingOnly=T)[1]
 
 # Setup path to directory of recentrifuge html files
 # shiny::addResourcePath(prefix = "path_to_results", directoryPath = here::here("./Results/"))
