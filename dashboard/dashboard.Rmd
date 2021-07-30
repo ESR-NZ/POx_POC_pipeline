@@ -16,6 +16,7 @@ library(ggplot2)
 library(plotly)
 library(dplyr)
 library(DT)
+library(fontawesome)
 
 # Setup path to directory of recentrifuge html files
 shiny::addResourcePath(prefix = "path_to_results", directoryPath = here::here("./Results/"))
@@ -130,17 +131,15 @@ renderValueBox({
 ### Top classification
     
 ```{r}
-tophit <- em("Bifidobacterium animalis") 
-# tophit <- reactive(recentrifuge_csv %>%
-#   select(contains(selected_isolate()), var) %>%
-#   filter(var == "Top hit") %>%
-#   pull(var = 1))
+tophit <- reactive(recentrifuge_csv %>%
+  select(contains(selected_isolate()), var) %>%
+  filter(var == "Top hit") %>%
+  pull(var = 1))
 
 renderValueBox({
-  # valueBox(value = tophit(),
-    valueBox(value = tophit,
+  valueBox(value = tophit(),
            caption = "Top classification",
-          #  icon = "fa-bacterium",
+           #  icon = "fa-bacterium",
            color = "green")
 })
 
