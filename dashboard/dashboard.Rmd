@@ -75,6 +75,9 @@ seqs_read <- reactive(recentrifuge_csv %>%
 
 renderValueBox({
   
+  # Print a message if no isolate is chosen
+  validate(need(input$isolate, "NULL"))
+  
   valueBox(value = seqs_read(),
            caption = "Sequences read",
            icon = "fa-bars",
@@ -92,6 +95,10 @@ classified <- reactive(recentrifuge_csv %>%
   pull(var = 1))
 
 renderValueBox({
+  
+  # Print a message if no isolate is chosen
+  validate(need(input$isolate, "NULL"))
+  
   valueBox(value = classified(),
            caption = "Sequences classified",
           #  icon = "fa-check",
@@ -110,6 +117,10 @@ unclassified <- reactive(recentrifuge_csv %>%
   pull(var = 1))
 
 renderValueBox({
+  
+  # Print a message if no isolate is chosen
+  validate(need(input$isolate, "NULL"))
+  
   valueBox(value = unclassified(),
            caption = "Mean read length",
            icon = "fa-dna",
@@ -127,6 +138,10 @@ tophit <- reactive(recentrifuge_csv %>%
   pull(var = 1))
 
 renderValueBox({
+  
+  # Print a message if no isolate is chosen
+  validate(need(input$isolate, "NULL"))
+  
   valueBox(value = tophit(),
            caption = "Top classification",
            #  icon = "fa-bacterium",
