@@ -71,3 +71,13 @@ R -e "install.packages('fontawesome', repos='http://cran.rstudio.com/')"
 # Install Python 3.9
 PY3_VER=3.9
 conda install -y python=${PY3_VER}
+pip3 install -y seaborn
+
+# Install filtlong
+cd $INSTALL_DIR
+git clone https://github.com/rrwick/Filtlong.git
+cd Filtlong
+make -j
+mv bin/filtlong $INSTALL_DIR/bin
+
+# Need to set up the minikraken database
