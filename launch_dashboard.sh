@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 # Metagenomics Pipeline interactive results dashboard launcher
 # M Benton - ESR
@@ -6,6 +6,11 @@
 
 # this script should identify a systems default browser, enter a previously installed conda r_env, and 
 # require all options and packages to launch an interactive dashboard in a local browser
+source ~/miniconda3/etc/profile.d/conda.sh 
+
+RESULTSDIR=$1
+
+echo -e "your chosen Results directory is: $RESULTSDIR"
 
 # grab the default browser (for auto launch)
 DEFAULTBROWS=$(xdg-settings get default-web-browser | sed 's/\.desktop//g')
@@ -16,6 +21,7 @@ conda activate r_env; R -e "options(shiny.port = 8100);                     # ac
   setwd(\"dashboard\");                                                     # mv to correct dur
   require(flexdashboard);                                                   # package required to open/run
   require(rmarkdown);                                                       # package required to open/run
-  run(file=\"dashboard.Rmd\", shiny_args = list(launch.browser = TRUE))"    # launch the server directly in browser
+  run(file=\"dashboard.Rmd\", shiny_args = list(launch.browser = TRUE))" \
+  --args "$RESULTSDIR"    # launch the server directly in browser
 
 # dashboard.Rmd contains a call to shiny server that will stop the server on the closing of the browser tab

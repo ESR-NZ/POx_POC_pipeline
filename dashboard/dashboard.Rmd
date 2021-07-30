@@ -18,8 +18,12 @@ library(dplyr)
 library(DT)
 library(fontawesome)
 
+# capture arg for results DIR coming from bash script
+NEWDIR <- commandArgs(trailingOnly=T)[1]
+
 # Setup path to directory of recentrifuge html files
-shiny::addResourcePath(prefix = "path_to_results", directoryPath = here::here("./Results/"))
+# shiny::addResourcePath(prefix = "path_to_results", directoryPath = here::here("./Results/"))
+shiny::addResourcePath(prefix = "path_to_results", directoryPath = here::here(NEWDIR))
 
 # Read all kraken csv files
 recentrifuge_df_list <- lapply(Sys.glob("../Results/*_output.krk.stat.csv"), read.csv)
@@ -58,6 +62,8 @@ selectizeInput("isolate",
                choices = isolates,
                options = list(maxItems = 1))
 ```
+
+The Results directory is: `r as.character(NEWDIR)`
 
 Row
 -------------------------------------
