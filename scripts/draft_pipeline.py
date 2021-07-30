@@ -219,7 +219,7 @@ def kraken2_run(len_filtered_fastq: Path, BARCODE: str):
     '''
     KREPORT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_.kreport"
     OUTPUT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_output.krk"
-    KRAKEN2_DB_PATH=Path('/opt/bioinf/kraken/kraken2_db/minikraken2_v1_8GB_201904') # This will need changing
+    KRAKEN2_DB_PATH=Path('/xavier_ssd/metagenomics_sprint/databases/minikraken2_v1_8GB') # This will need changing
     CONFIDENCE='0.01'
 
     # this works
@@ -336,7 +336,7 @@ def main():
         print(f"Top classifiction hit {species}")
 
         # call to recentrifuge
-        rcf_cmd = f'rcf -n /data/gitrepos/recentrifuge/taxdump -k {K_PATHS[0]} -o {BARCODE}.html -e CSV'
+        rcf_cmd = f'rcf -n /xavier_ssd/gitrepo/recentrifuge/taxdump/ -k {K_PATHS[0]} -o {BARCODE}.html -e CSV'
         run(rcf_cmd)
         
         
