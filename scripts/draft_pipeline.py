@@ -335,6 +335,11 @@ def main():
 
         print(f"Top classifiction hit {species}")
 
+        # call to recentrifuge
+        rcf_cmd = f'rcf -n /data/gitrepos/recentrifuge/taxdump -k {K_PATHS[0]} -o {BARCODE}.html -e CSV'
+        run(rcf_cmd)
+        
+        
         # need to clean up the temp files here
         os.remove(fastq_file)
         os.remove(len_filtered_fastq)
