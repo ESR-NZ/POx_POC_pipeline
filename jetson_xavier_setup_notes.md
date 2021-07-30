@@ -256,6 +256,33 @@ mamba install -c conda-forge r-fontawesome
 R -e "install.packages('fontawesome', repos='http://cran.rstudio.com/')"
 ```
 
+#### launching the flexdashboard from cli
+
+I was exploring ways to launch the dashboard automatically. The below is pretty nasty but it does work, and sets a 'static' port on localhost - this could then be bookmarked in a local broswer for easy accessibility. We would need a way to kill this again, maybe it gets 'cleaned up' next time the pipeline is run?
+
+```sh
+conda activate r_env; R -e "options(shiny.port = 8100); setwd(\"dashboard\"); require(flexdashboard); require(rmarkdown); run(file=\"dashboard.Rmd\", shiny_args = list(launch.browser = TRUE))"
+```
+
+If we want the dashboard to launch automatically into a browswe the below will do so:
+
+```sh
+conda activate r_env; R -e "options(shiny.port = 8100); options(browser=\"firefox\"); setwd(\"dashboard\"); require(flexdashboard); require(rmarkdown); run(file=\"dashboard.Rmd\", shiny_args = list(launch.browser = TRUE))"
+```
+
+Note: we'll need to change "firefox" to "chrome", or whatever browser is default on the Xaviers.
+
+Can poll default browser:
+
+```sh
+minit@esr-xavier:~$ xdg-settings get default-web-browser
+chromium-browser.desktop
+```
+
+Actually it might be better to set some of these R options in an `.Rprofile` or similar, and wrap the rest of this in a script?
+
+
+
 ## other python packages required
 
 The current draft pipeline ans associated scripts depend on the below (as well as anything previously mentioned):
