@@ -278,7 +278,7 @@ def write_classify_to_file(species_dict: dict) -> str:
     
     with open(tax_csv_file_path, 'a') as tax_csv:
         header_names = ['Barcode', 'Taxon1', 'Taxon2', 'Taxon3']
-        tax_writer = csv.DictWriter(tax_csv, fieldnames=header_names, delimiter=', ')
+        tax_writer = csv.DictWriter(tax_csv, fieldnames=header_names)
         
         if not tax_file_exists:
             tax_writer.writeheader()
