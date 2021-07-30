@@ -232,11 +232,6 @@ def kraken2_run(len_filtered_fastq: Path, BARCODE: str):
     '''
     KREPORT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_.kreport"
     OUTPUT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_output.krk"
-<<<<<<< HEAD
-    
-=======
-    KRAKEN2_DB_PATH=Path('/xavier_ssd/metagenomics_sprint/databases/minikraken2_v1_8GB') # This will need changing
->>>>>>> 58f944f580848b53bba55c00299b3e21f96de4ba
     CONFIDENCE='0.01'
 
     # this works
@@ -350,14 +345,8 @@ def main():
         print(f"Top classifiction hit {species}")
 
         # call to recentrifuge
-<<<<<<< HEAD
         rcf_cmd = f'rcf -n {rcf_TAXDUMP} -k {K_PATHS[0]} -o {BARCODE}.html -e CSV'
         run(rcf_cmd, shell=True, check=True)
-=======
-        rcf_cmd = f'rcf -n /xavier_ssd/gitrepo/recentrifuge/taxdump/ -k {K_PATHS[0]} -o {BARCODE}.html -e CSV'
-        run(rcf_cmd)
-        
->>>>>>> 58f944f580848b53bba55c00299b3e21f96de4ba
         
 
         # need to clean up the temp files here
