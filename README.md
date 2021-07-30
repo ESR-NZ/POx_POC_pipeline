@@ -10,7 +10,7 @@ See:
 
 ## Interactive results
 
-![dashboard image](./images/dashboard_image.png)
+![dashboard demo](./images/dashboard.gif)
 
 ## Classification - kraken2 
 

@@ -33,17 +33,8 @@ colnames(recentrifuge_csv)[colnames(recentrifuge_csv) == "X...1"] <- "var"
 # Drop redundant columns
 recentrifuge_csv <- recentrifuge_csv %>% select(-contains("X"))
 
-# Read test recentrifuge file
-# recentrifuge_csv <- read.csv("../Results/barcode02_output.krk.stat.csv")
-# 
-# # Flip dataframe for easier grabbing of variables
-# variables <- recentrifuge_csv[1]
-# recentrifuge_csv <- as.data.frame(t(recentrifuge_csv[,-1]))
-# colnames(recentrifuge_csv) <- variables$X
-# recentrifuge_csv$myfactor <- factor(row.names(recentrifuge_csv))
-
 # Read AMR output file
-amr_resgenes <- read.delim("../data/test_dna.got", header=TRUE, allowEscapes=FALSE, sep="\t",  quote="", na.strings="", comment.char="")
+# amr_resgenes <- read.delim("../data/test_dna.got", header=TRUE, allowEscapes=FALSE, sep="\t",  quote="", na.strings="", comment.char="")
 
 # Create a list of samples based on the files present in the kraken output directory
 isolates <- list.files(path = "../Results/")
@@ -56,7 +47,6 @@ isolates <- unique(isolates)
 
 htmltools::tagList(fontawesome::fa_html_dependency())
 ```
-
 
 Inputs {.sidebar}
 -----------------------------------------------------------------------
@@ -85,6 +75,9 @@ seqs_read <- reactive(recentrifuge_csv %>%
 
 renderValueBox({
   
+  # Print a message if no isolate is chosen
+  validate(need(input$isolate, "NULL"))
+  
   valueBox(value = seqs_read(),
            caption = "Sequences read",
            icon = "fa-bars",
@@ -102,6 +95,10 @@ classified <- reactive(recentrifuge_csv %>%
   pull(var = 1))
 
 renderValueBox({
+  
+  # Print a message if no isolate is chosen
+  validate(need(input$isolate, "NULL"))
+  
   valueBox(value = classified(),
            caption = "Sequences classified",
           #  icon = "fa-check",
@@ -120,6 +117,10 @@ unclassified <- reactive(recentrifuge_csv %>%
   pull(var = 1))
 
 renderValueBox({
+  
+  # Print a message if no isolate is chosen
+  validate(need(input$isolate, "NULL"))
+  
   valueBox(value = unclassified(),
            caption = "Mean read length",
            icon = "fa-dna",
@@ -137,30 +138,14 @@ tophit <- reactive(recentrifuge_csv %>%
   pull(var = 1))
 
 renderValueBox({
+  
+  # Print a message if no isolate is chosen
+  validate(need(input$isolate, "NULL"))
+  
   valueBox(value = tophit(),
            caption = "Top classification",
            #  icon = "fa-bacterium",
            color = "green")
-})
-
-```
-
-### AMR hit
-    
-```{r}
-# Check for presence of data in the AMR dataset
-if (dim(amr_resgenes)[1] == 0) {
-  num_amr_genes <- 0
-} else {
-  num_amr_genes <- as.character(nrow(amr_resgenes))
-}
-
-renderValueBox({
-  valueBox(value = num_amr_genes,
-           caption = "Number of AMR genes",
-           icon = "fa-pills",
-          #  icon="fas fa-capsules",
-           color = "warning")
 })
 
 ```
@@ -189,7 +174,7 @@ renderUI({
 })
 ```
 
-Row {.tabset .tabset-fade}
+Row
 -------------------------------------
 
 ### Read length distribution
@@ -207,50 +192,6 @@ renderUI({
   # Embed png
   tags$iframe(src = read_dist_path(), width = "100%", height = "100%")
 })
-```
-
-### Antimicrobial resistance - plot
-
-```{r}
-plot <- ggplot(amr_resgenes, aes(x = Subclass, fill = Gene.symbol, label = Gene.symbol)) +
-geom_bar() +
-geom_text(stat = "count", size = 2, position = position_stack(vjust = 0.5)) +
-coord_flip() +
-  ylab("Count") +
-  xlab("Subclass")
-
-ggplotly(plot)
-```
-
-### Antimicrobial resistance - table
-
-```{r}
-datatable(amr_resgenes %>%
-            select(Class,
-                   Subclass,
-                   Reference.sequence.length,
-                   Accession.of.closest.sequence),
-          filter = "top",
-          rownames = FALSE,
-          colnames = c("Class",
-                       "Subclass",
-                       "Reference sequence length",
-                       "Accession of closest sequence"),
-          extensions = list("ColReorder" = NULL,
-                            "Buttons" = NULL,
-                            "FixedColumns" = list(leftColumns=1)),
-          options = list(
-            dom = "BRrltpi",
-            autoWidth = TRUE,
-            columnDefs = list(list(width = "200px", targets = 0)),
-            lengthMenu = list(c(10, 50, -1), c("10", "50", "All")),
-            ColReorder = TRUE,
-            buttons =
-              list("copy",
-                   list(extend = "collection",
-                        buttons = c("csv", "excel", "pdf"),
-                        text = "Download"),
-                   I("colvis"))))
 ```
 
 ```{r, echo = FALSE}
