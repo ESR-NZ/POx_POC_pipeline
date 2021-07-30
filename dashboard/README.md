@@ -10,4 +10,4 @@ Dashboard for end users to access and consume the QC and classification results 
 
 ## Additional code
 
-More code for plotting AMR data that isn't included in the dashboard for now can be found at [AMR_code.Rmd](.AMR_code.Rmd)
+More code for plotting AMR data that isn't included in the dashboard for now can be found at [AMR_code.Rmd](./AMR_code.Rmd)
