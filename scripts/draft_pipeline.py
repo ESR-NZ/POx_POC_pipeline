@@ -9,15 +9,31 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 import re
 import gzip
+import argparse
+import csv
+import os
 
-# This will be supplied by the API or as an arg by the user
-minKnow_run_path = Path("/NGS/scratch/QC/NP_barcoded_test_data/") # example minIon minKnow data path used for testing
+# Pipe line needs a single positional arg that points to a run directory
+arg_parser = argparse.ArgumentParser(prog='POC-POX analysis pipeline',
+                                description="Run the POC analysis pipeline for all sub-directories with sequencing reads inside")
+
+arg_parser.add_argument("minKnow_run_path",
+                        metavar='path',
+                        type=str,
+                        help='Path to the MinKnow output directory of the sequencing run you wish to analyse')
+
+args = arg_parser.parse_args()
+
+minKnow_run_path = Path(args.minKnow_run_path) 
 
 # Will put results in the minKnow dir for now
 RESULTS_PATH = minKnow_run_path/"Results"
 
 if not RESULTS_PATH.is_dir():
     RESULTS_PATH.mkdir(exist_ok=True)
+
+## Need to workout the kraken2 database locaion.
+KRAKEN2_DB_PATH=Path()
 
 # Get a list of directories with fastqs in them, this works if multiplexed or not
 def get_fastq_dirs(minKnow_run_path):
@@ -61,6 +77,11 @@ def concat_read_files(fq_dir: Path) -> Path:
     Could probably make this more parallel...   
     '''
     all_reads = Path(f"{fq_dir / fq_dir.name}_all_reads") 
+    
+    # remove any tmp files from previous crashed runs
+    if all_reads.is_file():
+        os.remove(all_reads)
+
     print(f'Concatenating all fastq read files in {fq_dir.name} to {all_reads.name}') # print for debug
     cat_cmd = f"cat {fq_dir}/*.fastq* > {all_reads}"
     
@@ -180,6 +201,10 @@ def filtlong_run(fastq_file, read_len=1000):
     fastq_dir = fastq_file.parent
     len_filt_file_path = fastq_dir/"len_filter_reads.fq"
     
+    # remove any tmp files from previous crashed runs
+    if len_filt_file_path.is_file():
+        os.remove(len_filt_file_path)
+
     filt_cmd = f'filtlong --min_length {read_len} {fastq_file} > {len_filt_file_path}'
     
     run(filt_cmd, shell=True, check=True)
@@ -209,7 +234,7 @@ def kraken2_run(len_filtered_fastq: Path, BARCODE: str):
     return (OUTPUT_FILE_PATH, KREPORT_FILE_PATH)
 
 
-def parse_kraken(kreport_path: Path) -> dict:
+def parse_kraken(BARCODE: str, kreport_path: Path) -> dict:
     '''
     Gets the top species hit from kraken2 for resfinder. 
     Output is a dict of the top three hits at the species level. 
@@ -222,11 +247,12 @@ def parse_kraken(kreport_path: Path) -> dict:
         s = re.split("\t", re.sub("  ","",line.rstrip()))
         prcnt = str( round(float(s[0].lstrip()), round_val) )
         sp = s[len(s)-1]
-        return((sp, prcnt+"%"))
-
+        #return((sp, prcnt+"%"))
+        #return(sp, prcnt+"%")
+        return sp
 
     with open(kreport_path, "r") as f:
-        tax_dict = {}
+        #tax_dict = {}
         species = []
         for line in f:
         # extract all lines matching the required ID level
@@ -237,12 +263,31 @@ def parse_kraken(kreport_path: Path) -> dict:
             
         if len(species) >= depth:
             tax_dict = {f'Taxon{i+1}':species[i] for i in range(depth)}
+            tax_dict['Barcode'] = BARCODE
         else:
             tax_dict = {f'Taxon{i+1}':species[i] for i in range(len(species))}
-    
+            tax_dict['Barcode'] = BARCODE
+
     return tax_dict
 
 
+def write_classify_to_file(species_dict: dict) -> str: 
+    
+    tax_csv_file_path = RESULTS_PATH/'classification_results.csv'
+    tax_file_exists = tax_csv_file_path.is_file()
+    
+    with open(tax_csv_file_path, 'a') as tax_csv:
+        header_names = ['Barcode', 'Taxon1', 'Taxon2', 'Taxon3']
+        tax_writer = csv.DictWriter(tax_csv, fieldnames=header_names, delimiter=', ')
+        
+        if not tax_file_exists:
+            tax_writer.writeheader()
+        
+        tax_writer.writerow(species_dict)
+
+    top_species = species_dict['Taxon1']
+
+    return top_species
 
 def run_recentrifuge():
     pass
@@ -258,34 +303,41 @@ def run_resfinder(len_filtered_fastq, species, BARCODE):
 
 # main func to run the script
 def main():
+    print(f"Looking for all your samples in: {minKnow_run_path}")
     fastq_dirs = get_fastq_dirs(minKnow_run_path)
     
     for fq_dir in fastq_dirs:
         print(f'Working on {fq_dir.name}\n')
 
         # Get barcode for this sample
-        BARCOE=fq_dir.name.split('_')[0]
+        BARCODE=fq_dir.name.split('_')[0]
         
         # Gather the reads and assign Path of reads to 'fastq_file'
+        # This asignment is a dumb way to do this
         fastq_file = concat_read_files(fq_dir)
         # Filter the reads and assign the Path of the filtered reads to 'len_filtered_fastq'
         len_filtered_fastq = filtlong_run(fastq_file)
-        print(len_filtered_fastq)
+
         print(f"Filtered reads live at {len_filtered_fastq}\n")
         
         # Do some plotting of the reads
         plot_length_dis_graph(fastq_file, RESULTS_PATH)
 
         # Run the classifer and assign the tuple of Paths of the output file variable  
-        K_PATHS = kraken2_run(len_filtered_fastq, BARCOE)
+        K_PATHS = kraken2_run(len_filtered_fastq, BARCODE)
         KREPORT_PATH = K_PATHS[1]
 
-        species_dict = parse_kraken(KREPORT_PATH)
+        species_dict = parse_kraken(BARCODE, KREPORT_PATH)
+        
+        write_classify_to_file(species_dict)
+
         species = species_dict['Taxon1']
 
-        print(species)
+        print(f"Top classifiction hit {species}")
 
-
+        # need to clean up the temp files here
+        os.remove(fastq_file)
+        os.remove(len_filtered_fastq)
 
 if __name__ == '__main__':
     main()
