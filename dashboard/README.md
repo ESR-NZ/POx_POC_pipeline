@@ -6,7 +6,7 @@ Dashboard for end users to access and consume the QC and classification results 
 
 ## Demo of dashboard
 
-![dashboard demo](./dashboard.gif)
+![dashboard demo](../images/dashboard_image.pn)
 
 ## Additional code
 
