@@ -78,6 +78,6 @@ cd $INSTALL_DIR
 git clone https://github.com/rrwick/Filtlong.git
 cd Filtlong
 make -j
-mv bin/filtlong $INSTALL_DIR/bin
+mv bin/Filtlong $INSTALL_DIR/bin
 
 # Need to set up the minikraken database
