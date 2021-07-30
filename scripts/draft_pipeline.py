@@ -22,9 +22,24 @@ arg_parser.add_argument("minKnow_run_path",
                         type=str,
                         help='Path to the MinKnow output directory of the sequencing run you wish to analyse')
 
+arg_parser.add_argument('--K_DB', '-k', type=str,
+                        help='Path to Krakren2 database',
+                        required=True)
+
+arg_parser.add_argument('--taxdump', '-t', type=str,
+                        help='Path to recentrifuge taxdump',
+                        required=True)
+
 args = arg_parser.parse_args()
 
+
+# path constants
 minKnow_run_path = Path(args.minKnow_run_path) 
+
+KRAKEN2_DB_PATH=Path(args.K_DB) 
+
+rcf_TAXDUMP=Path(args.taxdump)
+
 
 # Will put results in the minKnow dir for now
 RESULTS_PATH = minKnow_run_path/"Results"
@@ -32,8 +47,6 @@ RESULTS_PATH = minKnow_run_path/"Results"
 if not RESULTS_PATH.is_dir():
     RESULTS_PATH.mkdir(exist_ok=True)
 
-## Need to workout the kraken2 database locaion.
-KRAKEN2_DB_PATH=Path()
 
 # Get a list of directories with fastqs in them, this works if multiplexed or not
 def get_fastq_dirs(minKnow_run_path):
@@ -177,8 +190,8 @@ def plot_length_dis_graph(fastq_file, results_path):
     n50 = round(n50/1000, 1)
     total_data = round(passed_bases/1000000, 2)
         
-    plot_dir  = Path("Plots")
-    plot_dir.mkdir(exist_ok=True)
+    #plot_dir  = Path("Plots")
+    #plot_dir.mkdir(exist_ok=True)
 
     plot_path = results_path/f"{barcode}_read_length_distrabution_plot.png"
     
@@ -219,7 +232,7 @@ def kraken2_run(len_filtered_fastq: Path, BARCODE: str):
     '''
     KREPORT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_.kreport"
     OUTPUT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_output.krk"
-    KRAKEN2_DB_PATH=Path('/opt/bioinf/kraken/kraken2_db/minikraken2_v1_8GB_201904') # This will need changing
+    
     CONFIDENCE='0.01'
 
     # this works
@@ -289,9 +302,6 @@ def write_classify_to_file(species_dict: dict) -> str:
 
     return top_species
 
-def run_recentrifuge():
-    pass
-
 
 def run_resfinder(len_filtered_fastq, species, BARCODE):
     
@@ -301,7 +311,7 @@ def run_resfinder(len_filtered_fastq, species, BARCODE):
     
 
 
-# main func to run the script
+####################### main func to run the script ################
 def main():
     print(f"Looking for all your samples in: {minKnow_run_path}")
     fastq_dirs = get_fastq_dirs(minKnow_run_path)
@@ -336,10 +346,10 @@ def main():
         print(f"Top classifiction hit {species}")
 
         # call to recentrifuge
-        rcf_cmd = f'rcf -n /data/gitrepos/recentrifuge/taxdump -k {K_PATHS[0]} -o {BARCODE}.html -e CSV'
-        run(rcf_cmd)
+        rcf_cmd = f'rcf -n {rcf_TAXDUMP} -k {K_PATHS[0]} -o {BARCODE}.html -e CSV'
+        run(rcf_cmd, shell=True, check=True)
         
-        
+
         # need to clean up the temp files here
         os.remove(fastq_file)
         os.remove(len_filtered_fastq)
