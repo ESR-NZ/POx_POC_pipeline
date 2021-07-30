@@ -19,14 +19,14 @@ library(DT)
 library(fontawesome)
 
 # capture arg for results DIR coming from bash script
-NEWDIR <- commandArgs(trailingOnly=T)[1]
+results_dir <- "./Results/"
 
 # Setup path to directory of recentrifuge html files
 # shiny::addResourcePath(prefix = "path_to_results", directoryPath = here::here("./Results/"))
-shiny::addResourcePath(prefix = "path_to_results", directoryPath = here::here(NEWDIR))
+shiny::addResourcePath(prefix = "path_to_results", directoryPath = here::here(results_dir))
 
 # Read all kraken csv files
-recentrifuge_df_list <- lapply(Sys.glob("../Results/*_output.krk.stat.csv"), read.csv)
+recentrifuge_df_list <- lapply(Sys.glob(paste0("../", results_dir, "*_output.krk.stat.csv")), read.csv)
 
 # Merge all kraken csv files together into one dataframe
 recentrifuge_csv <- bind_cols(recentrifuge_df_list)
@@ -41,7 +41,7 @@ recentrifuge_csv <- recentrifuge_csv %>% select(-contains("X"))
 # amr_resgenes <- read.delim("../data/test_dna.got", header=TRUE, allowEscapes=FALSE, sep="\t",  quote="", na.strings="", comment.char="")
 
 # Create a list of samples based on the files present in the kraken output directory
-isolates <- list.files(path = "../Results/")
+isolates <- list.files(path = paste0("../", results_dir))
 
 # Get only the sample names from the file list (everything before "_")
 isolates <- sub("_.*", "", isolates)
@@ -62,8 +62,6 @@ selectizeInput("isolate",
                choices = isolates,
                options = list(maxItems = 1))
 ```
-
-The Results directory is: `r as.character(NEWDIR)`
 
 Row
 -------------------------------------
