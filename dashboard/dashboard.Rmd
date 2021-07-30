@@ -254,3 +254,6 @@ datatable(amr_resgenes %>%
                    I("colvis"))))
 ```
 
+```{r, echo = FALSE}
+session$onSessionEnded(stopApp)
+```
