@@ -14,8 +14,8 @@ import csv
 import os
 
 # Pipe line needs a single positional arg that points to a run directory
-arg_parser = argparse.ArgumentParser(prog='POX-POC analysis pipeline',
-                                description="Run the POX analysis pipeline for all sub-directories with sequencing reads inside")
+arg_parser = argparse.ArgumentParser(prog='POC-POX analysis pipeline',
+                                description="Run the POC analysis pipeline for all sub-directories with sequencing reads inside")
 
 arg_parser.add_argument("minKnow_run_path",
                         metavar='path',
@@ -351,7 +351,7 @@ def main():
         run(rcf_cmd, shell=True, check=True)
         
 
-        # need to clean up the temp read files here
+        # need to clean up the temp files here
         os.remove(fastq_file)
         os.remove(len_filtered_fastq)
 
