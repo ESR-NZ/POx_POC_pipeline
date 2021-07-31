@@ -5,7 +5,7 @@
 # 30/07/2021
 
 
-PIPELINE=pipeline
+PIPELINE=POX_POC_pipeline
 
 # get user input for database location
 echo 'Enter the SSD mount path to download the required databases to:'
@@ -95,13 +95,15 @@ cd Filtlong
 make -j
 mv bin/Filtlong $INSTALL_DIR/bin
 
-
+cd $INSTALL_DIR
 # Need to set up the minikraken database
 
 if [ ! -d $K_DATABASE/minikraken2_v2_8GB_201904 ]
 then
 	wget https://genome-idx.s3.amazonaws.com/kraken/minikraken2_v2_8GB_201904.tgz -P $K_DATABASE
 # unpack the .tgz
-	tar -xvzf $K_DATABASE/minikraken2_v2_8GB_201904.tgz
+	cd $K_DATABASE
+	tar -xvzf minikraken2_v2_8GB_201904.tgz 
 fi
 
+cd $INSTALL_DIR
