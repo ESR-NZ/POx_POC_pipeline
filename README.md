@@ -1,4 +1,4 @@
-# POC metagenomics sprint
+# POx_POC sprint
 
 A place to start putting code and organising ideas
 
