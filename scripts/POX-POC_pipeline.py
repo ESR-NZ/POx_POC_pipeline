@@ -14,8 +14,8 @@ import csv
 import os
 
 # Pipe line needs a single positional arg that points to a run directory
-arg_parser = argparse.ArgumentParser(prog='POC-POX analysis pipeline',
-                                description="Run the POC analysis pipeline for all sub-directories with sequencing reads inside")
+arg_parser = argparse.ArgumentParser(prog='POx-POC analysis pipeline',
+                                description="Run the POx-POC analysis pipeline for all sub-directories with sequencing reads inside")
 
 arg_parser.add_argument("minKnow_run_path",
                         metavar='path',
