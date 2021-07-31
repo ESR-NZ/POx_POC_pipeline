@@ -93,15 +93,16 @@ cd $INSTALL_DIR
 git clone https://github.com/rrwick/Filtlong.git
 cd Filtlong
 make -j
-mv bin/Filtlong $INSTALL_DIR/bin
+mv bin/filtlong $INSTALL_DIR/bin
 
 cd $INSTALL_DIR
 # Need to set up the minikraken database
 
 if [ ! -d $K_DATABASE/minikraken2_v2_8GB_201904 ]
 then
+	# DL the databases 
 	wget https://genome-idx.s3.amazonaws.com/kraken/minikraken2_v2_8GB_201904.tgz -P $K_DATABASE
-# unpack the .tgz
+	# unpack the .tgz
 	cd $K_DATABASE
 	tar -xvzf minikraken2_v2_8GB_201904.tgz 
 fi
