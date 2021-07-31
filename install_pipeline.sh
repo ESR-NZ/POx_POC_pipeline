@@ -7,6 +7,20 @@
 
 PIPELINE=pipeline
 
+# get user input for database location
+echo 'Enter the SSD mount path to download the required databases to:'
+read -p '(e.g. /media/minit/xavierSSD ): ' SSD_MOUNT
+
+if [ ! -d $SSD_MOUNT ]
+then
+    echo "Invalid location, please try again"
+    exit 0
+fi
+
+K_DATABASE="${SSD_MOUNT}/kraken2_DBs"
+echo "Kraken2 index database will be downloaded to: ${K_DATABASE}"
+
+
 # User can specify destination
 if [ $# -lt 1 ]; then
 	INSTALL_DIR=${PWD}/${PIPELINE}
@@ -81,7 +95,13 @@ cd Filtlong
 make -j
 mv bin/Filtlong $INSTALL_DIR/bin
 
+
 # Need to set up the minikraken database
 
-KRAKEN_DB_PATH=""
-wget https://genome-idx.s3.amazonaws.com/kraken/minikraken2_v2_8GB_201904.tgz
+if [ ! -d $K_DATABASE/minikraken2_v2_8GB_201904 ]
+then
+	wget https://genome-idx.s3.amazonaws.com/kraken/minikraken2_v2_8GB_201904.tgz -P $K_DATABASE
+# unpack the .tgz
+	tar -xvzf $K_DATABASE/minikraken2_v2_8GB_201904.tgz
+fi
+

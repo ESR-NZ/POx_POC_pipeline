@@ -284,7 +284,11 @@ def parse_kraken(BARCODE: str, kreport_path: Path) -> dict:
 
 
 def write_classify_to_file(species_dict: dict) -> str: 
-    
+    '''
+    Write the results of classificain to a single file: classification_results.csv. 
+    Returns the top species for printing to screen.
+    Needs a bit of formatting work.
+    '''
     tax_csv_file_path = RESULTS_PATH/'classification_results.csv'
     tax_file_exists = tax_csv_file_path.is_file()
     
@@ -303,7 +307,7 @@ def write_classify_to_file(species_dict: dict) -> str:
 
 
 def run_resfinder(len_filtered_fastq, species, BARCODE):
-    
+    '''Not used, not working  yet'''
     OUTPUT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_res.got"
     res_cmd = f"amrfinder --plus -n {len_filtered_fastq} -O {species} > {OUTPUT_FILE_PATH}"
     run(res_cmd)
@@ -332,20 +336,18 @@ def main():
         # Do some plotting of the reads
         plot_length_dis_graph(fastq_file, RESULTS_PATH)
 
-        # Run the classifer and assign the tuple of Paths of the output file variable  
-        K_PATHS = kraken2_run(len_filtered_fastq, BARCODE)
-        KREPORT_PATH = K_PATHS[1]
-
-        species_dict = parse_kraken(BARCODE, KREPORT_PATH)
+        # Run the classifer and unpack the tuple of Paths of the output files to vars
+        KOUTPUT_PATH, KREPORT_PATH = kraken2_run(len_filtered_fastq, BARCODE)
         
-        write_classify_to_file(species_dict)
+        # parsing the k2 report to get top hits
+        species_dict = parse_kraken(BARCODE, KREPORT_PATH)
+        # writing the tophits to a file
+        top_species = write_classify_to_file(species_dict)
 
-        species = species_dict['Taxon1']
-
-        print(f"Top classifiction hit {species}")
+        print(f"Top classifiction hit {top_species}")
 
         # call to recentrifuge
-        rcf_cmd = f'rcf -n {rcf_TAXDUMP} -k {K_PATHS[0]} -o {BARCODE}.html -e CSV'
+        rcf_cmd = f'rcf -n {rcf_TAXDUMP} -k {KOUTPUT_PATH} -o {BARCODE}.html -e CSV'
         run(rcf_cmd, shell=True, check=True)
         
 
