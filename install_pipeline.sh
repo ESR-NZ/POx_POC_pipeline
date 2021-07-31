@@ -90,14 +90,17 @@ pip3 install -y seaborn
 
 # Install filtlong
 cd $INSTALL_DIR
+echo $INSTALL_DIR
+
 git clone https://github.com/rrwick/Filtlong.git
 cd Filtlong
 make -j
 mv bin/filtlong $INSTALL_DIR/bin
 
-cd $INSTALL_DIR
-# Need to set up the minikraken database
 
+
+# Need to set up the minikraken database
+cd $INSTALL_DIR
 if [ ! -d $K_DATABASE/minikraken2_v2_8GB_201904 ]
 then
 	# DL the databases 
