@@ -89,13 +89,15 @@ conda install -y python=${PY3_VER}
 pip3 install -y seaborn
 
 # Install filtlong
-
+echo ""
 cd $INSTALL_DIR
 echo $INSTALL_DIR
+PWD
+echo ""
 
 git clone https://github.com/rrwick/Filtlong.git
 cd Filtlong
-make -j # this seems to crash when run frmo the install script but goes ok from terminal.
+make -j # this seems to crash when run from the install script but completes ok from terminal.
 mv bin/filtlong $INSTALL_DIR/bin
 
 
