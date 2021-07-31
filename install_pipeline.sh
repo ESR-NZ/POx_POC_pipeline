@@ -4,7 +4,8 @@
 # S Sturrock - ESR
 # 30/07/2021
 
-PIPELINE=metagenomics_pipeline
+
+PIPELINE=pipeline
 
 # User can specify destination
 if [ $# -lt 1 ]; then
@@ -81,3 +82,6 @@ make -j
 mv bin/Filtlong $INSTALL_DIR/bin
 
 # Need to set up the minikraken database
+
+KRAKEN_DB_PATH=""
+wget https://genome-idx.s3.amazonaws.com/kraken/minikraken2_v2_8GB_201904.tgz
