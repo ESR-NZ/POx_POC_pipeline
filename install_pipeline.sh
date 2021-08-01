@@ -46,6 +46,13 @@ cd kraken2
 # Create init.sh to set up path etc for user
 echo "export PATH=${INSTALL_DIR}/bin:${PATH}" > $INSTALL_DIR/bin/init.sh
 chmod +x $INSTALL_DIR/bin/init.sh
+
+# Install filtlong
+cd $INSTALL_DIR
+git clone https://github.com/rrwick/Filtlong.git
+cd Filtlong
+make -j
+mv bin/filtlong $INSTALL_DIR/bin
 cd $INSTALL_DIR
 
 # Set up miniconda
@@ -83,28 +90,17 @@ conda install -y -c conda-forge r-plotly
 # recent version of fontawesome isn't available in conda
 R -e "install.packages('fontawesome', repos='http://cran.rstudio.com/')"
 
-# Install Python 3.9
-PY3_VER=3.9
-conda install -y python=${PY3_VER}
-pip3 install -y seaborn
-
-# Install filtlong
-echo ""
-cd $INSTALL_DIR
-echo $INSTALL_DIR
-PWD
-echo ""
-
-git clone https://github.com/rrwick/Filtlong.git
-cd Filtlong
-make -j # this seems to crash when run from the install script but completes ok from terminal.
-mv bin/filtlong $INSTALL_DIR/bin
-
+# Install seaborn
+pip3 install seaborn
 
 # Need to set up the minikraken database
+<<<<<<< HEAD
+if [ ! -f "${K_DATABASE}/minikraken2_v2_8GB_201904.tgz" ]; then
+=======
 cd $INSTALL_DIR
 if [ ! -f $K_DATABASE/minikraken2_v2_8GB_201904.tgz ]
 then
+>>>>>>> ea18a91cdb999b5fc92bdcf0161ba71251a7bfe7
 	# DL the databases 
 	wget https://genome-idx.s3.amazonaws.com/kraken/minikraken2_v2_8GB_201904.tgz -P $K_DATABASE
 	# unpack the .tgz
