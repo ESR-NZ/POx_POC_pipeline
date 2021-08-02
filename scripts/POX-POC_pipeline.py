@@ -68,7 +68,7 @@ def get_fastq_dirs(minKnow_run_path):
     for fq_dir in fastq_dirs:
         if fq_dir.name == "unclassified":
             fastq_dirs.remove(fq_dir)
-        
+    
     return fastq_dirs 
 
 
