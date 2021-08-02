@@ -42,6 +42,11 @@ recentrifuge_csv <- recentrifuge_csv %>% select(-contains("X..."))
 # Read AMR output file
 # amr_resgenes <- read.delim("../data/test_dna.got", header=TRUE, allowEscapes=FALSE, sep="\t",  quote="", na.strings="", comment.char="")
 
+# Read top classification results data
+top_class <- read.csv(paste0(results_dir, "classification_results.csv"))
+
+# Get only the rows with 
+
 # Create a list of samples based on the .stat.csv files present in the results directory
 isolates <- list.files(path = results_dir, pattern = "*.stat.csv")
 
@@ -78,7 +83,8 @@ selected_isolate <- reactive(input$isolate)
 seqs_read <- reactive(recentrifuge_csv %>%
   select(contains(selected_isolate()), var) %>%
   filter(var == "Seqs. read") %>%
-  pull(var = 1))
+  pull(var = 1) %>%
+  format(big.mark=","))
 
 renderValueBox({
   
@@ -99,7 +105,8 @@ renderValueBox({
 classified <- reactive(recentrifuge_csv %>%
   select(contains(selected_isolate()), var) %>%
   filter(var == "Seqs. class.") %>%
-  pull(var = 1))
+  pull(var = 1) %>%
+  format(big.mark=","))
 
 renderValueBox({
   
@@ -121,7 +128,8 @@ renderValueBox({
 unclassified <- reactive(recentrifuge_csv %>%
   select(contains(selected_isolate()), var) %>%
   filter(var == "Length mean") %>%
-  pull(var = 1))
+  pull(var = 1) %>%
+  format(big.mark=","))
 
 renderValueBox({
   
@@ -139,10 +147,13 @@ renderValueBox({
 ### Top classification
     
 ```{r}
-tophit <- reactive(recentrifuge_csv %>%
-  select(contains(selected_isolate()), var) %>%
-  filter(var == "Top hit") %>%
-  pull(var = 1))
+tophit <- reactive(top_class %>%
+  filter(Barcode == selected_isolate()) %>%
+  pull(Taxon1) %>%
+  # Deal with multiple rows of data for the same isolate/sample
+  unique() %>%
+  # Italics
+  em())
 
 renderValueBox({
   
