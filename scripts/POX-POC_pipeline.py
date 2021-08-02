@@ -63,11 +63,12 @@ def get_fastq_dirs(minKnow_run_path):
         if dirs.parent not in fastq_dirs:
             fastq_dirs.append(dirs.parent)
         
-    # remove unclassified from fastq_dirs
+    # remove unclassified and and fastq_fail paths from fastq_dirs
     for fq_dir in fastq_dirs:
         if fq_dir.name == "unclassified":
             fastq_dirs.remove(fq_dir)
-    
+        if fq_dir.match("*/fastq_fail/*"):
+            fastq_dirs.remove(fq_dir)
     return fastq_dirs 
 
 
@@ -347,7 +348,7 @@ def main():
         print(f"Top classifiction hit {top_species}")
 
         # call to recentrifuge
-        rcf_cmd = f'rcf -n {rcf_TAXDUMP} -k {KOUTPUT_PATH} -o {BARCODE}.html -e CSV'
+        rcf_cmd = f'rcf -n {rcf_TAXDUMP} -k {KOUTPUT_PATH} -o {RESULTS_PATH/BARCODE}.html -e CSV'
         run(rcf_cmd, shell=True, check=True)
         
 
