@@ -5,10 +5,11 @@
 # 30/07/2021
 
 
-PIPELINE=POX_POC_pipeline
-
+PIPELINE=POX_POC_install
+# get the path of the repo
+INSTALL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 # get user input for database location
-echo 'Enter the SSD mount path to download the required databases to:'
+echo 'Enter the SSD mount path to install the pipeline to:'
 read -p '(e.g. /media/minit/xavierSSD ): ' SSD_MOUNT
 
 if [ ! -d $SSD_MOUNT ]
@@ -17,18 +18,14 @@ then
     exit 0
 fi
 
-K_DATABASE="${SSD_MOUNT}/kraken2_DBs"
-echo "Kraken2 index database will be downloaded to: ${K_DATABASE}"
 
-
-# User can specify destination
+# User can specify destination; default is supplied SSD mount 
 if [ $# -lt 1 ]; then
-	INSTALL_DIR=${PWD}/${PIPELINE}
+	INSTALL_DIR=${SSD_MOUNT}/${PIPELINE}
 else
 	INSTALL_DIR=${1}/${PIPELINE}
 fi
 
-echo $INSTALL_DIR
 
 # If the directory already exists, delete it
 if [ -d $INSTALL_DIR ]; then
@@ -40,14 +37,24 @@ mkdir -p $INSTALL_DIR/bin
 cd $INSTALL_DIR
 
 # Download and build kraken2
+echo "Download and build kraken2"
+echo ""
 git clone https://github.com/DerrickWood/kraken2.git
 cd kraken2
 ./install_kraken2.sh $INSTALL_DIR/bin
+
+K_DATABASE="${INSTALL_DIR}/kraken2/kraken2_DBs"
+echo "Kraken2 index database will be downloaded to: ${K_DATABASE}"
+
+
 # Create init.sh to set up path etc for user
 echo "export PATH=${INSTALL_DIR}/bin:${PATH}" > $INSTALL_DIR/bin/init.sh
 chmod +x $INSTALL_DIR/bin/init.sh
 
+
 # Install filtlong
+echo "Install filtlong"
+echo ""
 cd $INSTALL_DIR
 git clone https://github.com/rrwick/Filtlong.git
 cd Filtlong
@@ -93,7 +100,7 @@ R -e "install.packages('fontawesome', repos='http://cran.rstudio.com/')"
 # Install seaborn
 pip3 install seaborn
 
-# Need to set up the minikraken database
+Need to set up the minikraken database
 if [ ! -f "${K_DATABASE}/minikraken2_v2_8GB_201904.tgz" ]; then
 	# DL the databases 
 	wget https://genome-idx.s3.amazonaws.com/kraken/minikraken2_v2_8GB_201904.tgz -P $K_DATABASE
@@ -103,3 +110,19 @@ if [ ! -f "${K_DATABASE}/minikraken2_v2_8GB_201904.tgz" ]; then
 fi
 
 cd $INSTALL_DIR
+# cp the run script and dashboard script to the pipeline bin dir so it will be in PATH
+cp $INSTALL_SCRIPT_DIR/scripts/POX-POC_run.py $INSTALL_DIR/bin
+cp $INSTALL_SCRIPT_DIR/scripts/launch_dashboard.sh $INSTALL_DIR/bin
+
+echo "export RCF_TAXDUMP=${INSTALL_DIR}/recentrifuge/taxdump" >> $INSTALL_DIR/bin/init.sh
+
+echo "export KRAKEN2_DB_PATH=${K_DATABASE}/minikraken2_v2_8GB_201904_UPDATE" >> $INSTALL_DIR/bin/init.sh
+
+# might need to add some conda stuff here for the launch script
+
+# this is not good practice, add the init.sh to the ~/.bashrc
+if [ ! $KRAKEN2_DB_PATH ]
+then
+	cat $INSTALL_DIR/bin/init.sh >> ~/.bashrc
+fi
+

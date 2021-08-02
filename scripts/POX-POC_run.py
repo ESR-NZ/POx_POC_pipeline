@@ -22,24 +22,15 @@ arg_parser.add_argument("minKnow_run_path",
                         type=str,
                         help='Path to the MinKnow output directory of the sequencing run you wish to analyse')
 
-arg_parser.add_argument('--K_DB', '-k', type=str,
-                        help='Path to Krakren2 database',
-                        required=True)
-
-arg_parser.add_argument('--taxdump', '-t', type=str,
-                        help='Path to recentrifuge taxdump',
-                        required=True)
-
 args = arg_parser.parse_args()
 
 
 # path constants
 minKnow_run_path = Path(args.minKnow_run_path) 
 
-KRAKEN2_DB_PATH=Path(args.K_DB) 
+KRAKEN2_DB_PATH=os.environ.get('KRAKEN2_DB_PATH')
 
-rcf_TAXDUMP=Path(args.taxdump)
-
+RCF_TAXDUMP=os.environ.get('RCF_TAXDUMP')
 
 # Will put results in the minKnow dir for now
 RESULTS_PATH = minKnow_run_path/"Results"
@@ -365,13 +356,21 @@ def main():
         print(f"Top classifiction hit {top_species}")
 
         # call to recentrifuge
-        rcf_cmd = f'rcf -n {rcf_TAXDUMP} -k {KOUTPUT_PATH} -o {RESULTS_PATH/BARCODE}.html -e CSV'
+        
+        rcf_cmd = f'rcf -n {RCF_TAXDUMP} -k {KOUTPUT_PATH} -o {RESULTS_PATH/BARCODE}.html -e CSV'
         run(rcf_cmd, shell=True, check=True)
         
+        # launch dashboard
+    
 
         # need to clean up the temp files here
         os.remove(fastq_file)
         os.remove(len_filtered_fastq)
+
+    # after looping over all "barcodes" launch the dash board
+    launch_cmd = f"launch_dashboard.sh {RESULTS_PATH}"
+    run(launch_cmd, shell=True, check=True)
+
 
 if __name__ == '__main__':
     main()
