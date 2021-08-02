@@ -53,7 +53,7 @@ def get_fastq_dirs(minKnow_run_path):
     '''
     Takes the top level run directory spawned by the sequencer run 
     as a Path object and returns an list of Path objects for the sub directories 
-    that have fastqs in them. Any dir with a fastq(.gz) in it will be treated as a "sample".
+    that have fastqs in them. Any dir with a .fastq(.gz) in it will be treated as a "sample".
     The directory name will become the samples barcode name.  
     '''
     fastq_dirs = [] 
@@ -64,11 +64,15 @@ def get_fastq_dirs(minKnow_run_path):
             fastq_dirs.append(dirs.parent)
         
     # remove unclassified and and fastq_fail paths from fastq_dirs
+    # this doesn't works and is ugly, needs attention
     for fq_dir in fastq_dirs:
         if fq_dir.name == "unclassified":
             fastq_dirs.remove(fq_dir)
+            
         if fq_dir.match("*/fastq_fail/*"):
-            fastq_dirs.remove(fq_dir)
+             print(f'failed dir: {fq_dir}')
+             #fastq_dirs.remove(fq_dir)
+
     return fastq_dirs 
 
 
@@ -93,8 +97,12 @@ def concat_read_files(fq_dir: Path) -> Path:
     all_reads = Path(f"{fq_dir / fq_dir.name}_all_reads") 
     
     # remove any tmp files from previous crashed runs
-    if all_reads.is_file():
-        os.remove(all_reads)
+    # this works but is ugly, needs attention
+    if all_reads.with_suffix('.fastq').is_file():
+        os.remove(all_reads.with_suffix('.fastq'))
+    if all_reads.with_suffix('.fastq.gz').is_file():
+        os.remove(all_reads.with_suffix('.fastq.gz'))
+    
 
     print(f'Concatenating all fastq read files in {fq_dir.name} to {all_reads.name}') # print for debug
     cat_cmd = f"cat {fq_dir}/*.fastq* > {all_reads}"
@@ -103,6 +111,7 @@ def concat_read_files(fq_dir: Path) -> Path:
     run(cat_cmd, shell=True, check=True)
     
     # add the correct suffix to the file based on gzip'd or not
+    # this works but is ugly, needs attention
     if is_gz_file(all_reads):
         all_reads.replace(all_reads.with_suffix('.fastq.gz'))
         all_reads_suffix = all_reads.parent / (all_reads.name + '.fastq.gz')
@@ -180,7 +189,7 @@ def plot_length_dis_graph(fastq_file, results_path):
     num_reads = len(lens_array)
     if num_reads < 1000:
         print(f'Skiping {barcode}, not enough reads')
-        return 
+        return None
 
     print(f'Calc passed bases for {barcode}')
     passed_bases = count_fastq_bases(fastq_file)
@@ -205,6 +214,7 @@ def plot_length_dis_graph(fastq_file, results_path):
     
     plot.savefig(plot_path)
     plt.close('all')
+    return True
 
 
 def filtlong_run(fastq_file, read_len=1000):
@@ -274,15 +284,19 @@ def parse_kraken(BARCODE: str, kreport_path: Path) -> dict:
             if re.search("\t"+level, line): 
                 species.append(extract_kreport( line, round_val=1 ))
             
-        if len(species) >= depth:
-            tax_dict = {f'Taxon{i+1}':species[i] for i in range(depth)}
-            tax_dict['Barcode'] = BARCODE
+        if species:
+            if len(species) >= depth:
+                tax_dict = {f'Taxon{i+1}':species[i] for i in range(depth)}
+                tax_dict['Barcode'] = BARCODE
+            else:
+                tax_dict = {f'Taxon{i+1}':species[i] for i in range(len(species))}
+                tax_dict['Barcode'] = BARCODE
+
+            return tax_dict
+        
         else:
-            tax_dict = {f'Taxon{i+1}':species[i] for i in range(len(species))}
-            tax_dict['Barcode'] = BARCODE
-
-    return tax_dict
-
+            #quick fix for none empty kreports
+            tax_dict = {'Barcode':BARCODE, 'Taxon1': 'None found'}
 
 def write_classify_to_file(species_dict: dict) -> str: 
     '''
@@ -323,6 +337,7 @@ def main():
     for fq_dir in fastq_dirs:
         print(f'Working on {fq_dir.name}\n')
 
+
         # Get barcode for this sample
         BARCODE=fq_dir.name.split('_')[0]
         
@@ -335,14 +350,20 @@ def main():
         print(f"Filtered reads live at {len_filtered_fastq}\n")
         
         # Do some plotting of the reads
-        plot_length_dis_graph(fastq_file, RESULTS_PATH)
+        if not plot_length_dis_graph(fastq_file, RESULTS_PATH):
+            # need to clean up the temp files here
+            os.remove(fastq_file)
+            os.remove(len_filtered_fastq)
+            continue
 
         # Run the classifer and unpack the tuple of Paths of the output files to vars
         KOUTPUT_PATH, KREPORT_PATH = kraken2_run(len_filtered_fastq, BARCODE)
         
         # parsing the k2 report to get top hits
         species_dict = parse_kraken(BARCODE, KREPORT_PATH)
-        # writing the tophits to a file
+        
+        # writing the tophits to a file, probalby crash if there are no hits
+        # needs attention
         top_species = write_classify_to_file(species_dict)
 
         print(f"Top classifiction hit {top_species}")
