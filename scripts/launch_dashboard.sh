@@ -7,7 +7,7 @@
 # this script should identify a systems default browser, enter a previously installed conda r_env, and 
 # require all options and packages to launch an interactive dashboard in a local browser
 # this need to be system specific C
-source ~/miniconda3/etc/profile.d/conda.sh 
+source $CONDA_PATH 
 
 RESULTSDIR=$1
 
