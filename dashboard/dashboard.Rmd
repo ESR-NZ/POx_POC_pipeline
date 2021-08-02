@@ -28,7 +28,7 @@ results_dir <- here::here(NEWDIR)
 shiny::addResourcePath(prefix = "path_to_results", directoryPath = results_dir)
 
 # Read all kraken csv files
-recentrifuge_df_list <- lapply(Sys.glob(paste0(results_dir, "*_output.krk.stat.csv")), read.csv)
+recentrifuge_df_list <- lapply(Sys.glob(paste0(results_dir, "*.stat.csv")), read.csv)
 
 # Merge all kraken csv files together into one dataframe
 recentrifuge_csv <- bind_cols(recentrifuge_df_list)
@@ -37,16 +37,16 @@ recentrifuge_csv <- bind_cols(recentrifuge_df_list)
 colnames(recentrifuge_csv)[colnames(recentrifuge_csv) == "X...1"] <- "var"
 
 # Drop redundant columns
-recentrifuge_csv <- recentrifuge_csv %>% select(-contains("X"))
+recentrifuge_csv <- recentrifuge_csv %>% select(-contains("X..."))
 
 # Read AMR output file
 # amr_resgenes <- read.delim("../data/test_dna.got", header=TRUE, allowEscapes=FALSE, sep="\t",  quote="", na.strings="", comment.char="")
 
-# Create a list of samples based on the files present in the kraken output directory
-isolates <- list.files(path = results_dir)
+# Create a list of samples based on the .stat.csv files present in the results directory
+isolates <- list.files(path = results_dir, pattern = "*.stat.csv")
 
-# Get only the sample names from the file list (everything before "_")
-isolates <- sub("_.*", "", isolates)
+# Get only the sample/isolate names from the file list (remove the suffixes)
+isolates <- sub(".stat.csv", "", isolates)
 
 # Get the unique samples names
 isolates <- unique(isolates)
@@ -167,7 +167,7 @@ Column {data-height=800}
 
 # Load in the current isolate the user has chosen to view so it can be used for "recentrifuge_html_path"
 selected_isolate <- reactive(input$isolate)
-recentrifuge_html_path <- reactive(paste0("path_to_results/", selected_isolate(), "_output.krk.html"))
+recentrifuge_html_path <- reactive(paste0("path_to_results/", selected_isolate(), ".html"))
 
 # Plot
 renderUI({
@@ -189,7 +189,7 @@ Row
 ```{r, fig.width=5, fig.height=5, align="center"}
 # Load in the current isolate the user has chosen to view so it can be used for "recentrifuge_html_path"
 selected_isolate <- reactive(input$isolate)
-read_dist_path <- reactive(paste0("path_to_results/", selected_isolate(), "_all_reads.fq_read_length_distrabution_plot.png"))
+read_dist_path <- reactive(paste0("path_to_results/", selected_isolate(), "_read_length_distrabution_plot.png"))
 
 renderUI({
   
