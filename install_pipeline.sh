@@ -100,7 +100,7 @@ R -e "install.packages('fontawesome', repos='http://cran.rstudio.com/')"
 # Install seaborn
 pip3 install seaborn
 
-Need to set up the minikraken database
+#Need to set up the minikraken database
 if [ ! -f "${K_DATABASE}/minikraken2_v2_8GB_201904.tgz" ]; then
 	# DL the databases 
 	wget https://genome-idx.s3.amazonaws.com/kraken/minikraken2_v2_8GB_201904.tgz -P $K_DATABASE
