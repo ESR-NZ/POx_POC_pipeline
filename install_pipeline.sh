@@ -98,7 +98,7 @@ mamba install -y -c conda-forge r-plotly
 R -e "install.packages('fontawesome', repos='http://cran.rstudio.com/')"
 
 # copy the dashboaed app over to the install bin
-cp $INSTALL_SCRIPT_DIR/dashboard $INSTALL_DIR/bin/dashboard
+cp -r $INSTALL_SCRIPT_DIR/dashboard $INSTALL_DIR/bin/dashboard
 # Install seaborn
 pip3 install seaborn
 
@@ -114,11 +114,11 @@ fi
 cd $INSTALL_DIR
 
 # cp the run script and dashboard script to the pipeline bin dir so it will be in PATH
-cp $INSTALL_SCRIPT_DIR/scripts $INSTALL_DIR/bin/scripts
+cp -r $INSTALL_SCRIPT_DIR/scripts $INSTALL_DIR/bin/scripts
 
-echo "export PATH=${INSTALL_DIR}/bin/scripts:${PATH}" > $INSTALL_DIR/bin/init.sh
+echo "export PATH=${INSTALL_DIR}/bin/scripts:${PATH}" >> $INSTALL_DIR/bin/init.sh
 
-echo "export PATH=${INSTALL_DIR}/bin/dashboard:${PATH}" > $INSTALL_DIR/bin/init.sh
+echo "export PATH=${INSTALL_DIR}/bin/dashboard:${PATH}" >> $INSTALL_DIR/bin/init.sh
 
 echo "export RCF_TAXDUMP=${INSTALL_DIR}/recentrifuge/taxdump" >> $INSTALL_DIR/bin/init.sh
 
