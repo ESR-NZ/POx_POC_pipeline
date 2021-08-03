@@ -97,6 +97,8 @@ conda install -y -c conda-forge r-plotly
 # recent version of fontawesome isn't available in conda
 R -e "install.packages('fontawesome', repos='http://cran.rstudio.com/')"
 
+# copy the dashboaed app over to the install bin
+cp $INSTALL_SCRIPT_DIR/dashboard $INSTALL_DIR/bin
 # Install seaborn
 pip3 install seaborn
 
