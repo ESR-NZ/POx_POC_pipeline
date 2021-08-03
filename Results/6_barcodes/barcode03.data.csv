@@ -1,0 +1,37 @@
+Samples,/xavier_ssd/minknow/Barcoded_data_run/Results/barcode03_output,/xavier_ssd/minknow/Barcoded_data_run/Results/barcode03_output,/xavier_ssd/minknow/Barcoded_data_run/Results/barcode03_output,Details,Details
+Stats,count,unassigned,score,Rank,Name
+Id,,,,,
+1,42848,158,241.2076643017177,no_rank,root
+2,42690,22,241.91728742094168,superkingdom,Bacteria
+1783272,42668,13,242.02214774538297,no_rank,Terrabacteria group
+1239,42655,2,242.08423397022622,phylum,Firmicutes
+91061,42653,15,242.09380348392844,class,Bacilli
+186826,42638,289,242.16368028519162,order,Lactobacillales
+1300,66,1,85.53030303030303,family,Streptococcaceae
+1301,65,0,86.3076923076923,genus,Streptococcus
+1308,65,65,86.3076923076923,species,Streptococcus thermophilus
+33958,42283,2904,243.6148570347421,family,Lactobacillaceae
+1253,2072,1,102.67519305019304,genus,Pediococcus
+187452,2071,0,102.70787059391598,species,Pediococcus claussenii
+701521,2071,2071,102.70787059391598,strain,Pediococcus claussenii ATCC BAA-344
+1578,22799,22753,299.71617176191944,genus,Lactobacillus
+1579,29,29,812.448275862069,species,Lactobacillus acidophilus
+1587,12,12,53.416666666666664,species,Lactobacillus helveticus
+1596,5,5,145.4,species,Lactobacillus gasseri
+46255,44,0,133.6818181818182,genus,Weissella
+1249,44,44,133.6818181818182,species,Weissella paramesenteroides
+2759736,27,0,508.77777777777777,genus,Lacticaseibacillus
+47715,27,27,508.77777777777777,species,Lacticaseibacillus rhamnosus
+2767842,12682,0,205.84079798139095,genus,Lactiplantibacillus
+1590,12682,12682,205.84079798139095,species,Lactiplantibacillus plantarum
+2767885,576,1,147.80555555555554,genus,Latilactobacillus
+28038,575,575,147.98434782608695,species,Latilactobacillus curvatus
+2767889,11,2,100.81818181818181,genus,Loigolactobacillus
+375175,9,9,111.66666666666667,species,Loigolactobacillus backii
+2767890,86,0,100.19767441860465,genus,Paucilactobacillus
+1193095,86,0,100.19767441860465,species,Paucilactobacillus hokkaidonensis
+1291742,86,86,100.19767441860465,strain,Lactobacillus hokkaidonensis JCM 18461
+2767893,1082,0,76.42975970425138,genus,Lentilactobacillus
+1581,1082,0,76.42975970425138,species,Lentilactobacillus buchneri
+2737512,1082,0,76.42975970425138,subspecies,Lentilactobacillus buchneri subsp. silagei
+1071400,1082,1082,76.42975970425138,strain,Lactobacillus buchneri subsp. silagei CD034

@@ -1,0 +1,16 @@
+,/xavier_ssd/minknow/Barcoded_data_run/Results/barcode04_output
+Seqs. read,31755.0
+Seqs. unclass.,584.0
+Seqs. class.,31171.0
+Seqs. filtered,31171.0
+Score min,35.0
+Score mean,422.3746430977511
+Score max,7236.0
+Length min,1000.0
+Length mean,10815.0
+Length max,138076.0
+Total nt read,339564566.0
+TIDs class.,37.0
+TIDs filtered,36.0
+TIDs folded,28.0
+Score limit,

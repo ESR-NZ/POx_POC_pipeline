@@ -1,0 +1,52 @@
+ 75.39	56306	56306	U	0	unclassified
+ 24.61	18377	813	R	1	root
+ 23.52	17562	14	R1	131567	  cellular organisms
+ 23.50	17548	252	D	2	    Bacteria
+ 23.15	17289	87	D1	1783272	      Terrabacteria group
+ 23.03	17201	31	P	1239	        Firmicutes
+ 22.99	17170	53	C	91061	          Bacilli
+ 22.92	17116	443	O	186826	            Lactobacillales
+ 22.32	16669	544	F	33958	              Lactobacillaceae
+ 21.49	16046	3386	G	1578	                Lactobacillus
+  8.52	6365	6365	S	47715	                  Lactobacillus rhamnosus
+  5.76	4303	4303	S	1579	                  Lactobacillus acidophilus
+  1.63	1216	1192	S	1580	                  Lactobacillus brevis
+  0.03	24	24	S1	1001583	                    Lactobacillus brevis KB290
+  0.64	475	474	S	1596	                  Lactobacillus gasseri
+  0.00	1	1	S1	1380360	                    Lactobacillus gasseri DSM 14869
+  0.33	245	245	S	1590	                  Lactobacillus plantarum
+  0.04	30	19	G1	655183	                  Lactobacillus casei group
+  0.01	11	10	S	1597	                    Lactobacillus paracasei
+  0.00	1	1	S1	1446494	                      Lactobacillus paracasei N1115
+  0.02	13	13	S	33959	                  Lactobacillus johnsonii
+  0.01	5	0	S	1581	                  Lactobacillus buchneri
+  0.01	5	5	S1	1071400	                    Lactobacillus buchneri CD034
+  0.00	3	3	S	1589	                  Lactobacillus pentosus
+  0.00	3	3	S	28038	                  Lactobacillus curvatus
+  0.00	1	1	S	1613	                  Lactobacillus fermentum
+  0.00	1	0	S	1602	                  Lactobacillus alimentarius
+  0.00	1	1	S1	1423720	                    Lactobacillus alimentarius DSM 20249
+  0.11	79	0	G	1253	                Pediococcus
+  0.10	74	0	S	187452	                  Pediococcus claussenii
+  0.10	74	74	S1	701521	                    Pediococcus claussenii ATCC BAA-344
+  0.01	5	5	S	114090	                  Pediococcus inopinatus
+  0.00	2	0	F	1300	              Streptococcaceae
+  0.00	2	0	G	1301	                Streptococcus
+  0.00	2	2	S	1308	                  Streptococcus thermophilus
+  0.00	2	0	F	81850	              Leuconostocaceae
+  0.00	2	0	G	46255	                Weissella
+  0.00	2	2	S	1249	                  Weissella paramesenteroides
+  0.00	1	0	O	1385	            Bacillales
+  0.00	1	0	F	186817	              Bacillaceae
+  0.00	1	1	G	1386	                Bacillus
+  0.00	1	0	P	201174	        Actinobacteria
+  0.00	1	1	C	1760	          Actinobacteria
+  0.01	7	2	P	1224	      Proteobacteria
+  0.01	4	2	C	28211	        Alphaproteobacteria
+  0.00	2	0	O	356	          Rhizobiales
+  0.00	2	0	F	655351	            Cohaesibacteraceae
+  0.00	2	0	G	655352	              Cohaesibacter
+  0.00	2	2	S	1798205	                Cohaesibacter sp. ES.047
+  0.00	1	1	C	1236	        Gammaproteobacteria
+  0.00	2	0	D	10239	  Viruses
+  0.00	2	2	D1	35237	    dsDNA viruses, no RNA stage

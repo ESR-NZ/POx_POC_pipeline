@@ -1,0 +1,12 @@
+ 35.63	3214	3214	U	0	unclassified
+ 64.37	5807	93	R	1	root
+ 63.34	5714	2	R1	131567	  cellular organisms
+ 63.32	5712	65	D	2	    Bacteria
+ 62.60	5647	15	D1	1783272	      Terrabacteria group
+ 62.43	5632	11	P	1239	        Firmicutes
+ 62.31	5621	22	C	91061	          Bacilli
+ 62.07	5599	13	O	186826	            Lactobacillales
+ 61.92	5586	1	F	33958	              Lactobacillaceae
+ 61.91	5585	462	G	1578	                Lactobacillus
+ 56.77	5121	5121	S	1579	                  Lactobacillus acidophilus
+  0.02	2	2	S	47715	                  Lactobacillus rhamnosus

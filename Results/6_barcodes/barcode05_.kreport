@@ -1,0 +1,30 @@
+  6.59	858	858	U	0	unclassified
+ 93.41	12155	37	R	1	root
+ 93.12	12118	0	R1	131567	  cellular organisms
+ 93.12	12118	11	D	2	    Bacteria
+ 93.04	12107	4	D1	1783272	      Terrabacteria group
+ 93.01	12103	5	P	1239	        Firmicutes
+ 92.97	12098	6	C	91061	          Bacilli
+ 92.91	12091	7	O	186826	            Lactobacillales
+ 92.86	12084	19	F	33958	              Lactobacillaceae
+ 92.71	12065	271	G	1578	                Lactobacillus
+ 86.64	11275	11149	S	1596	                  Lactobacillus gasseri
+  0.75	98	98	S1	1380360	                    Lactobacillus gasseri DSM 14869
+  0.22	28	28	S1	324831	                    Lactobacillus gasseri ATCC 33323 = JCM 1131
+  3.31	431	402	S	33959	                  Lactobacillus johnsonii
+  0.18	23	23	S1	257314	                    Lactobacillus johnsonii NCC 533
+  0.02	3	3	S1	633699	                    Lactobacillus johnsonii FI9785
+  0.02	3	3	S1	1408186	                    Lactobacillus johnsonii N6.2
+  0.32	42	42	S	1613	                  Lactobacillus fermentum
+  0.20	26	26	S	1579	                  Lactobacillus acidophilus
+  0.08	10	10	S	47715	                  Lactobacillus rhamnosus
+  0.03	4	4	S	1598	                  Lactobacillus reuteri
+  0.02	2	2	S	1580	                  Lactobacillus brevis
+  0.02	2	0	S	1623	                  Lactobacillus ruminis
+  0.02	2	2	S1	1069534	                    Lactobacillus ruminis ATCC 27782
+  0.01	1	1	S	83683	                  Lactobacillus amylolyticus
+  0.01	1	1	S	1590	                  Lactobacillus plantarum
+  0.01	1	0	O	1385	            Bacillales
+  0.01	1	0	F	186817	              Bacillaceae
+  0.01	1	0	G	1386	                Bacillus
+  0.01	1	1	G1	86661	                  Bacillus cereus group

@@ -1,0 +1,13 @@
+  0.13	6	6	U	0	unclassified
+ 99.87	4755	0	R	1	root
+ 99.87	4755	0	R1	131567	  cellular organisms
+ 99.87	4755	0	D	2	    Bacteria
+ 99.87	4755	1	D1	1783272	      Terrabacteria group
+ 99.85	4754	0	P	201174	        Actinobacteria
+ 99.85	4754	0	C	1760	          Actinobacteria
+ 99.85	4754	0	O	85004	            Bifidobacteriales
+ 99.85	4754	0	F	31953	              Bifidobacteriaceae
+ 99.85	4754	9	G	1678	                Bifidobacterium
+ 99.66	4745	4744	S	28025	                  Bifidobacterium animalis
+  0.02	1	0	S1	302911	                    Bifidobacterium animalis subsp. lactis
+  0.02	1	1	S2	1316911	                      Bifidobacterium animalis subsp. lactis KLDS2.0603

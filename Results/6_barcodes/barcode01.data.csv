@@ -1,0 +1,18 @@
+Samples,/xavier_ssd/minknow/Barcoded_data_run/Results/barcode01_output,/xavier_ssd/minknow/Barcoded_data_run/Results/barcode01_output,/xavier_ssd/minknow/Barcoded_data_run/Results/barcode01_output,Details,Details
+Stats,count,unassigned,score,Rank,Name
+Id,,,,,
+1,31021,4,587.3026014635248,no_rank,root
+2,31017,5,587.3729567656446,superkingdom,Bacteria
+1783272,31012,1,587.4607571262737,no_rank,Terrabacteria group
+1239,31011,1,587.4785076263262,phylum,Firmicutes
+91061,31010,5,587.4960012899065,class,Bacilli
+1385,6,0,76.5,order,Bacillales
+186817,6,0,76.5,family,Bacillaceae
+1386,6,0,76.5,genus,Bacillus
+86661,6,6,76.5,species_group,Bacillus cereus group
+186826,30999,1,587.6831833284945,order,Lactobacillales
+33958,30998,8,587.7010129685787,family,Lactobacillaceae
+1578,30982,222,587.6716803305145,genus,Lactobacillus
+1579,30760,30760,591.2265604681404,species,Lactobacillus acidophilus
+2759736,8,0,761.5,genus,Lacticaseibacillus
+47715,8,8,761.5,species,Lacticaseibacillus rhamnosus

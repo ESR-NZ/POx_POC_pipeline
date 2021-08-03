@@ -1,0 +1,12 @@
+Samples,barcode18_output,barcode18_output,barcode18_output,Details,Details
+Stats,count,unassigned,score,Rank,Name
+Id,,,,,
+1,4352,0,821.4223345588235,no_rank,root
+2,4352,3,821.4223345588235,superkingdom,Bacteria
+1783272,4349,0,821.9096343987123,no_rank,Terrabacteria group
+201174,4349,0,821.9096343987123,phylum,Actinobacteria
+1760,4349,0,821.9096343987123,class,Actinomycetia
+85004,4349,0,821.9096343987123,order,Bifidobacteriales
+31953,4349,0,821.9096343987123,family,Bifidobacteriaceae
+1678,4349,8,821.9096343987123,genus,Bifidobacterium
+28025,4341,4341,823.2881824464409,species,Bifidobacterium animalis
