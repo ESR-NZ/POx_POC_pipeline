@@ -90,9 +90,9 @@ cd recentrifuge
 mamba create -y -n r_env r-essentials r-base
 mamba install -y -c conda-forge r-shinylp
 mamba install -y -c conda-forge r-dt
-conda install -y -c conda-forge r-flexdashboard
-conda install -y -c conda-forge r-here
-conda install -y -c conda-forge r-plotly
+mamba install -y -c conda-forge r-flexdashboard
+mamba install -y -c conda-forge r-here
+mamba install -y -c conda-forge r-plotly
 #mamba install -c conda-forge r-fontawesome
 # recent version of fontawesome isn't available in conda
 R -e "install.packages('fontawesome', repos='http://cran.rstudio.com/')"
