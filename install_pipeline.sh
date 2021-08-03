@@ -116,6 +116,9 @@ cd $INSTALL_DIR
 # cp the run script and dashboard script to the pipeline bin dir so it will be in PATH
 cp $INSTALL_SCRIPT_DIR/scripts $INSTALL_DIR/bin/scripts
 
+echo "export PATH=${INSTALL_DIR}/bin/scripts:${PATH}" > $INSTALL_DIR/bin/init.sh
+
+echo "export PATH=${INSTALL_DIR}/bin/dashboard:${PATH}" > $INSTALL_DIR/bin/init.sh
 
 echo "export RCF_TAXDUMP=${INSTALL_DIR}/recentrifuge/taxdump" >> $INSTALL_DIR/bin/init.sh
 
