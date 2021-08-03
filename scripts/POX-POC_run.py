@@ -55,7 +55,7 @@ def get_fastq_dirs(minKnow_run_path):
             fastq_dirs.append(dirs.parent)
         
     # remove unclassified and and fastq_fail paths from fastq_dirs
-    # this doesn't works and is ugly, needs attention.
+    
     for fq_dir in fastq_dirs:
         if fq_dir.name == "unclassified":
             fastq_dirs.remove(fq_dir)
