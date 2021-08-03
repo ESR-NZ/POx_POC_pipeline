@@ -5,7 +5,7 @@
 # 30/07/2021
 
 
-PIPELINE=POX_POC_install
+PIPELINE=POX_POC_installation
 # get the path of the repo
 INSTALL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 # get user input for database location
