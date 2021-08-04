@@ -86,14 +86,8 @@ cd recentrifuge
 # Download NCBI node db
 ./retaxdump
 
-# Install R
-mamba create -y -n r_env r-essentials r-base
-mamba install -y -c conda-forge r-shinylp
-mamba install -y -c conda-forge r-dt
-mamba install -y -c conda-forge r-flexdashboard
-mamba install -y -c conda-forge r-here
-mamba install -y -c conda-forge r-plotly
-#mamba install -c conda-forge r-fontawesome
+# Install R, Shiny and flexdashboard
+mamba install -y -c r-essentials r-base r-shinylp r-dt r-flexdashboard r-here r-plotly
 # recent version of fontawesome isn't available in conda
 R -e "install.packages('fontawesome', repos='http://cran.rstudio.com/')"
 
