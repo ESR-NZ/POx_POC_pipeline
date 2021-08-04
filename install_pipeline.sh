@@ -48,9 +48,8 @@ echo "Kraken2 index database will be downloaded to: ${K_DATABASE}"
 
 
 # Create init.sh to set up path etc for user
-echo "export PATH=${INSTALL_DIR}/bin:${PATH}" > $INSTALL_DIR/bin/init.sh
+touch $INSTALL_DIR/bin/init.sh
 chmod +x $INSTALL_DIR/bin/init.sh
-
 
 # Install filtlong
 echo "Install filtlong"
@@ -111,7 +110,7 @@ cd $INSTALL_DIR
 cp -r $INSTALL_SCRIPT_DIR/scripts $INSTALL_DIR/bin/scripts
 
 #add stuff to path via init.script 
-echo "export PATH=${INSTALL_DIR}/bin/scripts:${INSTALL_DIR}/bin/dashboard:${INSTALL_DIR}/bin/dashboard/dashboard.Rmd:${PATH}" >> $INSTALL_DIR/bin/init.sh
+echo "export PATH=${INSTALL_DIR}/bin:${INSTALL_DIR}/bin/scripts:${INSTALL_DIR}/bin/dashboard:${INSTALL_DIR}/bin/dashboard/dashboard.Rmd:${PATH}" >> $INSTALL_DIR/bin/init.sh
 
 # add some environmental vars (must be a better way to do this)
 echo "export RCF_TAXDUMP=${INSTALL_DIR}/recentrifuge/taxdump" >> $INSTALL_DIR/bin/init.sh
