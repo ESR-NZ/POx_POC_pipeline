@@ -23,6 +23,6 @@ conda activate r_env; R -e "options(shiny.port = 8100);                     # ac
   require(flexdashboard);                                                   # package required to open/run
   require(rmarkdown);                                                       # package required to open/run
   run(file=\"./dashboard/dashboard.Rmd\", shiny_args = list(launch.browser = TRUE))" \
-  --args "$RESULTSDIR"    # launch the server directly in browser
+  --args "$RESULTSDIR/"    # launch the server directly in browser
 
 # dashboard.Rmd contains a call to shiny server that will stop the server on the closing of the browser tab or browser
