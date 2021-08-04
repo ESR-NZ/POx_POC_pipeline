@@ -87,7 +87,7 @@ cd recentrifuge
 ./retaxdump
 
 # Install R, Shiny and flexdashboard
-mamba install -y -c r-essentials r-base r-shinylp r-dt r-flexdashboard r-here r-plotly
+mamba install -y r-essentials r-base r-shinylp r-dt r-flexdashboard r-here r-plotly
 # recent version of fontawesome isn't available in conda
 R -e "install.packages('fontawesome', repos='http://cran.rstudio.com/')"
 
