@@ -120,6 +120,8 @@ echo "export PATH=${INSTALL_DIR}/bin/scripts:${PATH}" >> $INSTALL_DIR/bin/init.s
 
 echo "export PATH=${INSTALL_DIR}/bin/dashboard:${PATH}" >> $INSTALL_DIR/bin/init.sh
 
+echo "export DASH_BOARD_APP=${INSTALL_DIR}/bin/dashboard/dashboard.Rmd" >> $INSTALL_DIR/bin/init.sh
+
 echo "export RCF_TAXDUMP=${INSTALL_DIR}/recentrifuge/taxdump" >> $INSTALL_DIR/bin/init.sh
 
 echo "export KRAKEN2_DB_PATH=${K_DATABASE}/minikraken2_v2_8GB_201904_UPDATE" >> $INSTALL_DIR/bin/init.sh
