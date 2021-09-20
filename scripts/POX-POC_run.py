@@ -134,26 +134,15 @@ def get_lens_array(fastq_file):
 def func_N50(lens_array):
     '''
     Does what it says on the tin. Takes in the read lenths array and spits out the N50 stat
-    Pretty slow tbh. Does the job for now but a work in progress. 
+    Fast approximation calc. 
     '''
-    unique = set(lens_array)
-    n50_list = []
-    for entry in unique:
-        multi = lens_array.count(entry) * entry
-        for i in range(multi):
-            n50_list.append(entry)
-    index = len(n50_list)/2
-    ave = []
-    if index % 2 == 0:
-        first = n50_list[int(index)-1]
-        second = n50_list[int(index)]
-        ave.append(first)
-        ave.append(second)
-        n50 = np.mean(ave)
-        return n50
-    else:
-        n50 = n50_list[int(index)-1]
-        return n50
+    lens_array.sort()
+    half_sum = sum(lens_array)/2
+    cum_sum = 0
+    for v in lens_array:
+        cum_sum += v
+        if cum_sum >= half_sum:
+            return int(v)
 
 
 def count_fastq_bases(fastq_file):

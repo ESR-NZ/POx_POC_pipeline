@@ -5,12 +5,18 @@
 # 30/07/2021
 
 
-PIPELINE=POX_POC_installation
+
 # get the path of the repo
 INSTALL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+
+# hard code for debugging
+SSD_MOUNT="/media/1tb_nvme"
+
 # get user input for database location
-echo 'Enter the SSD mount path to install the pipeline to:'
-read -p '(e.g. /media/minit/xavierSSD ): ' SSD_MOUNT
+# uncomment below 
+#echo 'Enter the SSD mount path to install the pipeline to:'
+#read -p '(e.g. /media/minit/xavierSSD ): ' SSD_MOUNT
 
 if [ ! -d $SSD_MOUNT ]
 then
@@ -18,16 +24,13 @@ then
     exit 0
 fi
 
-
-# User can specify destination; default is supplied SSD mount 
-if [ $# -lt 1 ]; then
-	INSTALL_DIR=${SSD_MOUNT}/${PIPELINE}
-else
-	INSTALL_DIR=${1}/${PIPELINE}
-fi
+# set name of install dir
+PIPELINE=POX_POC_installation
+# set install dir location
+INSTALL_DIR=${SSD_MOUNT}/${PIPELINE}
 
 
-# If the directory already exists, delete it
+# If the install directory already exists, delete it
 if [ -d $INSTALL_DIR ]; then
 	rm -rf $INSTALL_DIR
 fi
@@ -43,7 +46,9 @@ git clone https://github.com/DerrickWood/kraken2.git
 cd kraken2
 ./install_kraken2.sh $INSTALL_DIR/bin
 
-K_DATABASE="${INSTALL_DIR}/kraken2/kraken2_DBs"
+
+# put the database on the SSD outside the install dir to save DL'ing each time 
+K_DATABASE="${SSD_MOUNT}/kraken2_DBs"
 echo "Kraken2 index database will be downloaded to: ${K_DATABASE}"
 
 
@@ -60,6 +65,7 @@ cd Filtlong
 make -j
 mv bin/filtlong $INSTALL_DIR/bin
 cd $INSTALL_DIR
+
 
 # Set up miniconda
 mkdir $INSTALL_DIR/miniconda
@@ -95,6 +101,8 @@ cp -r $INSTALL_SCRIPT_DIR/dashboard $INSTALL_DIR/bin/dashboard
 # Install seaborn
 pip3 install seaborn
 
+
+
 #Need to set up the minikraken database
 if [ ! -f "${K_DATABASE}/minikraken2_v2_8GB_201904.tgz" ]; then
 	# DL the databases 
@@ -120,5 +128,5 @@ echo "export KRAKEN2_DB_PATH=${K_DATABASE}/minikraken2_v2_8GB_201904_UPDATE" >> 
 # might need to add some conda stuff here for the launch script
 echo "export CONDA_PATH=${INSTALL_DIR}/miniconda/etc/profile.d/conda.sh" >> $INSTALL_DIR/bin/init.sh
 
-# this sucks, needs fixing
+# this sucks, needs fixing at least add a check
 cat $INSTALL_DIR/bin/init.sh >> ~/.bashrc
