@@ -310,7 +310,7 @@ def main():
     fastq_dirs = get_fastq_dirs(minKnow_run_path)
     
     for fq_dir in fastq_dirs:
-        print(f'\nWorking on {fq_dir.name}\n')
+        print(f'Working on {fq_dir.name}\n')
 
 
         # Get barcode for this sample
@@ -322,7 +322,7 @@ def main():
         # Filter the reads and assign the Path of the filtered reads to 'len_filtered_fastq'
         len_filtered_fastq = filtlong_run(fastq_file)
 
-        print(f"Filtered reads live at: {len_filtered_fastq}\n")
+        print(f"Filtered reads live at {len_filtered_fastq}\n")
         
         # Do some plotting of the reads
         if not plot_length_dis_graph(fastq_file, RESULTS_PATH):
@@ -341,7 +341,7 @@ def main():
         # needs attention
         top_species = write_classify_to_file(species_dict)
 
-        print(f"Top classifiction hit: {top_species}")
+        print(f"Top classifiction hit {top_species}")
 
         # call to recentrifuge
         

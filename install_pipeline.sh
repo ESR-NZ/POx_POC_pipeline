@@ -128,5 +128,5 @@ echo "export KRAKEN2_DB_PATH=${K_DATABASE}/minikraken2_v2_8GB_201904_UPDATE" >> 
 # might need to add some conda stuff here for the launch script
 echo "export CONDA_PATH=${INSTALL_DIR}/miniconda/etc/profile.d/conda.sh" >> $INSTALL_DIR/bin/init.sh
 
-# this sucks, needs fixing at least add a check
+# this sucks, needs fixing
 cat $INSTALL_DIR/bin/init.sh >> ~/.bashrc
