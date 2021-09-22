@@ -22,12 +22,16 @@ then
     exit 0
 fi
 
+echo "Setting up the conda environment"
+conda env create -f environment.yml
 
 CONDA_PATH=$(which conda)
 
-echo $CONDA_PATH
+eval "$($CONDA_PATH shell.bash hook)"
+conda activate POx-POC_conda
 
-exit 0
+mamba install -y -c bioconda recentrifuge
+
 
 
 # Download and build kraken2
@@ -35,35 +39,23 @@ echo "Download and build kraken2"
 echo ""
 git clone https://github.com/DerrickWood/kraken2.git
 cd kraken2
-./install_kraken2.sh $INSTALL_DIR/bin
-
-
-# put the database on the SSD outside the install dir to save DL'ing each time 
-K_DATABASE="${SSD_MOUNT}/kraken2_DBs"
-echo "Kraken2 index database will be downloaded to: ${K_DATABASE}"
-
+./install_kraken2.sh 
+cd ..
 
 # Create init.sh to set up path etc for user
-touch $INSTALL_DIR/bin/init.sh
-chmod +x $INSTALL_DIR/bin/init.sh
+touch init.sh
+chmod init.sh
 
 # Install filtlong
 echo "Install filtlong"
 echo ""
-cd $INSTALL_DIR
 git clone https://github.com/rrwick/Filtlong.git
 cd Filtlong
 make -j
-mv bin/filtlong $INSTALL_DIR/bin
-cd $INSTALL_DIR
+cd ..
 
+exit 0
 
-# Set up miniconda
-mkdir $INSTALL_DIR/miniconda
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh
-bash Miniconda3-latest-Linux-aarch64.sh -b -f -p $INSTALL_DIR/miniconda
-# Add miniconda to the init.sh
-echo 'eval "$('$INSTALL_DIR'/miniconda/bin/conda shell.bash hook)"' >> $INSTALL_DIR/bin/init.sh
 
 # Activate the conda env
 eval "$(${INSTALL_DIR}/miniconda/bin/conda shell.bash hook)"
@@ -93,6 +85,10 @@ cp -r $INSTALL_SCRIPT_DIR/dashboard $INSTALL_DIR/bin/dashboard
 pip3 install seaborn
 
 
+
+# put the database on the SSD outside the install dir to save DL'ing each time 
+K_DATABASE="${SSD_MOUNT}/kraken2_DBs"
+echo "Kraken2 index database will be downloaded to: ${K_DATABASE}"
 
 #Need to set up the minikraken database
 if [ ! -f "${K_DATABASE}/minikraken2_v2_8GB_201904.tgz" ]; then
