@@ -1,0 +1,8 @@
+name: POx-POC_conda
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - mamba
+  - biopython
