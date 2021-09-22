@@ -7,7 +7,6 @@
 # get the path of the repo
 INSTALL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-
 # hard code for debugging
 SSD_MOUNT="/media/1tb_nvme"
 
@@ -47,6 +46,7 @@ cd recentrifuge
 
 
 # Download and build kraken2
+echo ""
 echo "Download and build kraken2"
 echo ""
 cd $BIN
@@ -56,6 +56,7 @@ cd kraken2
 
 
 # Install filtlong
+echo ""
 echo "Install filtlong"
 echo ""
 cd $BIN
@@ -64,12 +65,10 @@ cd Filtlong
 make -j
 cd ..
 
-exit 0
 
 # Create init.sh to set up path etc for user
-touch init.sh
-chmod init.sh
-
+#touch init.sh
+#chmod init.sh
 
 
 # Install R, Shiny and flexdashboard
@@ -96,16 +95,16 @@ fi
 
 ### The following needs the most work. Need a cleaner way to do this ###
 
-#add stuff to path via init.script 
-echo "export PATH=${INSTALL_DIR}/bin:${INSTALL_DIR}/bin/scripts:${INSTALL_DIR}/bin/dashboard:${INSTALL_DIR}/bin/dashboard/dashboard.Rmd:${PATH}" >> $INSTALL_DIR/bin/init.sh
+# #add stuff to path via init.script 
+# echo "export PATH=${INSTALL_DIR}/bin:${INSTALL_DIR}/bin/scripts:${INSTALL_DIR}/bin/dashboard:${INSTALL_DIR}/bin/dashboard/dashboard.Rmd:${PATH}" >> $INSTALL_DIR/bin/init.sh
 
-# add some environmental vars (must be a better way to do this)
-echo "export RCF_TAXDUMP=${INSTALL_DIR}/recentrifuge/taxdump" >> $INSTALL_DIR/bin/init.sh
+# # add some environmental vars (must be a better way to do this)
+# echo "export RCF_TAXDUMP=${INSTALL_DIR}/recentrifuge/taxdump" >> $INSTALL_DIR/bin/init.sh
 
-echo "export KRAKEN2_DB_PATH=${K_DATABASE}/minikraken2_v2_8GB_201904_UPDATE" >> $INSTALL_DIR/bin/init.sh
+# echo "export KRAKEN2_DB_PATH=${K_DATABASE}/minikraken2_v2_8GB_201904_UPDATE" >> $INSTALL_DIR/bin/init.sh
 
-# might need to add some conda stuff here for the launch script
-echo "export CONDA_PATH=${INSTALL_DIR}/miniconda/etc/profile.d/conda.sh" >> $INSTALL_DIR/bin/init.sh
+# # might need to add some conda stuff here for the launch script
+# echo "export CONDA_PATH=${INSTALL_DIR}/miniconda/etc/profile.d/conda.sh" >> $INSTALL_DIR/bin/init.sh
 
-# this sucks, needs fixing
-cat $INSTALL_DIR/bin/init.sh >> ~/.bashrc
+# # this sucks, needs fixing
+# cat $INSTALL_DIR/bin/init.sh >> ~/.bashrc
