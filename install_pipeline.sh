@@ -28,7 +28,8 @@ BIN=$INSTALL_SCRIPT_DIR/bin
 
 
 echo "Setting up the conda environment"
-conda env create -f environment.yml
+
+conda env create -f environment.yml --force
 
 CONDA_PATH=$(which conda)
 
@@ -55,7 +56,6 @@ cd kraken2
 
 
 # Install filtlong
-
 echo "Install filtlong"
 echo ""
 cd $BIN
