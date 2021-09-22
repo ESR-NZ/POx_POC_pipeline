@@ -22,6 +22,11 @@ then
     exit 0
 fi
 
+#set up a dir to install deps into
+mkdir bin
+BIN=$INSTALL_SCRIPT_DIR/bin
+
+
 echo "Setting up the conda environment"
 conda env create -f environment.yml
 
@@ -32,23 +37,28 @@ conda activate POx-POC_conda
 
 mamba install -y -c bioconda recentrifuge
 
+# bulid some stuff source in the bin dir
+cd $BIN
+git clone https://github.com/khyox/recentrifuge.git
+cd recentrifuge
+# Download NCBI node db
+./retaxdump
 
 
 # Download and build kraken2
 echo "Download and build kraken2"
 echo ""
+cd $BIN
 git clone https://github.com/DerrickWood/kraken2.git
 cd kraken2
-./install_kraken2.sh 
-cd ..
+./install_kraken2.sh
 
-# Create init.sh to set up path etc for user
-touch init.sh
-chmod init.sh
 
 # Install filtlong
+
 echo "Install filtlong"
 echo ""
+cd $BIN
 git clone https://github.com/rrwick/Filtlong.git
 cd Filtlong
 make -j
@@ -56,53 +66,35 @@ cd ..
 
 exit 0
 
+# Create init.sh to set up path etc for user
+touch init.sh
+chmod init.sh
 
-# Activate the conda env
-eval "$(${INSTALL_DIR}/miniconda/bin/conda shell.bash hook)"
-# Add channels
-# conda config --add channels defaults
-conda config --add channels bioconda
-conda config --add channels conda-forge
-# Mamba
-conda install -y mamba -n base -c conda-forge
 
-# recentrifuge install
-mamba install -y -c bioconda recentrifuge
-cd $INSTALL_DIR
-git clone https://github.com/khyox/recentrifuge.git
-cd recentrifuge
-# Download NCBI node db
-./retaxdump
 
 # Install R, Shiny and flexdashboard
 mamba install -y r-essentials r-base r-shinylp r-dt r-flexdashboard r-here r-plotly
 # recent version of fontawesome isn't available in conda
 R -e "install.packages('fontawesome', repos='http://cran.rstudio.com/')"
 
-# copy the dashboaed app over to the install bin
-cp -r $INSTALL_SCRIPT_DIR/dashboard $INSTALL_DIR/bin/dashboard
-# Install seaborn
-pip3 install seaborn
-
-
-
-# put the database on the SSD outside the install dir to save DL'ing each time 
+# Need to set up the minikraken database
+# put the mini-kraken2 database on the SSD.
 K_DATABASE="${SSD_MOUNT}/kraken2_DBs"
-echo "Kraken2 index database will be downloaded to: ${K_DATABASE}"
 
-#Need to set up the minikraken database
+
 if [ ! -f "${K_DATABASE}/minikraken2_v2_8GB_201904.tgz" ]; then
+	echo "Kraken2 index database will be downloaded to: ${K_DATABASE}"
 	# DL the databases 
 	wget https://genome-idx.s3.amazonaws.com/kraken/minikraken2_v2_8GB_201904.tgz -P $K_DATABASE
 	# unpack the .tgz
 	cd $K_DATABASE
-	tar -xvzf minikraken2_v2_8GB_201904.tgz 
+	tar -xvzf minikraken2_v2_8GB_201904.tgz
+else
+	echo "The Kraken database already exists. Skipping download"
 fi
 
-cd $INSTALL_DIR
 
-# cp the run script and dashboard script to the pipeline bin dir so it will be in PATH
-cp -r $INSTALL_SCRIPT_DIR/scripts $INSTALL_DIR/bin/scripts
+### The following needs the most work. Need a cleaner way to do this ###
 
 #add stuff to path via init.script 
 echo "export PATH=${INSTALL_DIR}/bin:${INSTALL_DIR}/bin/scripts:${INSTALL_DIR}/bin/dashboard:${INSTALL_DIR}/bin/dashboard/dashboard.Rmd:${PATH}" >> $INSTALL_DIR/bin/init.sh
