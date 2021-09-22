@@ -4,8 +4,6 @@
 # S Sturrock - ESR
 # 30/07/2021
 
-
-
 # get the path of the repo
 INSTALL_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
@@ -24,20 +22,13 @@ then
     exit 0
 fi
 
-# set name of install dir
-PIPELINE=POX_POC_installation
-# set install dir location
-INSTALL_DIR=${SSD_MOUNT}/${PIPELINE}
 
+CONDA_PATH=$(which conda)
 
-# If the install directory already exists, delete it
-if [ -d $INSTALL_DIR ]; then
-	rm -rf $INSTALL_DIR
-fi
+echo $CONDA_PATH
 
-mkdir -p $INSTALL_DIR/bin
-# Go into install directory and everything will be put in here
-cd $INSTALL_DIR
+exit 0
+
 
 # Download and build kraken2
 echo "Download and build kraken2"
