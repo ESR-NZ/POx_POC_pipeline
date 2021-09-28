@@ -25,14 +25,12 @@ then
 fi
 
 #set up a dir to install deps into
-
 BIN="$INSTALL_SCRIPT_DIR/bin"
 [ ! -d $BIN ] && mkdir $BIN
 
-
 echo "Installing dependancies"
 echo ""
-# Install filtlong before the activation of conda envor it doesn't work 
+# Install filtlong before the activation of conda env or it doesn't work 
 echo ""
 echo "Install filtlong"
 echo ""
