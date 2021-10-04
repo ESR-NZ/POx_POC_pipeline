@@ -1,8 +1,7 @@
-# POx_POC sprint
+# POx_POC 
 
-A place to start putting code and organising ideas
+An installable environment and code for the Jetson Xaiver to analyse clinical isoaltes from nanopore sequencing. This is a baseline versions with out the dashboard working. 
 
-See:
 
 - [Currently available pipelines/tools](./available_pipelines_tools.md)
 - [Initial look at demultiplexing after Kraken (no longer doing)](./demultiplex_kraken_output.md)
