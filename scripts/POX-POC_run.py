@@ -30,8 +30,6 @@ minKnow_run_path = Path(args.minKnow_run_path)
 
 KRAKEN2_DB_PATH=os.environ.get('KRAKEN2_DB_PATH')
 
-RCF_TAXDUMP=os.environ.get('RCF_TAXDUMP')
-
 # Will put results in the minKnow dir for now
 RESULTS_PATH = minKnow_run_path/"Results"
 
