@@ -47,7 +47,9 @@ echo "Setting up the conda environment"
 # needed to use conda in a script
 eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
 
+echo ""
 echo "Installing python dependancies with conda"
+echo ""
 conda env update -q --file environment.yml
 
 # Download and build kraken2
