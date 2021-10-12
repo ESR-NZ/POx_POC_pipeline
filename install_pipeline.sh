@@ -46,16 +46,8 @@ echo "Setting up the conda environment"
 # needed to use conda in a script
 eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
 
-echo "Making a conda env called: POx-POC_conda"
-# Make empty conda env with the right name
-conda create -y -q -n POx-POC_conda
-
 echo "Installing dependancies with mumba"
-conda env update -q -n POx-POC_conda --file environment.yml
-
-# activate that new env 
-conda activate POx-POC_conda
-
+conda env update -q --file environment.yml
 
 # Download and build kraken2
 echo ""
@@ -64,12 +56,7 @@ echo ""
 cd $BIN
 git clone https://github.com/DerrickWood/kraken2.git
 cd kraken2
-./install_kraken2.sh
-
-
-# Create init.sh to set up path etc for user
-#touch init.sh
-#chmod init.sh
+./install_kraken2.sh $BIN
 
 
 # Need to set up the minikraken database
@@ -88,6 +75,8 @@ else
 	echo "The Kraken database already exists. Skipping download"
 fi
 
+
+# manually
 
 # ### The following needs the most work. Need a cleaner way to do this ###
 
