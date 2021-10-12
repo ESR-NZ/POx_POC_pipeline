@@ -38,15 +38,16 @@ cd $BIN
 git clone https://github.com/rrwick/Filtlong.git
 cd Filtlong
 make -j
-cd $INSTALL_SCRIPT_DIR
+mv bin/filtlong $BIN
 
+cd $INSTALL_SCRIPT_DIR
 
 # following assumes conda is installed on the system, add this to README.md
 echo "Setting up the conda environment"
 # needed to use conda in a script
 eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
 
-echo "Installing dependancies with mumba"
+echo "Installing python dependancies with conda"
 conda env update -q --file environment.yml
 
 # Download and build kraken2
