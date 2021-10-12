@@ -1,5 +1,7 @@
 # POx_POC 
 
+Work in progress. 
+
 An installable environment and code for the Jetson Xaiver to analyse clinical isoaltes from nanopore sequencing. This is a baseline versions with out the dashboard working. 
 
 
