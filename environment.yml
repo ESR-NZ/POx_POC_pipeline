@@ -3,13 +3,5 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - recentrifuge
   - biopython
   - seaborn
-  - r-essentials 
-  - r-base
-  - r-shinylp
-  - r-dt
-  - r-flexdashboard
-  - r-here
-  - r-plotly

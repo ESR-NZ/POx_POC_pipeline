@@ -11,12 +11,12 @@ echo "$INSTALL_SCRIPT_DIR"
 
 
 # hard code for debugging (k database will go here)
-SSD_MOUNT="/media/1tb_nvme"
+#SSD_MOUNT="/path"
 
 # get user input for database location
 # uncomment below 
-#echo 'Enter the SSD mount path to install the pipeline to:'
-#read -p '(e.g. /media/minit/xavierSSD ): ' SSD_MOUNT
+echo 'Enter the SSD mount path to download the kraken databse to:'
+read -p '(e.g. /media/minit/xavierSSD ): ' SSD_MOUNT
 
 if [ ! -d $SSD_MOUNT ]
 then
@@ -46,29 +46,15 @@ echo "Setting up the conda environment"
 # needed to use conda in a script
 eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
 
-echo "Installing mamba in base environment"
-conda install -y -q -c conda-forge mamba
-
 echo "Making a conda env called: POx-POC_conda"
 # Make empty conda env with the right name
 conda create -y -q -n POx-POC_conda
 
 echo "Installing dependancies with mumba"
-mamba env update -q -n POx-POC_conda --file environment.yml
+conda env update -q -n POx-POC_conda --file environment.yml
 
 # activate that new env 
 conda activate POx-POC_conda
-
-
-# bulid some stuff from source in the bin dir required for rcf, this needs biopython from the conda env
-echo ""
-echo "Clone the rcf repo to run retaxdump"
-echo ""
-cd $BIN
-git clone https://github.com/khyox/recentrifuge.git
-cd recentrifuge
-# Download NCBI node db
-./retaxdump
 
 
 # Download and build kraken2
@@ -85,9 +71,6 @@ cd kraken2
 #touch init.sh
 #chmod init.sh
 
-# R stuff shoud be installed with conda/mumba from env.yaml file
-# recent version of fontawesome isn't available in conda
-R -e "install.packages('fontawesome', repos='http://cran.rstudio.com/')"
 
 # Need to set up the minikraken database
 # put the mini-kraken2 database on the SSD.
