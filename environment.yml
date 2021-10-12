@@ -5,3 +5,5 @@ channels:
 dependencies:
   - biopython
   - seaborn
+  - numpy
+  - matplotlib
