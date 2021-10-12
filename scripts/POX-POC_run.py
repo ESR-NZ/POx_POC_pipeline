@@ -348,16 +348,11 @@ def main():
         rcf_cmd = f'rcf -n {RCF_TAXDUMP} -k {KOUTPUT_PATH} -o {RESULTS_PATH/BARCODE}.html -e CSV'
         run(rcf_cmd, shell=True, check=True)
         
-        # launch dashboard
-    
 
         # need to clean up the temp files here
         os.remove(fastq_file)
         os.remove(len_filtered_fastq)
 
-    # after looping over all "barcodes" launch the dash board
-    launch_cmd = f"launch_dashboard.sh {RESULTS_PATH}"
-    run(launch_cmd, shell=True, check=True)
 
 
 if __name__ == '__main__':
