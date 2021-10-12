@@ -76,7 +76,7 @@ else
 fi
 
 
-# manually
+# manually change the $PATH and set any environmental variable needed 
 
 # ### The following needs the most work. Need a cleaner way to do this ###
 
