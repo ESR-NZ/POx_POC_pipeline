@@ -81,9 +81,18 @@ fi
 # symlink the run script to the repo bin dir
 cd $INSTALL_SCRIPT_DIR 
 ln -s scripts/POX-POC_run.py $BIN/POX-POC_run.py
- 
 
-# manually change the $PATH and set any environmental variable needed 
+
+# prompt manually change the $PATH and set any environmental variable needed 
+echo ""
+echo "add the following to the end of your ~/.bashrc file" 
+echo "export PATH=$BIN:$PAHT"
+echo "export KRAKEN2_DB_PATH=${K_DATABASE}/minikraken2_v2_8GB_201904_UPDATE"
+
+
+
+
+
 
 # ### The following needs the most work. Need a cleaner way to do this ###
 
