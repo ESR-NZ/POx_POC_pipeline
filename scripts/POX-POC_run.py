@@ -339,7 +339,7 @@ def main():
         os.remove(fastq_file)
         os.remove(len_filtered_fastq)
 
-
-
+    print(f"/nPOx_POC finished: results are in: {RESULTS_PATH}")
+    print("Thanks!")
 if __name__ == '__main__':
     main()
