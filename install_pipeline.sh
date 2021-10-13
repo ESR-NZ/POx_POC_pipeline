@@ -79,9 +79,8 @@ else
 fi
 
 # symlink the run script to the repo bin dir
-cd $INSTALL_SCRIPT_DIR 
-ln -s scripts/POX-POC_run.py $BIN/POX-POC_run.py
 
+ln -s $INSTALL_SCRIPT_DIR/scripts/POX-POC_run.py $BIN/POX-POC_run.py
 
 # prompt manually change the $PATH and set any environmental variable needed 
 echo ""
