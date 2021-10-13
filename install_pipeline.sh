@@ -86,7 +86,7 @@ ln -s scripts/POX-POC_run.py $BIN/POX-POC_run.py
 # prompt manually change the $PATH and set any environmental variable needed 
 echo ""
 echo "add the following to the end of your ~/.bashrc file" 
-echo "export PATH=$BIN:$PATH"
+echo "export PATH=$BIN:\$PATH"
 echo "export KRAKEN2_DB_PATH=${K_DATABASE}/minikraken2_v2_8GB_201904_UPDATE"
 
 
