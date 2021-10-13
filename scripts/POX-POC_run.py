@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-# coding: utf-8
+#!/usr/bin/env python
 
 from pathlib import Path
 from Bio import SeqIO
@@ -12,6 +11,19 @@ import gzip
 import argparse
 import csv
 import os
+
+
+# terminal text color
+class bcolors:
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    ENDC = '\033[0m'
+
+# eg print(bcolors.GREEN + "This text is green" + bcolors.RED + " and this is RED...?" + bcolors.ENDC)
+# print(bcolors.GREEN + "" + bcolors.ENDC)
 
 # Pipe line needs a single positional arg that points to a run directory
 arg_parser = argparse.ArgumentParser(prog='POx-POC analysis pipeline',
@@ -104,7 +116,7 @@ def concat_read_files(fq_dir: Path) -> Path:
         all_reads.replace(all_reads.with_suffix('.fastq')) 
         all_reads_suffix = all_reads.parent / (all_reads.name + '.fastq')
     
-    print(all_reads_suffix)
+    print(bcolors.HEADER + f"{all_reads_suffix}" + bcolors.ENDC)
     
     return all_reads_suffix
 
@@ -178,7 +190,7 @@ def plot_length_dis_graph(fastq_file, results_path):
 
     plot_path = results_path/f"{barcode}_read_length_distrabution_plot.png"
     
-    print(f"Plottig {barcode} to {plot_path}")
+    print(f"Plottig {barcode} to: " + bcolors.HEADER + f"{plot_path}" + bcolors.ENDC)
     
     plot = sns.displot(x=lens_array, log_scale=(True,False),height=8, aspect=2)
 
@@ -297,11 +309,11 @@ def write_classify_to_file(species_dict: dict) -> str:
 
 ####################### main func to run the script ################
 def main():
-    print(f"Looking for all your samples in: {minKnow_run_path}")
+    print("Looking for all your samples in: " + bcolors.HEADER + f"{minKnow_run_path}" + bcolors.ENDC)
     fastq_dirs = get_fastq_dirs(minKnow_run_path)
     
     for fq_dir in sorted(fastq_dirs):
-        print(f'\nWorking on {fq_dir.name}\n')
+        print("\nNow working on: " + bcolors.RED + f"{fq_dir.name}\n" + bcolors.ENDC)
 
 
         # Get barcode for this sample
@@ -313,7 +325,7 @@ def main():
         # Filter the reads and assign the Path of the filtered reads to 'len_filtered_fastq'
         len_filtered_fastq = filtlong_run(fastq_file)
 
-        print(f"Filtered reads live at: {len_filtered_fastq}\n")
+        print("\nFiltered reads live at: " + bcolors.HEADER + f"{len_filtered_fastq}\n" + bcolors.ENDC)
         
         # Do some plotting of the reads
         if not plot_length_dis_graph(fastq_file, RESULTS_PATH):
@@ -332,14 +344,14 @@ def main():
         # needs attention
         top_species = write_classify_to_file(species_dict)
 
-        print(f"Top classifiction hit: {top_species}")
+        print(bcolors.YELLOW + "\nTop classifiction hit: " + bcolors.BLUE + f"{top_species}" + bcolors.ENDC)
 
 
         # need to clean up the temp files here
         os.remove(fastq_file)
         os.remove(len_filtered_fastq)
 
-    print(f"\nPOx_POC finished! Results are in: {RESULTS_PATH}")
-    print("Thanks!")
+    print(bcolors.YELLOW + "\nPOx_POC finished! Results are in: " + bcolors.HEADER + f"{RESULTS_PATH}" + bcolors.ENDC)
+    print(bcolors.YELLOW + "\nThanks!" + bcolors.ENDC)
 if __name__ == '__main__':
     main()
