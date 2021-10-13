@@ -59,8 +59,9 @@ echo ""
 git clone https://github.com/DerrickWood/kraken2.git
 cd kraken2
 ./install_kraken2.sh $BIN
-# might need to symlink here?
 
+echo "^^^^ The above will be done automatically"
+echo ""
 # Need to set up the minikraken database
 # put the mini-kraken2 database on the SSD.
 K_DATABASE="${SSD_MOUNT}/kraken2_DBs"
