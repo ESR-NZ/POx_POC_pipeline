@@ -90,10 +90,6 @@ echo "export PATH=$BIN:$PAHT"
 echo "export KRAKEN2_DB_PATH=${K_DATABASE}/minikraken2_v2_8GB_201904_UPDATE"
 
 
-
-
-
-
 # ### The following needs the most work. Need a cleaner way to do this ###
 
 # # #add stuff to path via init.script 
