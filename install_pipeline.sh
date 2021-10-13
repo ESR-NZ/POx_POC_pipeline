@@ -78,6 +78,10 @@ else
 	echo "The Kraken database already exists. Skipping download"
 fi
 
+# symlink the run script to the repo bin dir
+cd $INSTALL_SCRIPT_DIR 
+ln -s scripts/POX-POC_run.py $BIN/POX-POC_run.py
+ 
 
 # manually change the $PATH and set any environmental variable needed 
 
