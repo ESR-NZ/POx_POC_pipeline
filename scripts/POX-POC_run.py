@@ -31,7 +31,7 @@ minKnow_run_path = Path(args.minKnow_run_path)
 KRAKEN2_DB_PATH=os.environ.get('KRAKEN2_DB_PATH')
 
 # Will put results in the minKnow dir for now
-RESULTS_PATH = minKnow_run_path/"Results"
+RESULTS_PATH = minKnow_run_path/"POx_POC_Results"
 
 if not RESULTS_PATH.is_dir():
     RESULTS_PATH.mkdir(exist_ok=True)
@@ -300,7 +300,7 @@ def main():
     print(f"Looking for all your samples in: {minKnow_run_path}")
     fastq_dirs = get_fastq_dirs(minKnow_run_path)
     
-    for fq_dir in fastq_dirs:
+    for fq_dir in sorted(fastq_dirs):
         print(f'\nWorking on {fq_dir.name}\n')
 
 
