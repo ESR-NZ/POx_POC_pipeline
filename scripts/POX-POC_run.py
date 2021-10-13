@@ -294,13 +294,6 @@ def write_classify_to_file(species_dict: dict) -> str:
     return top_species
 
 
-def run_resfinder(len_filtered_fastq, species, BARCODE):
-    '''Not used, not working  yet'''
-    OUTPUT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_res.got"
-    res_cmd = f"amrfinder --plus -n {len_filtered_fastq} -O {species} > {OUTPUT_FILE_PATH}"
-    run(res_cmd)
-    
-
 
 ####################### main func to run the script ################
 def main():
@@ -341,11 +334,6 @@ def main():
 
         print(f"Top classifiction hit: {top_species}")
 
-        # call to recentrifuge
-        
-        rcf_cmd = f'rcf -n {RCF_TAXDUMP} -k {KOUTPUT_PATH} -o {RESULTS_PATH/BARCODE}.html -e CSV'
-        run(rcf_cmd, shell=True, check=True)
-        
 
         # need to clean up the temp files here
         os.remove(fastq_file)
