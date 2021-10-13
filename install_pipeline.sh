@@ -56,11 +56,10 @@ conda env update -q --file environment.yml
 echo ""
 echo "Download and build kraken2"
 echo ""
-cd $BIN
 git clone https://github.com/DerrickWood/kraken2.git
 cd kraken2
 ./install_kraken2.sh $BIN
-
+# might need to symlink here?
 
 # Need to set up the minikraken database
 # put the mini-kraken2 database on the SSD.
