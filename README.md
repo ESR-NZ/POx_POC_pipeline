@@ -26,7 +26,10 @@ You will need to add the created `bin` directory to your path, as well as, an en
 
 ## Running the analysis  
 
-Once installed, the "pipeline" can be run with the command `POX-POC_run.py <path/to/run_directory>` 
-Results can be found in `path/to/run_directory/POx_POC_results`  
+Once installed, the "pipeline" can be run with the command:  
+`POX-POC_run.py <path/to/run_directory>`  
 
-This can be run during the sequencing experiment if required.  
+Results can be found in:   
+`path/to/run_directory/POx_POC_results`  
+
+This can be run during the sequencing experiment if required to analyse the data generated upto that point.  
