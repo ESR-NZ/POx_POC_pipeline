@@ -24,9 +24,14 @@ then
     exit 0
 fi
 
-#set up a dir to install deps into
+#set up a bin dir to hold executibles 
 BIN="$INSTALL_SCRIPT_DIR/bin"
 [ ! -d $BIN ] && mkdir $BIN
+
+DEPS="$INSTALL_SCRIPT_DIR/deps"
+[ ! -d $DEPS ] && mkdir $DEPS
+
+
 
 echo "Installing dependancies"
 echo ""
@@ -34,7 +39,7 @@ echo ""
 echo ""
 echo "Install filtlong"
 echo ""
-cd $BIN
+cd $DEPS
 git clone https://github.com/rrwick/Filtlong.git
 cd Filtlong
 make -j
@@ -56,6 +61,7 @@ conda env update -q --file environment.yml
 echo ""
 echo "Download and build kraken2"
 echo ""
+cd $DEPS
 git clone https://github.com/DerrickWood/kraken2.git
 cd kraken2
 ./install_kraken2.sh $BIN
@@ -79,7 +85,6 @@ else
 fi
 
 # symlink the run script to the repo bin dir
-
 ln -s $INSTALL_SCRIPT_DIR/scripts/POX-POC_run.py $BIN/POX-POC_run.py
 
 # prompt manually change the $PATH and set any environmental variable needed 
