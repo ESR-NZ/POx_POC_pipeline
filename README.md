@@ -10,7 +10,7 @@ This analysis pipeline is designed to make read classificaion easy to run at a p
 ## Install  
 
 ### Conda Note:
-Requires `conda` to be installed on the system already. It uses `conda` to add a small number of pretty standard python packages (see `environment.yml`). These will, and can be, installed in the base conda environment or which ever environment is activated at the time of install. As it is expected this is a dedicated sequencing device the base environment will be the easiest for the end user. For future updates a dedicated environment my be used.  
+Requires `conda` to be installed on the system already. It uses `conda` to add a small number of pretty standard python packages (see `environment.yml`). These will, and can be, installed in the base conda environment, or which ever environment is activated at the time of install. As it is expected this is a dedicated sequencing device, the base conda environment will be the easiest for the end user. For future updates a dedicated environment my be used.  
 
 To install:  
 
@@ -21,10 +21,12 @@ To install:
 
 The above commands will download and build the other software dependencies needed to run the analysis; namely [`filtlong`](https://github.com/rrwick/Filtlong) and [`kraken2`](https://github.com/DerrickWood/kraken2). Acknowledgements to the authors of this excellent software. 
 
-The first time install script is run it will also download the required kraken2 database to the SSD.  
-You will need to add the created `bin` directory to your path, as well as, an environent variable so the run script knows where to find the kraken2 database. There instructions to copy/paste the required lines to your `.bascrc` file shown at the end of the install process, so watch out for those.   
+The first time the install script (`install_pipeline.sh`) is run it will also download the required kraken2 database to the SSD.  
+You will need to add the created `bin` directory to your path, as well as, an environent variable (`KRAKEN2_DB_PATH`) so the run script knows where to find the kraken2 database. There are instructions to copy/paste the required lines to your `.bascrc` file shown at the end of the install process, so watch out for those.   
 
 ## Running the analysis  
 
 Once installed, the "pipeline" can be run with the command `POX-POC_run.py <path/to/run_directory>` 
-Results can be found in `path/to/run_directory/POX_POC_results`
+Results can be found in `path/to/run_directory/POx_POC_results`  
+
+This can be run during the sequencing experiment if required.  
