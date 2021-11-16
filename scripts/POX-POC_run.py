@@ -57,20 +57,15 @@ def get_fastq_dirs(minKnow_run_path):
     that have fastqs in them. Any dir with a .fastq(.gz) in it will be treated as a "sample".
     The directory name will become the samples barcode name.  
     '''
-    fastq_dirs = [] 
-    fq_glob_dirs = minKnow_run_path.rglob('*.fastq*')
+    # get path to every fastq file under the supplied run_path
+    fq_glob_paths = [fq_dir for fq_dir in minKnow_run_path.rglob('*.fastq*')] 
+    
+    # get the set of all dirs with fastq files 
+    all_fastq_dirs = {fq_path.parent for fq_path in fq_glob_paths}
 
-    for dirs in fq_glob_dirs:
-        if dirs.parent not in fastq_dirs:
-            fastq_dirs.append(dirs.parent)
-        
-    # remove unclassified and and fastq_fail paths from fastq_dirs
+    filtered_fastq_dirs = [p for p in all_fastq_dirs if "fastq_fail" not in p.parts and p.name != "unclassified"]
     
-    for fq_dir in fastq_dirs:
-        if fq_dir.name == "unclassified":
-            fastq_dirs.remove(fq_dir)
-    
-    return fastq_dirs 
+    return filtered_fastq_dirs 
 
 
 def is_gz_file(file_path: Path) -> bool:
