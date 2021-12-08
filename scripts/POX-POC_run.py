@@ -99,7 +99,7 @@ def concat_read_files(fq_dir: Path) -> Path:
         os.remove(all_reads.with_suffix('.fastq.gz'))
     
 
-    print(f'Concatenating all fastq read files in {fq_dir.name} to {all_reads.name}') # print for debug
+    print(f'Concatenating all fastq read files to {all_reads.name}') # print for debug
     cat_cmd = f"cat {fq_dir}/*.fastq* > {all_reads}"
     
     # run the command with supprocess.run 
@@ -169,40 +169,23 @@ def count_fastq_bases(fastq_file):
     return int(bases.decode('ascii').rstrip())
 
 
-def plot_length_dis_graph(fq_dir, BARCODE, results_path):
-    
-    
-    print(f'Calc length array for {BARCODE}')
+def plot_length_dis_graph(fq_dir, BARCODE, lens_array, results_path):
     
     # This named file should be in the directory by the time this plotting fuction is called 
     fastq_file = fq_dir/"len_filter_reads.fq"
-    
-    lens_array = get_lens_array(fastq_file)
-    num_reads = len(lens_array)
-    
-    if num_reads < 1000:
-        print(f'Skiping {BARCODE}, not enough reads')
-        return None
-
-    print(f'Calc passed bases for {BARCODE}')
-    
-    
+        
     passed_bases = count_fastq_bases(fastq_file)
     
-    print(f'Calc n50 for {BARCODE}')
+    print(f'Calc n50 for plot')
     n50 = func_N50(lens_array)
     
     # conver to kb
     n50 = round(n50/1000, 1)
     total_data = round(passed_bases/1000000, 2)
-        
-    #plot_dir  = Path("Plots")
-    #plot_dir.mkdir(exist_ok=True)
 
     plot_path = results_path/f"{BARCODE}_read_length_distrabution_plot.png"
     
     print(f"Plottig {BARCODE} to: " + bcolors.HEADER + f"{plot_path}" + bcolors.ENDC)
-    
     
     # plot the histogram
     plot = sns.displot(x=lens_array, 
@@ -228,7 +211,7 @@ def run_seqkit_lenght_filter(fastq_file, read_len=900):
     '''
     fastq_dir = fastq_file.parent
     BARCODE = fastq_dir.name
-    print(f'\nRunning seqkit length filter for {BARCODE}\n')
+    print(f'\nRunning seqkit length filter for all read in sample: '+ bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
 
     len_filt_file_path = fastq_dir/"len_filter_reads.fq"
     # the command, as a string, that will be used in a bash subprocess run the command
@@ -239,10 +222,10 @@ def run_seqkit_lenght_filter(fastq_file, read_len=900):
     sp.communicate()
     # check the exit code
     if sp.returncode != 0:
-        print(f'Error running seqkit length filter for {BARCODE}')
+        print(f'Error running seqkit length filter for sample: '+ bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
         return False
     else:
-        print(f'Seqkit length filter for {BARCODE} complete\n')
+        print(f'Seqkit length filter for sample ' + bcolors.RED + f"{BARCODE} " + bcolors.ENDC + 'complete\n')
         return len_filt_file_path
 
 
@@ -256,6 +239,7 @@ def kraken2_run(len_filtered_fastq: Path, BARCODE: str):
     OUTPUT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_output.krk"
     CONFIDENCE='0.02'
 
+    print(f'Running read classifier for sample: '+ bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
     # this works
     run(['kraken2',
           '--db', KRAKEN2_DB_PATH,
@@ -335,15 +319,17 @@ def write_classify_to_file(species_dict: dict) -> str:
 
 ####################### main func to run the script ################
 def main():
-    print("Looking for all your samples in: " + bcolors.HEADER + f"{minKnow_run_path}" + bcolors.ENDC)
+    print("Looking for all your samples in run: " + bcolors.HEADER + f"{minKnow_run_path}\n" + bcolors.ENDC)
     fastq_dirs = get_fastq_dirs(minKnow_run_path)
     
+
     for fq_dir in sorted(fastq_dirs):
-        print("\nNow working on: " + bcolors.RED + f"{fq_dir.name}\n" + bcolors.ENDC)
-
-
+        
         # Get barcode for this sample
         BARCODE=fq_dir.name.split('_')[0]
+
+        print("\nNow working on: " + bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
+        print("Checking read numbers for: " + bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
         
         # Gather the reads and assign Path of reads to 'fastq_file'
         # This asignment is a dumb way to do this
@@ -351,11 +337,23 @@ def main():
         
         # Filter the reads and assign the Path of the filtered reads to 'len_filtered_fastq'
         len_filtered_fastq = run_seqkit_lenght_filter(fastq_file)
-
-        print("\nFiltered reads live at: " + bcolors.HEADER + f"{len_filtered_fastq}\n" + bcolors.ENDC)
         
+        print("Filtered reads live at: " + bcolors.HEADER + f"{len_filtered_fastq}\n" + bcolors.ENDC)
+        
+        print(f'Calc length array for ' + bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
+        lens_array = get_lens_array(len_filtered_fastq)
+        num_reads = len(lens_array)
+
+        if num_reads < 1000:
+            print(f'Skiping sample {BARCODE}, not enough reads\n')
+            continue
+
+        print(f'Passed reads: ' + bcolors.RED + f"{num_reads}\n" + bcolors.ENDC)
+        
+
+    
         # Do some plotting of the reads
-        if not plot_length_dis_graph(fq_dir, BARCODE, RESULTS_PATH):
+        if not plot_length_dis_graph(fq_dir, BARCODE, lens_array, RESULTS_PATH):
             # need to clean up the temp files here
             os.remove(fastq_file)
             os.remove(len_filtered_fastq)
@@ -371,7 +369,7 @@ def main():
         # needs attention
         top_species = write_classify_to_file(species_dict)
 
-        print(bcolors.YELLOW + "\nTop classifiction hit: " + bcolors.BLUE + f"{top_species}" + bcolors.ENDC)
+        print(bcolors.YELLOW + "\nTop classifiction hit: " + bcolors.BLUE + f"{top_species}\n" + bcolors.ENDC)
 
 
         # need to clean up the temp files here
