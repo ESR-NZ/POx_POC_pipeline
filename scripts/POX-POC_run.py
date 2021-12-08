@@ -57,14 +57,15 @@ def get_fastq_dirs(minKnow_run_path):
     Takes the top level run directory spawned by the sequencer run 
     as a Path object and returns an list of Path objects for the sub directories 
     that have fastqs in them. Any dir with a .fastq(.gz) in it will be treated as a "sample".
-    The directory name will become the samples barcode name.  
+    The directory name will become the samples barcode name. 
+    Finally, filter out fastq_fail and unclassified dirs. 
+    If two samples have the same name the second to be processed will overwrite the first.   
     '''
     # get path to every fastq file under the supplied run_path
     fq_glob_paths = [fq_dir for fq_dir in minKnow_run_path.rglob('*.fastq*')] 
-    
     # get the set of all dirs with fastq files 
     all_fastq_dirs = {fq_path.parent for fq_path in fq_glob_paths}
-    # filter out the fq_fail dirs and unclassified by reading directory name
+    # filter some unwanted dirs
     filtered_fastq_dirs = [p for p in all_fastq_dirs if "fastq_fail" not in p.parts and p.name != "unclassified"]
     
     return filtered_fastq_dirs 
