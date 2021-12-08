@@ -11,6 +11,7 @@ import gzip
 import argparse
 import csv
 import os
+import shutil
 
 
 # terminal text color
@@ -44,9 +45,10 @@ KRAKEN2_DB_PATH=os.environ.get('KRAKEN2_DB_PATH')
 
 # Will put results in the minKnow dir for now
 RESULTS_PATH = minKnow_run_path/"POx_POC_Results"
-
-if not RESULTS_PATH.is_dir():
-    RESULTS_PATH.mkdir(exist_ok=True)
+# Make the results directory. Overwrite if exists.
+if RESULTS_PATH.is_dir():
+    shutil.rmtree(RESULTS_PATH)
+RESULTS_PATH.mkdir()
 
 
 # Get a list of directories with fastqs in them, this works if multiplexed or not
@@ -62,7 +64,7 @@ def get_fastq_dirs(minKnow_run_path):
     
     # get the set of all dirs with fastq files 
     all_fastq_dirs = {fq_path.parent for fq_path in fq_glob_paths}
-
+    # filter out the fq_fail dirs and unclassified by reading directory name
     filtered_fastq_dirs = [p for p in all_fastq_dirs if "fastq_fail" not in p.parts and p.name != "unclassified"]
     
     return filtered_fastq_dirs 
@@ -122,9 +124,9 @@ def get_lens_array(fastq_file):
     Takes in a single fastq file and returns and list of the legths of each read
     in the file. Used to calc the N50 and histogram.
     Have identified that this can be done much faster with unix or Rust. 
-    This will surfice for the draft script for now
+    This will surfice for the draft script for now.
     '''
-    ## this needs to handel gzipped files
+    ## this needs to handle gzipped files
     if is_gz_file(fastq_file):
         with gzip.open(fastq_file, "rt") as gz_file:
             lens_array = [len(rec) for rec in SeqIO.parse(gz_file, "fastq")]
@@ -141,8 +143,11 @@ def func_N50(lens_array):
     Fast approximation calc. 
     '''
     lens_array.sort()
+    
+    #half of the total data
     half_sum = sum(lens_array)/2
     cum_sum = 0
+    # find the lenght of the read that is at least half the total data length 
     for v in lens_array:
         cum_sum += v
         if cum_sum >= half_sum:
@@ -153,43 +158,62 @@ def count_fastq_bases(fastq_file):
     '''
     counts the number of bases sequenced in a fastq file
     '''
+    # the command, as a string, that will be used in a bash subprocess to do the calculation
     cat_cmd = f"cat {fastq_file} | paste - - - - | cut -f 2 | tr -d '\n' | wc -c"
-    # span a subprocess
-    sp = Popen(cat_cmd, shell=True, stdout=PIPE)
+    # span a subprocess and run the command
+    sp = Popen(cat_cmd, shell=True, stdout=PIPE) # people dont like 'shell = true'
     # get the results back from the sp
     bases = sp.communicate()[0]
     
     return int(bases.decode('ascii').rstrip())
 
 
-def plot_length_dis_graph(fastq_file, results_path):
-    barcode = fastq_file.name.split('_')[0] # this is a bit dirty
-    print(f'Calc length array for {barcode}')
+def plot_length_dis_graph(fq_dir, BARCODE, results_path):
+    
+    
+    print(f'Calc length array for {BARCODE}')
+    
+    # This named file should be in the directory by the time this plotting fuction is called 
+    fastq_file = fq_dir/"len_filter_reads.fq"
+    
     lens_array = get_lens_array(fastq_file)
     num_reads = len(lens_array)
+    
     if num_reads < 1000:
-        print(f'Skiping {barcode}, not enough reads')
+        print(f'Skiping {BARCODE}, not enough reads')
         return None
 
-    print(f'Calc passed bases for {barcode}')
+    print(f'Calc passed bases for {BARCODE}')
+    
+    
     passed_bases = count_fastq_bases(fastq_file)
     
-    print(f'Calc n50 for {barcode}')
+    print(f'Calc n50 for {BARCODE}')
     n50 = func_N50(lens_array)
     
+    # conver to kb
     n50 = round(n50/1000, 1)
     total_data = round(passed_bases/1000000, 2)
         
     #plot_dir  = Path("Plots")
     #plot_dir.mkdir(exist_ok=True)
 
-    plot_path = results_path/f"{barcode}_read_length_distrabution_plot.png"
+    plot_path = results_path/f"{BARCODE}_read_length_distrabution_plot.png"
     
-    print(f"Plottig {barcode} to: " + bcolors.HEADER + f"{plot_path}" + bcolors.ENDC)
+    print(f"Plottig {BARCODE} to: " + bcolors.HEADER + f"{plot_path}" + bcolors.ENDC)
     
-    plot = sns.displot(x=lens_array, log_scale=(True,False),height=8, aspect=2)
+    
+    # plot the histogram
+    plot = sns.displot(x=lens_array, 
+                    weights = lens_array,
+                    bins = 200, 
+                    log_scale=(True,False), 
+                    height=8,
+                    aspect=2)
 
-    plot.fig.suptitle(f'''{barcode} Read length distribution\n N50: {n50}kb - Total data: {total_data}Mb''',
+    plot.set(ylabel='bases', xlim=(800, max(lens_array)+5000))
+
+    plot.figure.suptitle(f'''{BARCODE} Read length distribution\n N50: {n50}kb - Total data: {total_data}Mb''',
                   fontsize=24, fontdict={"weight": "bold"}, y=1.2)
     
     plot.savefig(plot_path)
@@ -205,7 +229,7 @@ def filtlong_run(fastq_file, read_len=1000):
     fastq_dir = fastq_file.parent
     len_filt_file_path = fastq_dir/"len_filter_reads.fq"
     
-    # remove any tmp files from previous crashed runs
+    # remove any tmp files from previous crashed runs =)
     if len_filt_file_path.is_file():
         os.remove(len_filt_file_path)
 
@@ -223,7 +247,7 @@ def kraken2_run(len_filtered_fastq: Path, BARCODE: str):
     '''
     KREPORT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_.kreport"
     OUTPUT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_output.krk"
-    CONFIDENCE='0.01'
+    CONFIDENCE='0.02'
 
     # this works
     run(['kraken2',
@@ -317,13 +341,14 @@ def main():
         # Gather the reads and assign Path of reads to 'fastq_file'
         # This asignment is a dumb way to do this
         fastq_file = concat_read_files(fq_dir)
+        
         # Filter the reads and assign the Path of the filtered reads to 'len_filtered_fastq'
         len_filtered_fastq = filtlong_run(fastq_file)
 
         print("\nFiltered reads live at: " + bcolors.HEADER + f"{len_filtered_fastq}\n" + bcolors.ENDC)
         
         # Do some plotting of the reads
-        if not plot_length_dis_graph(fastq_file, RESULTS_PATH):
+        if not plot_length_dis_graph(fq_dir, BARCODE, RESULTS_PATH):
             # need to clean up the temp files here
             os.remove(fastq_file)
             os.remove(len_filtered_fastq)
@@ -348,5 +373,6 @@ def main():
 
     print(bcolors.YELLOW + "\nPOx_POC finished! Results are in: " + bcolors.HEADER + f"{RESULTS_PATH}" + bcolors.ENDC)
     print(bcolors.YELLOW + "\nThanks!" + bcolors.ENDC)
+
 if __name__ == '__main__':
     main()
