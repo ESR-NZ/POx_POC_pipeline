@@ -32,18 +32,14 @@ DEPS="$INSTALL_SCRIPT_DIR/deps"
 [ ! -d $DEPS ] && mkdir $DEPS
 
 
-
-echo "Installing dependancies"
-echo ""
-# Install filtlong before the activation of conda env or it doesn't work 
-echo ""
-echo "Install filtlong"
-echo ""
 cd $DEPS
-git clone https://github.com/rrwick/Filtlong.git
-cd Filtlong
-make -j
-mv bin/filtlong $BIN
+echo "Downloading seqkit static binary"
+wget https://github.com/shenwei356/seqkit/releases/download/v2.1.0/seqkit_linux_arm64.tar.gz
+tar -xvf seqkit_linux_arm64.tar.gz
+mv seqkit $BIN
+rm seqkit_linux_arm64.tar.gz
+echo ""
+
 
 cd $INSTALL_SCRIPT_DIR
 
@@ -93,19 +89,3 @@ echo "add the following to the end of your ~/.bashrc file"
 echo "export PATH=$BIN:\$PATH"
 echo "export KRAKEN2_DB_PATH=${K_DATABASE}/minikraken2_v2_8GB_201904_UPDATE"
 
-
-# ### The following needs the most work. Need a cleaner way to do this ###
-
-# # #add stuff to path via init.script 
-# # echo "export PATH=${INSTALL_DIR}/bin:${INSTALL_DIR}/bin/scripts:${INSTALL_DIR}/bin/dashboard:${INSTALL_DIR}/bin/dashboard/dashboard.Rmd:${PATH}" >> $INSTALL_DIR/bin/init.sh
-
-# # # add some environmental vars (must be a better way to do this)
-# # echo "export RCF_TAXDUMP=${INSTALL_DIR}/recentrifuge/taxdump" >> $INSTALL_DIR/bin/init.sh
-
-# # echo "export KRAKEN2_DB_PATH=${K_DATABASE}/minikraken2_v2_8GB_201904_UPDATE" >> $INSTALL_DIR/bin/init.sh
-
-# # # might need to add some conda stuff here for the launch script
-# # echo "export CONDA_PATH=${INSTALL_DIR}/miniconda/etc/profile.d/conda.sh" >> $INSTALL_DIR/bin/init.sh
-
-# # # this sucks, needs fixing
-# # cat $INSTALL_DIR/bin/init.sh >> ~/.bashrc
