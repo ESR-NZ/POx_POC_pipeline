@@ -222,23 +222,29 @@ def plot_length_dis_graph(fq_dir, BARCODE, results_path):
     return True
 
 
-def filtlong_run(fastq_file, read_len=1000):
+def run_seqkit_lenght_filter(fastq_file, read_len=900):
     '''
-    Generates and runs a call to length filter the reads with filtlong.
-    Takes in a fastq file path and returns the path to the length filtered reads fastq
+    Runs seqkit length filter on the fastq file.
     '''
     fastq_dir = fastq_file.parent
-    len_filt_file_path = fastq_dir/"len_filter_reads.fq"
-    
-    # remove any tmp files from previous crashed runs =)
-    if len_filt_file_path.is_file():
-        os.remove(len_filt_file_path)
+    BARCODE = fastq_dir.name
+    print(f'\nRunning seqkit length filter for {BARCODE}\n')
 
-    filt_cmd = f'filtlong --min_length {read_len} {fastq_file} > {len_filt_file_path}'
-    
-    run(filt_cmd, shell=True, check=True)
-    
-    return len_filt_file_path
+    len_filt_file_path = fastq_dir/"len_filter_reads.fq"
+    # the command, as a string, that will be used in a bash subprocess run the command
+    len_filter_cmd = f"seqkit seq -g -m {read_len} {fastq_file} > {len_filt_file_path}"
+    # span a subprocess and run the command
+    sp = Popen(len_filter_cmd, shell=True, stdout=PIPE) # people dont like 'shell = true'
+    # get the results back from the sp
+    sp.communicate()
+    # check the exit code
+    if sp.returncode != 0:
+        print(f'Error running seqkit length filter for {BARCODE}')
+        return False
+    else:
+        print(f'Seqkit length filter for {BARCODE} complete\n')
+        return len_filt_file_path
+
 
 
 def kraken2_run(len_filtered_fastq: Path, BARCODE: str):
@@ -344,7 +350,7 @@ def main():
         fastq_file = concat_read_files(fq_dir)
         
         # Filter the reads and assign the Path of the filtered reads to 'len_filtered_fastq'
-        len_filtered_fastq = filtlong_run(fastq_file)
+        len_filtered_fastq = run_seqkit_lenght_filter(fastq_file)
 
         print("\nFiltered reads live at: " + bcolors.HEADER + f"{len_filtered_fastq}\n" + bcolors.ENDC)
         
