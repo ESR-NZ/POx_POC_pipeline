@@ -319,7 +319,8 @@ def write_classify_to_file(species_dict: dict) -> str:
 
 ####################### main func to run the script ################
 def main():
-    print("Looking for all your samples in run: " + bcolors.HEADER + f"{minKnow_run_path}\n" + bcolors.ENDC)
+    print("\nRunning POX-POC pipeline")
+    print("\nLooking for all your samples in run: " + bcolors.HEADER + f"{minKnow_run_path}\n" + bcolors.ENDC)
     fastq_dirs = get_fastq_dirs(minKnow_run_path)
     
 
