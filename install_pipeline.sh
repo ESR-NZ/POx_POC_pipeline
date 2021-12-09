@@ -31,6 +31,7 @@ BIN="$INSTALL_SCRIPT_DIR/bin"
 DEPS="$INSTALL_SCRIPT_DIR/deps"
 [ ! -d $DEPS ] && mkdir $DEPS
 
+# Sort out some dependencies first
 
 cd $DEPS
 echo "Downloading seqkit static binary"
@@ -41,6 +42,7 @@ rm seqkit_linux_arm64.tar.gz
 echo ""
 
 
+# now the python dependencies
 cd $INSTALL_SCRIPT_DIR
 
 # following assumes conda is installed on the system, add this to README.md
@@ -81,7 +83,12 @@ else
 fi
 
 # symlink the run script to the repo bin dir
-ln -s $INSTALL_SCRIPT_DIR/scripts/POX-POC_run.py $BIN/POX-POC_run.py
+ln -s $INSTALL_SCRIPT_DIR/POX-POC_run.py $BIN/POX-POC_run.py
+
+cd $INSTALL_SCRIPT_DIR
+# now install the pipeline python package
+pip install .
+
 
 # prompt manually change the $PATH and set any environmental variable needed 
 echo ""
