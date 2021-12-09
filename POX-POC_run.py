@@ -74,45 +74,6 @@ def is_gz_file(file_path: Path) -> bool:
         return is_gzip
 
 
-# concat reads for each "barcode" to single file for analysis
-def concat_read_files(fq_dir: Path) -> Path:
-    '''
-    Takes in a Path object of a directory of fastq files and combines them
-    into a singe file within that same directory. The function then returns
-    the path to this new file. This uses the unix cat command.
-    Could probably make this more parallel...   
-    '''
-    all_reads = Path(f"{fq_dir / fq_dir.name}_all_reads") 
-    
-    # remove any tmp files from previous crashed runs
-    # this works but is ugly, needs attention
-    if all_reads.with_suffix('.fastq').is_file():
-        os.remove(all_reads.with_suffix('.fastq'))
-    if all_reads.with_suffix('.fastq.gz').is_file():
-        os.remove(all_reads.with_suffix('.fastq.gz'))
-    
-
-    print(f'Concatenating all fastq read files to {all_reads.name}') # print for debug
-    cat_cmd = f"cat {fq_dir}/*.fastq* > {all_reads}"
-    
-    # run the command with supprocess.run 
-    run(cat_cmd, shell=True, check=True)
-    
-    # add the correct suffix to the file based on gzip'd or not
-    # this works but is ugly, needs attention
-    if is_gz_file(all_reads):
-        all_reads.replace(all_reads.with_suffix('.fastq.gz'))
-        all_reads_suffix = all_reads.parent / (all_reads.name + '.fastq.gz')
-    else:
-        all_reads.replace(all_reads.with_suffix('.fastq')) 
-        all_reads_suffix = all_reads.parent / (all_reads.name + '.fastq')
-    
-    print(bcolors.HEADER + f"{all_reads_suffix}" + bcolors.ENDC)
-    
-    return all_reads_suffix
-
-
-
 ####################### main func to run the script ################
 def main():
     print("\nRunning POX-POC pipeline")
@@ -129,7 +90,7 @@ def main():
         
         # Gather the reads and assign Path of reads to 'fastq_file'
         # This asignment is a dumb way to do this
-        fastq_file = concat_read_files(fq_dir)
+        fastq_file = qc.concat_read_files(fq_dir)
         
         # Filter the reads and assign the Path of the filtered reads to 'len_filtered_fastq'
         len_filtered_fastq = qc.run_seqkit_lenght_filter(fastq_file)
