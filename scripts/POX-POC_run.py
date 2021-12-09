@@ -322,7 +322,6 @@ def main():
     print("\nRunning POX-POC pipeline")
     print("\nLooking for all your samples in run: " + bcolors.HEADER + f"{minKnow_run_path}\n" + bcolors.ENDC)
     fastq_dirs = get_fastq_dirs(minKnow_run_path)
-    
 
     for fq_dir in sorted(fastq_dirs):
         
@@ -351,9 +350,7 @@ def main():
 
         print(f'Passed reads: ' + bcolors.RED + f"{num_reads}\n" + bcolors.ENDC)
         
-
-    
-        # Do some plotting of the reads
+        # Do some plotting of the passed reads
         if not plot_length_dis_graph(fq_dir, BARCODE, lens_array, RESULTS_PATH):
             # need to clean up the temp files here
             os.remove(fastq_file)
@@ -371,7 +368,6 @@ def main():
         top_species = write_classify_to_file(species_dict)
 
         print(bcolors.YELLOW + "\nTop classifiction hit: " + bcolors.BLUE + f"{top_species}\n" + bcolors.ENDC)
-
 
         # need to clean up the temp files here
         os.remove(fastq_file)
