@@ -3,7 +3,6 @@
 from pathlib import Path
 from Bio import SeqIO
 from subprocess import Popen, PIPE, run
-import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
 import re
@@ -12,6 +11,7 @@ import argparse
 import csv
 import os
 import shutil
+import POX_POC as pcx
 
 
 # terminal text color
@@ -138,22 +138,6 @@ def get_lens_array(fastq_file):
     return lens_array
 
 
-def func_N50(lens_array):
-    '''
-    Does what it says on the tin. Takes in the read lenths array and spits out the N50 stat
-    Fast approximation calc. 
-    '''
-    lens_array.sort()
-    
-    #half of the total data
-    half_sum = sum(lens_array)/2
-    cum_sum = 0
-    # find the lenght of the read that is at least half the total data length 
-    for v in lens_array:
-        cum_sum += v
-        if cum_sum >= half_sum:
-            return int(v)
-
 
 def count_fastq_bases(fastq_file):
     '''
@@ -177,7 +161,7 @@ def plot_length_dis_graph(fq_dir, BARCODE, lens_array, results_path):
     passed_bases = count_fastq_bases(fastq_file)
     
     print(f'Calc n50 for plot')
-    n50 = func_N50(lens_array)
+    n50 = pcx.func_N50(lens_array)
     
     # conver to kb
     n50 = round(n50/1000, 1)
