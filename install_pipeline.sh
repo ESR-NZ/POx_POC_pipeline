@@ -85,10 +85,6 @@ fi
 # symlink the run script to the repo bin dir
 ln -s $INSTALL_SCRIPT_DIR/POX-POC_run.py $BIN/POX-POC_run.py
 
-cd $INSTALL_SCRIPT_DIR
-# now install the pipeline python package
-pip install .
-
 
 # prompt manually change the $PATH and set any environmental variable needed 
 echo ""
