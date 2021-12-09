@@ -6,13 +6,12 @@ from subprocess import Popen, PIPE, run
 import seaborn as sns
 from matplotlib import pyplot as plt
 import re
-import gzip
+
 import argparse
 import csv
 import os
 import shutil
-import POX_POC as pcx
-
+from POX_POC import plotting, qc
 
 # terminal text color
 class bcolors:
@@ -117,76 +116,6 @@ def concat_read_files(fq_dir: Path) -> Path:
     print(bcolors.HEADER + f"{all_reads_suffix}" + bcolors.ENDC)
     
     return all_reads_suffix
-
-
-# Function for data QC
-def get_lens_array(fastq_file):
-    '''
-    Takes in a single fastq file and returns and list of the legths of each read
-    in the file. Used to calc the N50 and histogram.
-    Have identified that this can be done much faster with unix or Rust. 
-    This will surfice for the draft script for now.
-    '''
-    ## this needs to handle gzipped files
-    if is_gz_file(fastq_file):
-        with gzip.open(fastq_file, "rt") as gz_file:
-            lens_array = [len(rec) for rec in SeqIO.parse(gz_file, "fastq")]
-               
-    else:
-        lens_array = [len(rec) for rec in SeqIO.parse(fastq_file, "fastq")]
-    
-    return lens_array
-
-
-
-def count_fastq_bases(fastq_file):
-    '''
-    counts the number of bases sequenced in a fastq file
-    '''
-    # the command, as a string, that will be used in a bash subprocess to do the calculation
-    cat_cmd = f"cat {fastq_file} | paste - - - - | cut -f 2 | tr -d '\n' | wc -c"
-    # span a subprocess and run the command
-    sp = Popen(cat_cmd, shell=True, stdout=PIPE) # people dont like 'shell = true'
-    # get the results back from the sp
-    bases = sp.communicate()[0]
-    
-    return int(bases.decode('ascii').rstrip())
-
-
-def plot_length_dis_graph(fq_dir, BARCODE, lens_array, results_path):
-    
-    # This named file should be in the directory by the time this plotting fuction is called 
-    fastq_file = fq_dir/"len_filter_reads.fq"
-        
-    passed_bases = count_fastq_bases(fastq_file)
-    
-    print(f'Calc n50 for plot')
-    n50 = pcx.func_N50(lens_array)
-    
-    # conver to kb
-    n50 = round(n50/1000, 1)
-    total_data = round(passed_bases/1000000, 2)
-
-    plot_path = results_path/f"{BARCODE}_read_length_distrabution_plot.png"
-    
-    print(f"Plottig {BARCODE} to: " + bcolors.HEADER + f"{plot_path}" + bcolors.ENDC)
-    
-    # plot the histogram
-    plot = sns.displot(x=lens_array, 
-                    weights = lens_array,
-                    bins = 200, 
-                    log_scale=(True,False), 
-                    height=8,
-                    aspect=2)
-
-    plot.set(ylabel='bases', xlim=(800, max(lens_array)+5000))
-
-    plot.figure.suptitle(f'''{BARCODE} Read length distribution\n N50: {n50}kb - Total data: {total_data}Mb''',
-                  fontsize=24, fontdict={"weight": "bold"}, y=1.2)
-    
-    plot.savefig(plot_path)
-    plt.close('all')
-    return True
 
 
 def run_seqkit_lenght_filter(fastq_file, read_len=900):
@@ -325,7 +254,7 @@ def main():
         print("Filtered reads live at: " + bcolors.HEADER + f"{len_filtered_fastq}\n" + bcolors.ENDC)
         
         print(f'Calc length array for ' + bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
-        lens_array = get_lens_array(len_filtered_fastq)
+        lens_array = qc.get_lens_array(len_filtered_fastq)
         num_reads = len(lens_array)
 
         if num_reads < 1000:
@@ -335,7 +264,7 @@ def main():
         print(f'Passed reads: ' + bcolors.RED + f"{num_reads}\n" + bcolors.ENDC)
         
         # Do some plotting of the passed reads
-        if not plot_length_dis_graph(fq_dir, BARCODE, lens_array, RESULTS_PATH):
+        if not plotting.plot_length_dis_graph(fq_dir, BARCODE, lens_array, RESULTS_PATH):
             # need to clean up the temp files here
             os.remove(fastq_file)
             os.remove(len_filtered_fastq)

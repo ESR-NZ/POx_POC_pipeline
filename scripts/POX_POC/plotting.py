@@ -3,6 +3,8 @@
 import seaborn as sns
 from matplotlib import pyplot as plt
 from subprocess import Popen, PIPE, run
+from Bio import SeqIO
+from qc import *
 
 # terminal text color
 class bcolors:
@@ -13,21 +15,6 @@ class bcolors:
     RED = '\033[91m'
     ENDC = '\033[0m'
 
-def func_N50(lens_array):
-    '''
-    Does what it says on the tin. Takes in the read lenths array and spits out the N50 stat
-    Fast approximation calc. 
-    '''
-    lens_array.sort()
-    
-    #half of the total data
-    half_sum = sum(lens_array)/2
-    cum_sum = 0
-    # find the lenght of the read that is at least half the total data length 
-    for v in lens_array:
-        cum_sum += v
-        if cum_sum >= half_sum:
-            return int(v)
 
 
 def count_fastq_bases(fastq_file):
@@ -42,6 +29,7 @@ def count_fastq_bases(fastq_file):
     bases = sp.communicate()[0]
     
     return int(bases.decode('ascii').rstrip())
+
 
 
 
