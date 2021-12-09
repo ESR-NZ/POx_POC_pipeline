@@ -1,6 +1,8 @@
 import gzip
 from Bio import SeqIO
 from pathlib import Path
+from subprocess import Popen, PIPE
+from terminal_color import bcolors
 
 
 # Functions for data QC and to support the plotting
@@ -13,7 +15,6 @@ def is_gz_file(file_path: Path) -> bool:
         is_gzip = f.read(2) == b'\x1f\x8b'
 
         return is_gzip
-
 
 
 def get_lens_array(fastq_file):
@@ -49,3 +50,27 @@ def func_N50(lens_array):
         cum_sum += v
         if cum_sum >= half_sum:
             return int(v)
+
+
+def run_seqkit_lenght_filter(fastq_file, read_len=900):
+    '''
+    Runs seqkit length filter on the fastq file.
+    '''
+    fastq_dir = fastq_file.parent
+    BARCODE = fastq_dir.name
+    print(f'\nRunning seqkit length filter for all read in sample: '+ bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
+
+    len_filt_file_path = fastq_dir/"len_filter_reads.fq"
+    # the command, as a string, that will be used in a bash subprocess run the command
+    len_filter_cmd = f"seqkit seq -g -m {read_len} {fastq_file} > {len_filt_file_path}"
+    # span a subprocess and run the command
+    sp = Popen(len_filter_cmd, shell=True, stdout=PIPE) # people dont like 'shell = true'
+    # get the results back from the sp
+    sp.communicate()
+    # check the exit code
+    if sp.returncode != 0:
+        print(f'Error running seqkit length filter for sample: '+ bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
+        return False
+    else:
+        print(f'Seqkit length filter for sample ' + bcolors.RED + f"{BARCODE} " + bcolors.ENDC + 'complete\n')
+        return len_filt_file_path

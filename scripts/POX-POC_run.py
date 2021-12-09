@@ -1,17 +1,11 @@
 #!/usr/bin/env python
 
 from pathlib import Path
-from Bio import SeqIO
 from subprocess import Popen, PIPE, run
-import seaborn as sns
-from matplotlib import pyplot as plt
-import re
-
 import argparse
-import csv
 import os
 import shutil
-from POX_POC import plotting, qc
+from POX_POC import plotting, qc, klassifier
 
 # terminal text color
 class bcolors:
@@ -40,7 +34,6 @@ args = arg_parser.parse_args()
 # path constants
 minKnow_run_path = Path(args.minKnow_run_path) 
 
-KRAKEN2_DB_PATH=os.environ.get('KRAKEN2_DB_PATH')
 
 # Will put results in the minKnow dir for now
 RESULTS_PATH = minKnow_run_path/"POx_POC_Results"
@@ -118,116 +111,6 @@ def concat_read_files(fq_dir: Path) -> Path:
     return all_reads_suffix
 
 
-def run_seqkit_lenght_filter(fastq_file, read_len=900):
-    '''
-    Runs seqkit length filter on the fastq file.
-    '''
-    fastq_dir = fastq_file.parent
-    BARCODE = fastq_dir.name
-    print(f'\nRunning seqkit length filter for all read in sample: '+ bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
-
-    len_filt_file_path = fastq_dir/"len_filter_reads.fq"
-    # the command, as a string, that will be used in a bash subprocess run the command
-    len_filter_cmd = f"seqkit seq -g -m {read_len} {fastq_file} > {len_filt_file_path}"
-    # span a subprocess and run the command
-    sp = Popen(len_filter_cmd, shell=True, stdout=PIPE) # people dont like 'shell = true'
-    # get the results back from the sp
-    sp.communicate()
-    # check the exit code
-    if sp.returncode != 0:
-        print(f'Error running seqkit length filter for sample: '+ bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
-        return False
-    else:
-        print(f'Seqkit length filter for sample ' + bcolors.RED + f"{BARCODE} " + bcolors.ENDC + 'complete\n')
-        return len_filt_file_path
-
-
-
-def kraken2_run(len_filtered_fastq: Path, BARCODE: str):
-    '''
-    Generates and runs the kraken2 call. Takes in the path to length filtered reads.
-    Returns the path the the generated report 
-    '''
-    KREPORT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_.kreport"
-    OUTPUT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_output.krk"
-    CONFIDENCE='0.02'
-
-    print(f'Running read classifier for sample: '+ bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
-    # this works
-    run(['kraken2',
-          '--db', KRAKEN2_DB_PATH,
-          '--confidence', CONFIDENCE,
-          '--report', KREPORT_FILE_PATH,
-           '--output', OUTPUT_FILE_PATH,
-           len_filtered_fastq],
-           )
-    
-    return (OUTPUT_FILE_PATH, KREPORT_FILE_PATH)
-
-
-def parse_kraken(BARCODE: str, kreport_path: Path) -> dict:
-    '''
-    Gets the top species hit from kraken2 for resfinder. 
-    Output is a dict of the top three hits at the species level. 
-    '''
-    # set some parameters
-    level="S"
-    depth=3
-    
-    def extract_kreport(line, round_val=1 ):
-        s = re.split("\t", re.sub("  ","",line.rstrip()))
-        prcnt = str( round(float(s[0].lstrip()), round_val) )
-        sp = s[len(s)-1]
-        #return((sp, prcnt+"%"))
-        #return(sp, prcnt+"%")
-        return sp
-
-    with open(kreport_path, "r") as f:
-        #tax_dict = {}
-        species = []
-        for line in f:
-        # extract all lines matching the required ID level
-        #tax_level = line.split("\t")[3]
-        #if tax_level == level: 
-            if re.search("\t"+level, line): 
-                species.append(extract_kreport( line, round_val=1 ))
-            
-        if species:
-            if len(species) >= depth:
-                tax_dict = {f'Taxon{i+1}':species[i] for i in range(depth)}
-                tax_dict['Barcode'] = BARCODE
-            else:
-                tax_dict = {f'Taxon{i+1}':species[i] for i in range(len(species))}
-                tax_dict['Barcode'] = BARCODE
-
-            return tax_dict
-        
-        else:
-            #quick fix for none empty kreports
-            tax_dict = {'Barcode':BARCODE, 'Taxon1': 'None found'}
-
-def write_classify_to_file(species_dict: dict) -> str: 
-    '''
-    Write the results of classificain to a single file: classification_results.csv. 
-    Returns the top species for printing to screen.
-    Needs a bit of formatting work.
-    '''
-    tax_csv_file_path = RESULTS_PATH/'classification_results.csv'
-    tax_file_exists = tax_csv_file_path.is_file()
-    
-    with open(tax_csv_file_path, 'a') as tax_csv:
-        header_names = ['Barcode', 'Taxon1', 'Taxon2', 'Taxon3']
-        tax_writer = csv.DictWriter(tax_csv, fieldnames=header_names)
-        
-        if not tax_file_exists:
-            tax_writer.writeheader()
-        
-        tax_writer.writerow(species_dict)
-
-    top_species = species_dict['Taxon1']
-
-    return top_species
-
 
 
 ####################### main func to run the script ################
@@ -249,7 +132,7 @@ def main():
         fastq_file = concat_read_files(fq_dir)
         
         # Filter the reads and assign the Path of the filtered reads to 'len_filtered_fastq'
-        len_filtered_fastq = run_seqkit_lenght_filter(fastq_file)
+        len_filtered_fastq = qc.run_seqkit_lenght_filter(fastq_file)
         
         print("Filtered reads live at: " + bcolors.HEADER + f"{len_filtered_fastq}\n" + bcolors.ENDC)
         
@@ -271,14 +154,14 @@ def main():
             continue
 
         # Run the classifer and unpack the tuple of Paths of the output files to vars
-        KOUTPUT_PATH, KREPORT_PATH = kraken2_run(len_filtered_fastq, BARCODE)
+        KREPORT_PATH = klassifier.kraken2_run(len_filtered_fastq, BARCODE, RESULTS_PATH)[1]
         
         # parsing the k2 report to get top hits
-        species_dict = parse_kraken(BARCODE, KREPORT_PATH)
+        species_dict = klassifier.parse_kraken(BARCODE, KREPORT_PATH)
         
         # writing the tophits to a file, probalby crash if there are no hits
         # needs attention
-        top_species = write_classify_to_file(species_dict)
+        top_species = klassifier.write_classify_to_file(species_dict, RESULTS_PATH)
 
         print(bcolors.YELLOW + "\nTop classifiction hit: " + bcolors.BLUE + f"{top_species}\n" + bcolors.ENDC)
 

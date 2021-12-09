@@ -5,16 +5,7 @@ from matplotlib import pyplot as plt
 from subprocess import Popen, PIPE, run
 from Bio import SeqIO
 from qc import *
-
-# terminal text color
-class bcolors:
-    HEADER = '\033[95m'
-    BLUE = '\033[94m'
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    RED = '\033[91m'
-    ENDC = '\033[0m'
-
+from terminal_color import bcolors
 
 
 def count_fastq_bases(fastq_file):
@@ -29,8 +20,6 @@ def count_fastq_bases(fastq_file):
     bases = sp.communicate()[0]
     
     return int(bases.decode('ascii').rstrip())
-
-
 
 
 def plot_length_dis_graph(fq_dir, BARCODE, lens_array, results_path):
