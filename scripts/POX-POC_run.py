@@ -5,7 +5,8 @@ from subprocess import Popen, PIPE, run
 import argparse
 import os
 import shutil
-from POX_POC import plotting, qc, klassifier
+from pox_poc import plotting, qc, klassifier
+
 
 # terminal text color
 class bcolors:
@@ -109,7 +110,6 @@ def concat_read_files(fq_dir: Path) -> Path:
     print(bcolors.HEADER + f"{all_reads_suffix}" + bcolors.ENDC)
     
     return all_reads_suffix
-
 
 
 

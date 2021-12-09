@@ -2,7 +2,7 @@ import gzip
 from Bio import SeqIO
 from pathlib import Path
 from subprocess import Popen, PIPE
-from terminal_color import bcolors
+from pox_poc.terminal_color import bcolors
 
 
 # Functions for data QC and to support the plotting

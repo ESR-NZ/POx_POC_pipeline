@@ -1,11 +1,8 @@
-
-
 import seaborn as sns
 from matplotlib import pyplot as plt
 from subprocess import Popen, PIPE, run
-from Bio import SeqIO
-from qc import *
-from terminal_color import bcolors
+from pox_poc import qc
+from pox_poc.terminal_color import bcolors
 
 
 def count_fastq_bases(fastq_file):
@@ -30,7 +27,7 @@ def plot_length_dis_graph(fq_dir, BARCODE, lens_array, results_path):
     passed_bases = count_fastq_bases(fastq_file)
     
     print(f'Calc n50 for plot')
-    n50 = func_N50(lens_array)
+    n50 = qc.func_N50(lens_array)
     
     # conver to kb
     n50 = round(n50/1000, 1)
@@ -43,7 +40,8 @@ def plot_length_dis_graph(fq_dir, BARCODE, lens_array, results_path):
     # plot the histogram
     plot = sns.displot(x=lens_array, 
                     weights = lens_array,
-                    bins = 200, 
+                    bins = 200,
+                    kde = True,
                     log_scale=(True,False), 
                     height=8,
                     aspect=2)

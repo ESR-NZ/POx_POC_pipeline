@@ -1,6 +1,6 @@
 from pathlib import Path
 from subprocess import Popen, PIPE, run
-from terminal_color import bcolors
+from pox_poc.terminal_color import bcolors
 import os
 import re
 import csv
