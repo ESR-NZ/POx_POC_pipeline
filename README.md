@@ -2,7 +2,7 @@
 
 A work in progress. 
 
-An installable environment and code for the Jetson Xaiver to analyse clinical bacterial isoaltes from nanopore sequencing data. This is a baseline minimum viable versions with out the proposed results dashboard not yet working. 
+An installable environment and code for the Jetson Xaiver to analyse clinical bacterial isoaltes from nanopore sequencing data. This is a baseline minimum viable versions without the proposed results dashboard and other features. 
 
 This analysis pipeline is designed to make read classificaion easy to run at a point-of-care setting. It will also produce some simple sequence data QC plots for each sample included in the run. The only expeced input for the programe is a barcoded ONT sequence run output directory. The program will search through the output directory to find each barcode and treat each one as a sample. Results will be printed to the screen and saved to a results directory too.        
 
