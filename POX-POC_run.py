@@ -64,16 +64,6 @@ def get_fastq_dirs(minKnow_run_path):
     return filtered_fastq_dirs 
 
 
-def is_gz_file(file_path: Path) -> bool:
-    '''
-    dirty trick to check for gzipped files based on magic number first 2 bites
-    '''
-    with open(file_path, 'rb') as f:
-        is_gzip = f.read(2) == b'\x1f\x8b'
-
-        return is_gzip
-
-
 ####################### main func to run the script ################
 def main():
     print("\nRunning POX-POC pipeline")
