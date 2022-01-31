@@ -17,6 +17,23 @@ def is_gz_file(file_path: Path) -> bool:
         return is_gzip
 
 
+def count_fastq_bases(fastq_file):
+    '''
+    counts the number of bases sequenced in a fastq file
+    '''
+    # the command, as a string, that will be used in a bash subprocess to do the calculation
+    if is_gz_file(fastq_file):
+        cat_cmd = f"zcat {fastq_file} | paste - - - - | cut -f 2 | tr -d '\n' | wc -c"
+    else:
+        cat_cmd = f"cat {fastq_file} | paste - - - - | cut -f 2 | tr -d '\n' | wc -c"
+    # span a subprocess and run the command
+    sp = Popen(cat_cmd, shell=True, stdout=PIPE) # people dont like 'shell = true'
+    # get the results back from the sp
+    bases = sp.communicate()[0]
+    
+    return int(bases.decode('ascii').rstrip())
+
+
 def get_lens_array(fastq_file):
     '''
     Takes in a single fastq file and returns and list of the legths of each read

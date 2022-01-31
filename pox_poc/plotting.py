@@ -5,31 +5,18 @@ from pox_poc import qc
 from pox_poc.terminal_color import bcolors
 
 
-def count_fastq_bases(fastq_file):
-    '''
-    counts the number of bases sequenced in a fastq file
-    '''
-    # the command, as a string, that will be used in a bash subprocess to do the calculation
-    cat_cmd = f"cat {fastq_file} | paste - - - - | cut -f 2 | tr -d '\n' | wc -c"
-    # span a subprocess and run the command
-    sp = Popen(cat_cmd, shell=True, stdout=PIPE) # people dont like 'shell = true'
-    # get the results back from the sp
-    bases = sp.communicate()[0]
-    
-    return int(bases.decode('ascii').rstrip())
-
 
 def plot_length_dis_graph(fq_dir, BARCODE, lens_array, results_path):
     
     # This named file should be in the directory by the time this plotting fuction is called 
     fastq_file = fq_dir/"len_filter_reads.fq"
         
-    passed_bases = count_fastq_bases(fastq_file)
+    passed_bases = qc.count_fastq_bases(fastq_file)
     
     print(f'Calc n50 for plot')
     n50 = qc.func_N50(lens_array)
     
-    # conver to kb
+    # conver to kb/mb
     n50 = round(n50/1000, 1)
     total_data = round(passed_bases/1000000, 2)
 
