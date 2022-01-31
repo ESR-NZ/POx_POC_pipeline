@@ -26,7 +26,7 @@ def count_fastq_bases(fastq_file):
         cat_cmd = f"zcat {fastq_file} | paste - - - - | cut -f 2 | tr -d '\n' | wc -c"
     else:
         cat_cmd = f"cat {fastq_file} | paste - - - - | cut -f 2 | tr -d '\n' | wc -c"
-    # span a subprocess and run the command
+    # spawn a subprocess and run the command
     sp = Popen(cat_cmd, shell=True, stdout=PIPE) # people dont like 'shell = true'
     # get the results back from the sp
     bases = sp.communicate()[0]
@@ -77,7 +77,7 @@ def run_seqkit_lenght_filter(fastq_file, read_len=900):
     BARCODE = fastq_dir.name
     print(f'\nRunning seqkit length filter for all read in sample: '+ bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
 
-    len_filt_file_path = fastq_dir/"len_filter_reads.fq"
+    len_filt_file_path = fastq_dir/f"{BARCODE}_len_filter_reads.fq"
     # the command, as a string, that will be used in a bash subprocess run the command
     len_filter_cmd = f"seqkit seq -g -m {read_len} {fastq_file} > {len_filt_file_path}"
     # span a subprocess and run the command

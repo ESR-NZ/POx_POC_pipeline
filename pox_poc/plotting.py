@@ -9,7 +9,7 @@ from pox_poc.terminal_color import bcolors
 def plot_length_dis_graph(fq_dir, BARCODE, lens_array, results_path):
     
     # This named file should be in the directory by the time this plotting fuction is called 
-    fastq_file = fq_dir/"len_filter_reads.fq"
+    fastq_file = fq_dir/f"{BARCODE}_len_filter_reads.fq"
         
     passed_bases = qc.count_fastq_bases(fastq_file)
     
