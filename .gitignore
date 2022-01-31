@@ -1,4 +1,4 @@
-pox_poc/__pycache__/
+pox_poc/__pycache__/*
 build/
 *.egg-info/
 
