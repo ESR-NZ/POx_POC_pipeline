@@ -69,15 +69,15 @@ def func_N50(lens_array):
             return int(v)
 
 
-def run_seqkit_lenght_filter(fastq_file, read_len=900):
+def run_seqkit_lenght_filter(fastq_file, BARCODE, COMBINED_FASTQ_DIR, read_len=1000):
     '''
-    Runs seqkit length filter on the fastq file.
+    Runs seqkit length filter on the fastq file and return the filtered file path.
     '''
-    fastq_dir = fastq_file.parent
-    BARCODE = fastq_dir.name
-    print(f'\nRunning seqkit length filter for all read in sample: '+ bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
+    
+    print(f'\nRunning seqkit length filter for all reads in sample: '+ bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
 
-    len_filt_file_path = fastq_dir/f"{BARCODE}_len_filter_reads.fq"
+    # create the output file name
+    len_filt_file_path = COMBINED_FASTQ_DIR/f"{BARCODE}_all_reads_lenght_filtered.fastq"
     # the command, as a string, that will be used in a bash subprocess run the command
     len_filter_cmd = f"seqkit seq -g -m {read_len} {fastq_file} > {len_filt_file_path}"
     # span a subprocess and run the command
@@ -95,14 +95,14 @@ def run_seqkit_lenght_filter(fastq_file, read_len=900):
 
 
 # concat reads for each "barcode" to single file for analysis
-def concat_read_files(fq_dir: Path) -> Path:
+def concat_read_files(fq_dir: Path, COMBINED_FASTQ_DIR: Path) -> Path:
     '''
     Takes in a Path object of a directory of fastq files and combines them
     into a singe file within that same directory. The function then returns
     the path to this new file. This uses the unix cat command.
     Could probably make this more parallel...   
     '''
-    all_reads = Path(f"{fq_dir / fq_dir.name}_all_reads") 
+    all_reads = Path(COMBINED_FASTQ_DIR / f"{fq_dir.name}_all_reads") 
     
     # remove any tmp files from previous crashed runs
     # this works but is ugly, needs attention
@@ -111,7 +111,7 @@ def concat_read_files(fq_dir: Path) -> Path:
     if all_reads.with_suffix('.fastq.gz').is_file():
         os.remove(all_reads.with_suffix('.fastq.gz'))
     
-
+    # do the concat with unix cat command
     print(f'Concatenating all fastq read files to {all_reads.name}') # print for debug
     cat_cmd = f"cat {fq_dir}/*.fastq* > {all_reads}"
     

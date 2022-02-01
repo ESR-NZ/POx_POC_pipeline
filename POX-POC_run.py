@@ -32,16 +32,34 @@ arg_parser.add_argument("minKnow_run_path",
 args = arg_parser.parse_args()
 
 
-# path constants
+# Path constants
 minKnow_run_path = Path(args.minKnow_run_path) 
 
+# check if the supplied run_path is a valid directory, if not exit gracefully
+if not minKnow_run_path.is_dir():
+    print(bcolors.RED + "Supplied path is not a directory. Check the spelling of your path. Exiting..." + bcolors.ENDC)
+    exit()
 
-# Will put results in the minKnow dir for now
+# Put results in a sub-directory of the supplied minKnow directory
 RESULTS_PATH = minKnow_run_path/"POx_POC_Results"
+
 # Make the results directory. Overwrite if exists.
 if RESULTS_PATH.is_dir():
     shutil.rmtree(RESULTS_PATH)
 RESULTS_PATH.mkdir()
+
+# Set up more sub-directories for each result type
+# make a dir for the combinred fastq files
+COMBINED_FASTQ_DIR = RESULTS_PATH/"Combined_fastqs"
+COMBINED_FASTQ_DIR.mkdir()
+
+# make a dir for the kreport files
+KREPORT_DIR = RESULTS_PATH/"Classification_report_files"
+KREPORT_DIR.mkdir()
+
+# make a dir for the plots
+PLOT_DIR = RESULTS_PATH/"Plots"
+PLOT_DIR.mkdir()
 
 
 # Get a list of directories with fastqs in them, this works if multiplexed or not
@@ -58,7 +76,7 @@ def get_fastq_dirs(minKnow_run_path):
     fq_glob_paths = [fq_dir for fq_dir in minKnow_run_path.rglob('*.fastq*')] 
     # get the set of all dirs with fastq files 
     all_fastq_dirs = {fq_path.parent for fq_path in fq_glob_paths}
-    # filter some unwanted dirs
+    # filter some unwanted dirs ie unclassified and fastq_fail
     filtered_fastq_dirs = [p for p in all_fastq_dirs if "fastq_fail" not in p.parts and p.name != "unclassified"]
     
     return filtered_fastq_dirs 
@@ -68,57 +86,64 @@ def get_fastq_dirs(minKnow_run_path):
 def main():
     print("\nRunning POX-POC pipeline")
     print("\nLooking for all your samples in run: " + bcolors.HEADER + f"{minKnow_run_path}\n" + bcolors.ENDC)
+    
+    # all fastq dirs (barcodes) in the run dir
     fastq_dirs = get_fastq_dirs(minKnow_run_path)
 
+    # loop through all fastq dirs (barcodes)
     for fq_dir in sorted(fastq_dirs):
         
-        # Get barcode for this sample
+        # Get barcode for this sample by parsing the dir name
         BARCODE=fq_dir.name.split('_')[0]
 
         print("\nNow working on: " + bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
         print("Checking read numbers for: " + bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
         
-        # Gather the reads and assign Path of reads to 'fastq_file'
-        # This asignment is a dumb way to do this
-        fastq_file = qc.concat_read_files(fq_dir)
+        # Gather the reads and assign Path of reads to 'fastq_files'
+        # resulting file needs to be cleaned up later
+        fastq_file = qc.concat_read_files(fq_dir, COMBINED_FASTQ_DIR)
         
         # Filter the reads and assign the Path of the filtered reads to 'len_filtered_fastq'
-        len_filtered_fastq = qc.run_seqkit_lenght_filter(fastq_file)
-        
+        # resulting file needs to be cleaned up later
+        filter_length=1000
+        len_filtered_fastq = qc.run_seqkit_lenght_filter(fastq_file, BARCODE, COMBINED_FASTQ_DIR, filter_length)
+
         print("Filtered reads live at: " + bcolors.HEADER + f"{len_filtered_fastq}\n" + bcolors.ENDC)
         
         print(f'Calc length array for ' + bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
         lens_array = qc.get_lens_array(len_filtered_fastq)
+        
+        # get the number of reads in the length filtered fastq file
         num_reads = len(lens_array)
 
+        # skip barcodes with less than 1000 reads
         if num_reads < 1000:
             print(f'Skiping sample {BARCODE}, not enough reads\n')
-            continue
-
-        print(f'Passed reads: ' + bcolors.RED + f"{num_reads}\n" + bcolors.ENDC)
-        
-        # Do some plotting of the passed reads
-        if not plotting.plot_length_dis_graph(fq_dir, BARCODE, lens_array, RESULTS_PATH):
-            # need to clean up the temp files here
+            # remove the fastq file and the filtered reads
             os.remove(fastq_file)
             os.remove(len_filtered_fastq)
             continue
 
+        print(f'Passed reads: ' + bcolors.RED + f"{num_reads}\n" + bcolors.ENDC)
+        
+        # Do some plotting of the length filtered fastq file
+        plotting.plot_length_dis_graph(len_filtered_fastq, BARCODE, filter_length ,lens_array, PLOT_DIR)
+
         # Run the classifer and unpack the tuple of Paths of the output files to vars
-        KREPORT_PATH = klassifier.kraken2_run(len_filtered_fastq, BARCODE, RESULTS_PATH)[1]
-        
+        K_PATHS = klassifier.kraken2_run(len_filtered_fastq, BARCODE, KREPORT_DIR)
+        kreport=K_PATHS[0]
+
         # parsing the k2 report to get top hits
-        species_dict = klassifier.parse_kraken(BARCODE, KREPORT_PATH)
+        species_dict = klassifier.parse_kraken(BARCODE, kreport)
         
-        # writing the tophits to a file, probalby crash if there are no hits
-        # needs attention
+        # writing the top-hits to a file, this is a csv file
         top_species = klassifier.write_classify_to_file(species_dict, RESULTS_PATH)
 
         print(bcolors.YELLOW + "\nTop classifiction hit: " + bcolors.BLUE + f"{top_species}\n" + bcolors.ENDC)
 
-        # need to clean up the temp files here
-        os.remove(fastq_file)
-        os.remove(len_filtered_fastq)
+        # cleanup concat fastq_file
+        #os.remove(fastq_file)
+        
 
     print(bcolors.YELLOW + "\nPOx_POC finished! Results are in: " + bcolors.HEADER + f"{RESULTS_PATH}" + bcolors.ENDC)
     print(bcolors.YELLOW + "\nThanks!" + bcolors.ENDC)

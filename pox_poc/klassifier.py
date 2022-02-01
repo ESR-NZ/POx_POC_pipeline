@@ -7,13 +7,13 @@ import csv
 
 KRAKEN2_DB_PATH=os.environ.get('KRAKEN2_DB_PATH')
 
-def kraken2_run(len_filtered_fastq: Path, BARCODE: str, RESULTS_PATH: Path) -> dict:
+def kraken2_run(len_filtered_fastq: Path, BARCODE: str, KREPORT_DIR: Path) -> dict:
     '''
     Generates and runs the kraken2 call. Takes in the path to length filtered reads.
     Returns the path the the generated report 
     '''
-    KREPORT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_.kreport"
-    OUTPUT_FILE_PATH=RESULTS_PATH/f"{BARCODE}_output.krk"
+    KREPORT_FILE_PATH=KREPORT_DIR/f"{BARCODE}_.kreport"
+    OUTPUT_FILE_PATH=KREPORT_DIR/f"{BARCODE}_output.krk"
     CONFIDENCE='0.02'
 
     print(f'Running read classifier for sample: '+ bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
@@ -25,8 +25,8 @@ def kraken2_run(len_filtered_fastq: Path, BARCODE: str, RESULTS_PATH: Path) -> d
            '--output', OUTPUT_FILE_PATH,
            len_filtered_fastq],
            )
-    
-    return (OUTPUT_FILE_PATH, KREPORT_FILE_PATH)
+
+    return (KREPORT_FILE_PATH, OUTPUT_FILE_PATH)
 
 
 def parse_kraken(BARCODE: str, kreport_path: Path) -> dict:
