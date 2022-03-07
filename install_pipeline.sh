@@ -83,7 +83,7 @@ else
 fi
 
 # move the run script to the repo bin dir
-ln -s pox_poc/POX-POC_run.py $BIN/POX-POC_run.py
+ln -s ${INSTALL_SCRIPT_DIR}/POX-POC_run.py ${BIN}/POX-POC_run.py
 
 
 # prompt manually change the $PATH and set any environmental variable needed 
