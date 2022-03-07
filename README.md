@@ -33,3 +33,8 @@ Results can be found in:
 `path/to/run_directory/POx_POC_results`  
 
 This can be run during the sequencing experiment if required to analyse the data generated upto that point.  
+
+
+## Output
+
+to write...
