@@ -19,7 +19,7 @@ To install:
 3) run the install script: `./install_pipeline.sh`
 4) Enter the path to the mounted SSD on the system when prompted.  
 
-The above commands will download and build the other software dependencies needed to run the analysis; namely [`filtlong`](https://github.com/rrwick/Filtlong) and [`kraken2`](https://github.com/DerrickWood/kraken2). Acknowledgements to the authors of this excellent software. 
+The above commands will download and build the other software dependencies needed to run the analysis; namely [`seqkit `](https://bioinf.shenwei.me/seqkit/download/) and [`kraken2`](https://github.com/DerrickWood/kraken2). Acknowledgements to the authors of this excellent software. 
 
 The first time the install script (`install_pipeline.sh`) is run it will also download the required kraken2 database to the SSD.  
 You will need to add the created `bin` directory to your path, as well as, an environent variable (`KRAKEN2_DB_PATH`) so the run script knows where to find the kraken2 database. There are instructions to copy/paste the required lines to your `.bascrc` file shown at the end of the install process, so watch out for those.   
