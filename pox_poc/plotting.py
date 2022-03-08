@@ -1,20 +1,20 @@
 import seaborn as sns
 from matplotlib import pyplot as plt
-from subprocess import Popen, PIPE, run
 from pox_poc import qc
 from pox_poc.terminal_color import bcolors
 
 
 
-def plot_length_dis_graph(fastq_file, BARCODE, filter_length, lens_array, plot_results_path):
+def plot_length_dis_graph(qc_dict, plot_results_path):
     
-    # plot the length distribution
+    # ploting the length distribution
     
-    passed_bases = qc.count_fastq_bases(fastq_file)
-    
-    print(f'Calc n50 for plot')
-    n50 = qc.func_N50(lens_array)
-    
+    BARCODE = qc_dict["BARCODE"]
+    passed_bases = qc_dict["total_base_count"]
+    lens_array = qc_dict["lens_array"]
+    n50 = qc_dict["N50"]
+    filter_length = qc_dict["filter_length"]
+
     # conver to kb/mb
     n50 = round(n50/1000, 1)
     total_data = round(passed_bases/1000000, 2)

@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 
 from pathlib import Path
-from subprocess import Popen, PIPE, run
 import argparse
 import os
 import shutil
 from pox_poc import plotting, qc, klassifier
-
+from datetime import date
 
 # terminal text color
 class bcolors:
@@ -40,8 +39,9 @@ if not minKnow_run_path.is_dir():
     print(bcolors.RED + "Supplied path is not a directory. Check the spelling of your path. Exiting..." + bcolors.ENDC)
     exit()
 
-# Put results in a sub-directory of the supplied minKnow directory
-RESULTS_PATH = minKnow_run_path/"POx_POC_Results"
+# Put results in a dated sub-directory of the supplied minKnow directory
+date_today = date.today()
+RESULTS_PATH = minKnow_run_path/f"POx_POC_Results_{date_today}"
 
 # Make the results directory. Overwrite if exists.
 if RESULTS_PATH.is_dir():
@@ -78,7 +78,9 @@ def get_fastq_dirs(minKnow_run_path):
     all_fastq_dirs = {fq_path.parent for fq_path in fq_glob_paths}
     # filter some unwanted dirs ie unclassified and fastq_fail
     filtered_fastq_dirs = [p for p in all_fastq_dirs if "fastq_fail" not in p.parts and p.name != "unclassified"]
-    
+    # and filter out any Combined_fastqs dirs
+    filtered_fastq_dirs = [p for p in filtered_fastq_dirs if "Combined_fastqs" not in p.parts]
+
     return filtered_fastq_dirs 
 
 
@@ -113,9 +115,10 @@ def main():
         print(f'Calc length array for ' + bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
         lens_array = qc.get_lens_array(len_filtered_fastq)
         
+        
         # get the number of reads in the length filtered fastq file
         num_reads = len(lens_array)
-
+        
         # skip barcodes with less than 1000 reads
         if num_reads < 1000:
             print(f'Skiping sample {BARCODE}, not enough reads\n')
@@ -125,9 +128,24 @@ def main():
             continue
 
         print(f'Passed reads: ' + bcolors.RED + f"{num_reads}\n" + bcolors.ENDC)
+
+        # Get the QC data for the filtered data and write to a dict
+        # get N50
+        print(f'Calc n50\n')
+        N50 = qc.func_N50(lens_array)
         
+        # total bases in the length filtered fastq file
+        total_base_count = qc.count_fastq_bases(len_filtered_fastq)
+
+        qc_dict = {"N50": N50, 
+            "total_base_count": total_base_count, 
+            "number_of_reads": num_reads, 
+            "BARCODE": BARCODE,
+            "filter_length": filter_length,
+            "lens_array": lens_array}
+
         # Do some plotting of the length filtered fastq file
-        plotting.plot_length_dis_graph(len_filtered_fastq, BARCODE, filter_length ,lens_array, PLOT_DIR)
+        plotting.plot_length_dis_graph(qc_dict, PLOT_DIR)
 
         # Run the classifer and unpack the tuple of Paths of the output files to vars
         K_PATHS = klassifier.kraken2_run(len_filtered_fastq, BARCODE, KREPORT_DIR)
@@ -136,13 +154,19 @@ def main():
         # parsing the k2 report to get top hits
         species_dict = klassifier.parse_kraken(BARCODE, kreport)
         
+
+        # add the qc data to the species dict
+        species_dict.update(qc_dict)
+
         # writing the top-hits to a file, this is a csv file
+        # writes to a file called "classification_results.csv"
         top_species = klassifier.write_classify_to_file(species_dict, RESULTS_PATH)
+        
 
         print(bcolors.YELLOW + "\nTop classifiction hit: " + bcolors.BLUE + f"{top_species}\n" + bcolors.ENDC)
 
-        # cleanup concat fastq_file
-        #os.remove(fastq_file)
+        # cleanup combined fastq_file, keep length filtered file for downstream analysis
+        os.remove(fastq_file)
         
 
     print(bcolors.YELLOW + "\nPOx_POC finished! Results are in: " + bcolors.HEADER + f"{RESULTS_PATH}" + bcolors.ENDC)

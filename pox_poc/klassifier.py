@@ -1,5 +1,5 @@
 from pathlib import Path
-from subprocess import Popen, PIPE, run
+from subprocess import run
 from pox_poc.terminal_color import bcolors
 import os
 import re
@@ -43,8 +43,8 @@ def parse_kraken(BARCODE: str, kreport_path: Path) -> dict:
         prcnt = str( round(float(s[0].lstrip()), round_val) )
         sp = s[len(s)-1]
         #return((sp, prcnt+"%"))
-        #return(sp, prcnt+"%")
-        return sp
+        return(sp, prcnt+"%")
+        #return sp
 
     with open(kreport_path, "r") as f:
         #tax_dict = {}
@@ -77,18 +77,21 @@ def write_classify_to_file(species_dict: dict, RESULTS_PATH) -> str:
     Write the results of classificain to a single file: classification_results.csv. 
     Returns the top species for printing to screen.
     Needs a bit of formatting work.
+    Also now writes the qc data to the file too. 
     '''
     tax_csv_file_path = RESULTS_PATH/'classification_results.csv'
     tax_file_exists = tax_csv_file_path.is_file()
     
     with open(tax_csv_file_path, 'a') as tax_csv:
-        header_names = ['Barcode', 'Taxon1', 'Taxon2', 'Taxon3']
+        header_names = ['BARCODE', ' Taxon1', ' Taxon2', ' Taxon3', ' N50', ' number_of_reads']
         tax_writer = csv.DictWriter(tax_csv, fieldnames=header_names)
         
         if not tax_file_exists:
             tax_writer.writeheader()
         
-        tax_writer.writerow(species_dict)
+        dict_to_write = {k:species_dict[k.lstrip()] for k in header_names}
+    
+        tax_writer.writerow(dict_to_write)
 
     top_species = species_dict['Taxon1']
 

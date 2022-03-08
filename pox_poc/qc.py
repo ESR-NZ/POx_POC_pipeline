@@ -4,6 +4,7 @@ from pathlib import Path
 from subprocess import Popen, PIPE, run
 from pox_poc.terminal_color import bcolors
 import os
+import csv
 
 # Functions for data QC and to support the plotting
 
@@ -77,9 +78,9 @@ def run_seqkit_lenght_filter(fastq_file, BARCODE, COMBINED_FASTQ_DIR, read_len=1
     print(f'\nRunning seqkit length filter for all reads in sample: '+ bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
 
     # create the output file name
-    len_filt_file_path = COMBINED_FASTQ_DIR/f"{BARCODE}_all_reads_lenght_filtered.fastq"
+    len_filt_file_path = COMBINED_FASTQ_DIR/f"{BARCODE}_all_reads_lenght_filtered.fastq.gz"
     # the command, as a string, that will be used in a bash subprocess run the command
-    len_filter_cmd = f"seqkit seq -g -m {read_len} {fastq_file} > {len_filt_file_path}"
+    len_filter_cmd = f"seqkit seq -g -m {read_len} -o {len_filt_file_path} {fastq_file}"
     # span a subprocess and run the command
     sp = Popen(len_filter_cmd, shell=True, stdout=PIPE) # people dont like 'shell = true'
     # get the results back from the sp
@@ -113,7 +114,7 @@ def concat_read_files(fq_dir: Path, COMBINED_FASTQ_DIR: Path) -> Path:
     
     # do the concat with unix cat command
     print(f'Concatenating all fastq read files to {all_reads.name}') # print for debug
-    cat_cmd = f"cat {fq_dir}/*.fastq* > {all_reads}"
+    cat_cmd = f"cat {fq_dir}/*.fastq* | gzip > {all_reads}"
     
     # run the command with supprocess.run 
     run(cat_cmd, shell=True, check=True)
@@ -130,3 +131,4 @@ def concat_read_files(fq_dir: Path, COMBINED_FASTQ_DIR: Path) -> Path:
     print(bcolors.HEADER + f"{all_reads_suffix}" + bcolors.ENDC)
     
     return all_reads_suffix
+
