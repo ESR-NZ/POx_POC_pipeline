@@ -30,7 +30,6 @@ arg_parser.add_argument("minKnow_run_path",
 
 args = arg_parser.parse_args()
 
-
 # Path constants
 minKnow_run_path = Path(args.minKnow_run_path) 
 
@@ -83,7 +82,6 @@ def get_fastq_dirs(minKnow_run_path):
 
     return filtered_fastq_dirs 
 
-
 ####################### main func to run the script ################
 def main():
     print("\nRunning POX-POC pipeline")
@@ -114,7 +112,6 @@ def main():
         
         print(f'Calc length array for ' + bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
         lens_array = qc.get_lens_array(len_filtered_fastq)
-        
         
         # get the number of reads in the length filtered fastq file
         num_reads = len(lens_array)
