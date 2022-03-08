@@ -43,7 +43,7 @@ def parse_kraken(BARCODE: str, kreport_path: Path) -> dict:
         prcnt = str( round(float(s[0].lstrip()), round_val) )
         sp = s[len(s)-1]
         #return((sp, prcnt+"%"))
-        return(sp, prcnt+"%")
+        return f'{sp} - {prcnt}%'
         #return sp
 
     with open(kreport_path, "r") as f:
@@ -83,7 +83,7 @@ def write_classify_to_file(species_dict: dict, RESULTS_PATH) -> str:
     tax_file_exists = tax_csv_file_path.is_file()
     
     with open(tax_csv_file_path, 'a') as tax_csv:
-        header_names = ['BARCODE', ' Taxon1', ' Taxon2', ' Taxon3', ' N50', ' number_of_reads']
+        header_names = ['BARCODE', 'Taxon1', 'Taxon2', 'Taxon3', 'N50', 'number_of_reads', 'total_bases_count']
         tax_writer = csv.DictWriter(tax_csv, fieldnames=header_names)
         
         if not tax_file_exists:
@@ -92,6 +92,7 @@ def write_classify_to_file(species_dict: dict, RESULTS_PATH) -> str:
         dict_to_write = {k:species_dict[k.lstrip()] for k in header_names}
     
         tax_writer.writerow(dict_to_write)
+        
 
     top_species = species_dict['Taxon1']
 

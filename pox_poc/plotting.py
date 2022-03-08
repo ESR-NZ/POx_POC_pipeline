@@ -10,7 +10,7 @@ def plot_length_dis_graph(qc_dict, plot_results_path):
     # ploting the length distribution
     
     BARCODE = qc_dict["BARCODE"]
-    passed_bases = qc_dict["total_base_count"]
+    passed_bases = qc_dict["total_bases_count"]
     lens_array = qc_dict["lens_array"]
     n50 = qc_dict["N50"]
     filter_length = qc_dict["filter_length"]

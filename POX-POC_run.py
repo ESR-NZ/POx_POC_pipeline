@@ -131,14 +131,13 @@ def main():
 
         # Get the QC data for the filtered data and write to a dict
         # get N50
-        print(f'Calc n50\n')
         N50 = qc.func_N50(lens_array)
         
         # total bases in the length filtered fastq file
         total_base_count = qc.count_fastq_bases(len_filtered_fastq)
 
         qc_dict = {"N50": N50, 
-            "total_base_count": total_base_count, 
+            "total_bases_count": total_base_count, 
             "number_of_reads": num_reads, 
             "BARCODE": BARCODE,
             "filter_length": filter_length,

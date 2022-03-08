@@ -113,7 +113,7 @@ def concat_read_files(fq_dir: Path, COMBINED_FASTQ_DIR: Path) -> Path:
         os.remove(all_reads.with_suffix('.fastq.gz'))
     
     # do the concat with unix cat command
-    print(f'Concatenating all fastq read files to {all_reads.name}') # print for debug
+    print(f'Concatenating all read files to {all_reads.name}.fastq.gz') # print for debug
     cat_cmd = f"cat {fq_dir}/*.fastq* | gzip > {all_reads}"
     
     # run the command with supprocess.run 
