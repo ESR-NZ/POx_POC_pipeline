@@ -136,7 +136,7 @@ def main():
         qc_dict = {"N50": N50, 
             "total_bases_count": total_base_count, 
             "number_of_reads": num_reads, 
-            "BARCODE": BARCODE,
+            "Barcode": BARCODE,
             "filter_length": filter_length,
             "lens_array": lens_array}
 
@@ -153,10 +153,10 @@ def main():
 
         # add the qc data to the species dict
         species_dict.update(qc_dict)
-
+        
         # writing the top-hits to a file, this is a csv file
         # writes to a file called "classification_results.csv"
-        top_species = klassifier.write_classify_to_file(species_dict, RESULTS_PATH)
+        top_species = klassifier.write_update_dict_to_file(species_dict, RESULTS_PATH)
         
 
         print(bcolors.YELLOW + "\nTop classifiction hit: " + bcolors.BLUE + f"{top_species}\n" + bcolors.ENDC)

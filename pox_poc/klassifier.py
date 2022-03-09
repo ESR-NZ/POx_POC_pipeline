@@ -4,6 +4,7 @@ from pox_poc.terminal_color import bcolors
 import os
 import re
 import csv
+from collections import defaultdict
 
 KRAKEN2_DB_PATH=os.environ.get('KRAKEN2_DB_PATH')
 
@@ -55,7 +56,8 @@ def parse_kraken(BARCODE: str, kreport_path: Path) -> dict:
         #if tax_level == level: 
             if re.search("\t"+level, line): 
                 species.append(extract_kreport( line, round_val=1 ))
-            
+
+        # get the top three hits
         if species:
             if len(species) >= depth:
                 tax_dict = {f'Taxon{i+1}':species[i] for i in range(depth)}
@@ -65,35 +67,36 @@ def parse_kraken(BARCODE: str, kreport_path: Path) -> dict:
                 tax_dict['Barcode'] = BARCODE
 
             return tax_dict
-        
         else:
-            #quick fix for none empty kreports
-            tax_dict = {'Barcode':BARCODE, 'Taxon1': 'None found'}
+            return {'Barcode':BARCODE, 'Taxon1':'No hits', 'Taxon2':'No hits', 'Taxon3':'No hits'}
 
 
-
-def write_classify_to_file(species_dict: dict, RESULTS_PATH) -> str: 
+def write_update_dict_to_file(updated_dict: dict, RESULTS_PATH) -> str: 
     '''
     Write the results of classificain to a single file: classification_results.csv. 
     Returns the top species for printing to screen.
     Needs a bit of formatting work.
-    Also now writes the qc data to the file too. 
+    Also now writes the qc data to the file too. Species dict is updated with qc_dict in main()
+    proior calling this fuctions.
+
     '''
     tax_csv_file_path = RESULTS_PATH/'classification_results.csv'
     tax_file_exists = tax_csv_file_path.is_file()
     
     with open(tax_csv_file_path, 'a') as tax_csv:
-        header_names = ['BARCODE', 'Taxon1', 'Taxon2', 'Taxon3', 'N50', 'number_of_reads', 'total_bases_count']
+        header_names = ['Barcode', 'Taxon1', 'Taxon2', 'Taxon3', 'N50', 'number_of_reads', 'total_bases_count']
         tax_writer = csv.DictWriter(tax_csv, fieldnames=header_names)
         
         if not tax_file_exists:
             tax_writer.writeheader()
+
+        # trim the dict to only the header names we want to write
+        dict_to_write = {k:updated_dict[k] for k in header_names if k in updated_dict.keys()}
         
-        dict_to_write = {k:species_dict[k.lstrip()] for k in header_names}
-    
+
         tax_writer.writerow(dict_to_write)
         
 
-    top_species = species_dict['Taxon1']
+    top_species = updated_dict['Taxon1']
 
     return top_species

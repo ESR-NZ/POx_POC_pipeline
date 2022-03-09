@@ -98,8 +98,8 @@ def run_seqkit_lenght_filter(fastq_file, BARCODE, COMBINED_FASTQ_DIR, read_len=1
 # concat reads for each "barcode" to single file for analysis
 def concat_read_files(fq_dir: Path, COMBINED_FASTQ_DIR: Path) -> Path:
     '''
-    Takes in a Path object of a directory of fastq files and combines them
-    into a singe file within that same directory. The function then returns
+    Takes in a Path object of a directory of fastq.(gz) files and combines them
+    into a singe file in a Combind_fastq dir. The function then returns
     the path to this new file. This uses the unix cat command.
     Could probably make this more parallel...   
     '''
@@ -114,21 +114,38 @@ def concat_read_files(fq_dir: Path, COMBINED_FASTQ_DIR: Path) -> Path:
     
     # do the concat with unix cat command
     print(f'Concatenating all read files to {all_reads.name}.fastq.gz') # print for debug
-    cat_cmd = f"cat {fq_dir}/*.fastq* | gzip > {all_reads}"
+    for file in fq_dir.iterdir():
+        if file.is_file():
+            if is_gz_file(file):
+                cat_cmd = f"zcat {file} >> {all_reads.with_suffix('.fastq.gz')}"
+            else:
+                cat_cmd = f"cat {file} | gzip >> {all_reads.with_suffix('.fastq.gz')}"
+            
+            sp = Popen(cat_cmd, shell=True, stdout=PIPE)
+            sp.communicate()
+            if sp.returncode != 0:
+                print(f'Error concatenating files for sample: '+ bcolors.RED + f"{fq_dir.name}\n" + bcolors.ENDC)
+                return False
+            else:
+                print(f'Concatenation of all read files to {all_reads.name}.fastq.gz complete\n')
+                return all_reads.with_suffix('.fastq.gz')
+    
+    #cat_cmd = f"cat {fq_dir}/*.fastq* > {all_reads}"
     
     # run the command with supprocess.run 
-    run(cat_cmd, shell=True, check=True)
+    #run(cat_cmd, shell=True, check=True)
     
     # add the correct suffix to the file based on gzip'd or not
     # this works but is ugly, needs attention
-    if is_gz_file(all_reads):
-        all_reads.replace(all_reads.with_suffix('.fastq.gz'))
-        all_reads_suffix = all_reads.parent / (all_reads.name + '.fastq.gz')
-    else:
-        all_reads.replace(all_reads.with_suffix('.fastq')) 
-        all_reads_suffix = all_reads.parent / (all_reads.name + '.fastq')
+    # if is_gz_file(all_reads):
+    #     all_reads.replace(all_reads.with_suffix('.fastq.gz'))
+    #     all_reads_suffix = all_reads.parent / (all_reads.name + '.fastq.gz')
+    # else:
+
+    #     all_reads.replace(all_reads.with_suffix('.fastq')) 
+    #     all_reads_suffix = all_reads.parent / (all_reads.name + '.fastq')
     
-    print(bcolors.HEADER + f"{all_reads_suffix}" + bcolors.ENDC)
+    # print(bcolors.HEADER + f"{all_reads_suffix}" + bcolors.ENDC)
     
-    return all_reads_suffix
+    # return all_reads_suffix
 
