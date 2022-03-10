@@ -58,18 +58,22 @@ def parse_kraken(BARCODE: str, kreport_path: Path) -> dict:
                 species.append(extract_kreport( line, round_val=1 ))
 
         # get the top three hits
+        
         if species:
             if len(species) >= depth:
                 tax_dict = {f'Taxon{i+1}':species[i] for i in range(depth)}
                 tax_dict['Barcode'] = BARCODE
             else:
                 tax_dict = {f'Taxon{i+1}':species[i] for i in range(len(species))}
+                for i in range(len(species), depth):
+                    tax_dict[f'Taxon{i+1}'] = "No hits"
                 tax_dict['Barcode'] = BARCODE
 
             return tax_dict
+
         else:
             return {'Barcode':BARCODE, 'Taxon1':'No hits', 'Taxon2':'No hits', 'Taxon3':'No hits'}
-
+       
 
 def write_update_dict_to_file(updated_dict: dict, RESULTS_PATH) -> str: 
     '''
@@ -91,12 +95,12 @@ def write_update_dict_to_file(updated_dict: dict, RESULTS_PATH) -> str:
             tax_writer.writeheader()
 
         # trim the dict to only the header names we want to write
-        dict_to_write = {k:updated_dict[k] for k in header_names if k in updated_dict.keys()}
+        dict_to_write = {k:updated_dict[k] for k in header_names}
         
 
         tax_writer.writerow(dict_to_write)
         
 
-    top_species = updated_dict['Taxon1']
+    top_species = dict_to_write['Taxon1']
 
     return top_species
