@@ -119,9 +119,10 @@ def main():
         # skip barcodes with less than 1000 reads
         if num_reads < 1000:
             print(f'Skiping sample {BARCODE}, not enough reads\n')
-            # remove the fastq file and the filtered reads
+            # remove the fastq file, the filtered reads and the directory
+
             os.remove(fastq_file)
-            os.remove(len_filtered_fastq)
+            shutil.rmtree(len_filtered_fastq.parent)
             continue
 
         print(f'Passed reads: ' + bcolors.RED + f"{num_reads}\n" + bcolors.ENDC)

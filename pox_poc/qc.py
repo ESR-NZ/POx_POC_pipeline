@@ -78,7 +78,9 @@ def run_seqkit_lenght_filter(fastq_file, BARCODE, COMBINED_FASTQ_DIR, read_len=1
     print(f'\nRunning seqkit length filter for all reads in sample: '+ bcolors.RED + f"{BARCODE}\n" + bcolors.ENDC)
 
     # create the output file name
-    len_filt_file_path = COMBINED_FASTQ_DIR/f"{BARCODE}_all_reads_lenght_filtered.fastq.gz"
+    len_filt_file_path = COMBINED_FASTQ_DIR/f"{BARCODE}/all_reads_lenght_filtered.fastq.gz"
+    # make a directory for the output file
+    len_filt_file_path.parent.mkdir(parents=True, exist_ok=True)
     # the command, as a string, that will be used in a bash subprocess run the command
     len_filter_cmd = f"seqkit seq -g -m {read_len} -o {len_filt_file_path} {fastq_file}"
     # span a subprocess and run the command

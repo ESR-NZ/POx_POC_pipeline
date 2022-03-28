@@ -1,4 +1,6 @@
 pox_poc/__pycache__/*
+pox_poc/scraps.py
+
 build/
 *.egg-info/
 
@@ -6,3 +8,4 @@ build/
 .ipynb_checkpoints
 /bin
 /deps
+
