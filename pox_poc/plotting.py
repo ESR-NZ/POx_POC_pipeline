@@ -10,14 +10,14 @@ def plot_length_dis_graph(qc_dict, plot_results_path):
     # ploting the length distribution
     
     BARCODE = qc_dict["Barcode"]
-    passed_bases = qc_dict["total_bases_count"]
+    passed_bases = qc_dict[" total_bases (Mb)"]
     lens_array = qc_dict["lens_array"]
-    n50 = qc_dict["N50"]
+    n50 = qc_dict[" N50 (kb)"]
     filter_length = qc_dict["filter_length"]
 
-    # conver to kb/mb
-    n50 = round(n50/1000, 1)
-    total_data = round(passed_bases/1000000, 2)
+    # round up data for plotting
+    n50 = round(n50, 1)
+    total_data = round(passed_bases, 2)
 
     plot_path = plot_results_path/f"{BARCODE}_read_length_distrabution_plot.png"
     

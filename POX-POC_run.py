@@ -133,9 +133,9 @@ def main():
         # total bases in the length filtered fastq file
         total_base_count = qc.count_fastq_bases(len_filtered_fastq)
 
-        qc_dict = {"N50": N50, 
-            "total_bases_count": total_base_count, 
-            "number_of_reads": num_reads, 
+        qc_dict = {" N50 (kb)": (N50/10**3), 
+            " total_bases (Mb)": (total_base_count/10**6), 
+            " number_of_reads": num_reads, 
             "Barcode": BARCODE,
             "filter_length": filter_length,
             "lens_array": lens_array}
